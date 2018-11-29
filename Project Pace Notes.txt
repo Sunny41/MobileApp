@@ -1,0 +1,102 @@
+PROJECT
+1. Submission: Vision
+until next week (31.10.18)
+Idea - What we wannna do 
+Motivation - Why we wanna do that
+Small research: are there similar apps
+-> Up to1- 2 pages, can/should include pictures
+
+find Name/Acronym for the App
+
+Bill splitting - Spill: calculate Gas price at the app, Adding  Members of the Group, Tutti Bill, Sort Bill parts to Members
+----------------
+Login with Google account
+User Profile (what do i need to pay to who, what do i get from who)
+create a group (like whatsapp, Name, Add Users, Description)
+    create activities (Name, Time, Location, persons, total cost (updated)) All group pays, specific members pay
+       create costs (Name, Price, Balance(+/-))
+Creator of Group is Admin (add and remove People)
+the admin can choose otherones to be admin
+everyone can add costs
+transparent to everyone
+everyone can see the deps of everyone
+(already bought stuff, even the costs out, like the restaurant)
+Restaurant situation (restaurant activity, -/+ balance costs, everyone has to add the cost of his food by himself to the activity)
+---------------
+----backend
+1. taking care for the database
+2. new activities (mockup)
+3. setting (mockup)
+4. login (mockup)
+5. trip four group (mockup)
+----frontend
+6. final layout
+7. colouring
+8. more mockups
+9. different styles ( need to tryout)
+
+Milestones
+21. November  -  meet up
+12. Dezember  -  meet up
+
+19. Dezember  -  Present Idea and requirements 
+(Mock ups, Demo, Sequence diagramms, Wireframes, Storys, Personas, User Storys, Testcase scenario, User scenario)
+7x Personas (everyone one)
+Wireframe (Jannik)
+MockUps (Hanna)
+User Scenario (Arj)
+3x User Storys (Kenneth) 
+Testcase Scenario (Tim)
+Demo (Paper prototype) (Oli)
+Sequence Diagramms (Sonja)
+
+9. January  -  Modelpresentation
+16. January  -  Meeting Implementation
+23. January  -  Finale Presentation
+-----------------------
+
+
+
+TODO
+1. server (node express) --
+ - create user
+ - login
+ - API for creating group and delete
+ - searching for and inviting registrated users (invited users are saved in a table)
+2. database (aws?) --Oli
+3. IBM cloud server hochladen --(not Tim)
+
+!2 People for Server and Database! (one for each)
+------------
+Login: (also Registration)
+User and password prompt
+(Maybe using Google API)
+---------------
+Overview/Dashboard:
+- Manage Groups
+- Invitations
+- Notifications
+- Managing user profile
+----------------
+Group:
+- invite people
+- admin can delete people
+- creator of the group is default admin
+- list of group activities (every) (filter for only showing participating activities)
+- costs you have to pay
+- create an Activity
+- joining an activity 
+--------------
+Activity:
+- payments
+- specify the users u payed for (those users need to notified about the payment)
+- updating (socket.io?) (what to do without internet connection) (ionic does have that)
+- Add payed costs by clicking on a member (Member of Activity)
+--------
+Think about:
+socket.io (server)
+dataexchange
+Ionic or React ---NO to React NATIVE!!!
+
+
+Android Studio
