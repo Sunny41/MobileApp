@@ -1,0 +1,33 @@
+Persona
+
+|----------|
+|  \|||/   |
+|  (o-o)   |
+| \(|||)/  |
+|  || ||   |
+|----------|
+
+Name: Max Mustermann
+Age: 25
+Job: Student
+
+Max Mustermann is a student for informatics in Reutlingen - Germany.
+He is in contact with many people and often goes out with them. At the university
+there are a lot of events and parties where Max is joining.
+Not always is a bill for himself. He often invites friends and other people, or get's invited, but the bill is split in the end of the activity or party.
+It is quite hard to have an overview of the spend money and how much money he owes to others.
+
+Key characteristics
+- Is a student
+- Oftens hangs out with friends and goes to parties, day trips, etc
+- Would like to have an easy overview of spend money when out with friends
+
+Goals
+- Have an overview of how much money he owes to others
+- Have an overview of how much money the others owes to him
+
+User Case Scenario
+Max is in the Shooter's Bar in Reutlingen with 15 of his friends from the Campus.
+They are drinking and laughing and having a good time. One Shot-Round after the other is ordered and everyone pays for a round,
+but also pays for his own drinks. Also Max is inviting his best friend Alina and Florian this evening. So he also pays for them. To track
+how much money he currently spend and owes to the others, he needs to have some assistence.
