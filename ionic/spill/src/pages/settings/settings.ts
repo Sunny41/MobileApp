@@ -1,14 +1,31 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { ProfilePage } from './profile/profile';
+import { AppSettingsPage } from './app-settings/app-settings';
+import { AccountPage } from './account/account';
 
+@IonicPage()
 @Component({
   selector: 'page-settings',
-  templateUrl: 'settings.html'
+  templateUrl: 'settings.html',
 })
 export class SettingsPage {
-    
-  constructor(public navCtrl: NavController){
-      this.navCtrl = navCtrl;
+
+  tab1Root = ProfilePage;
+  tab2Root = AccountPage;
+  tab3Root = AppSettingsPage;
+  
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events) {
   }
 
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad SettingsPage');
+  }
+
+
+  goBack(){
+    this.events.publish('save');
+    this.navCtrl.pop();
+  }
 }

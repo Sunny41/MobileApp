@@ -1,12 +1,24 @@
-    <ion-header>
-        <ion-navbar>
-          <ion-title>
-            Settings
-          </ion-title>
-        </ion-navbar>
-      </ion-header>
-      
-      <ion-content padding>
-        <h1>Settings</h1>
-      </ion-content>
-      
+
+<ion-header>
+
+    <ion-navbar hideBackButton>
+        <ion-buttons left>
+            <button ion-button (click)="goBack()">
+                <ion-icon class="customIcon" name="arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>Settings</ion-title>
+     </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <ion-tabs tabsLayout="icon-top" tabsPlacement="top">
+      <ion-tab [root]="tab1Root" tabTitle="Profile" tabIcon="person"></ion-tab>
+      <ion-tab [root]="tab2Root" tabTitle="Account" tabIcon="key"></ion-tab>
+      <ion-tab [root]="tab3Root" tabTitle="General" tabIcon="settings"></ion-tab>      
+    </ion-tabs>
+
+</ion-content>

@@ -11,6 +11,9 @@ import { LoginPage } from '../pages/login/login';
 import { SettingsPage } from '../pages/settings/settings';
 import {NewGroupPage} from '../pages/new-group/new-group';
 import {GroupPage} from '../pages/group/group';
+import { ProfilePage } from '../pages/settings/profile/profile';
+import { AppSettingsPage } from '../pages/settings/app-settings/app-settings';
+import { AccountPage } from '../pages/settings/account/account';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import {GroupPage} from '../pages/group/group';
     LoginPage,
     SettingsPage,
     GroupPage,
-    NewGroupPage
+    NewGroupPage,
+    ProfilePage,
+    AppSettingsPage,
+    AccountPage
   ],
   imports: [
     BrowserModule,
@@ -34,7 +40,10 @@ import {GroupPage} from '../pages/group/group';
     LoginPage,
     SettingsPage,
     GroupPage,
-    NewGroupPage
+    NewGroupPage,
+    ProfilePage,
+    AppSettingsPage, 
+    AccountPage
   ],
   providers: [
     StatusBar,
