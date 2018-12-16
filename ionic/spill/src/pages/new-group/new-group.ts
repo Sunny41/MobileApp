@@ -24,7 +24,7 @@ export class NewGroupPage {
     console.log('ionViewDidLoad NewGroupPage');
   }
 
-  addGroup(){
+  addNewGroup(){
     this.navCtrl.push(GroupPage);
   }
 
