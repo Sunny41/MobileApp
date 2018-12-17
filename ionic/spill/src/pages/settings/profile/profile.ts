@@ -49,6 +49,7 @@ export class ProfilePage {
                 subTitle: 'The username cannot be empty!',
                 buttons: ['OK']
               });
+              this.changeUsername();
               alert.present();
             }else{
               console.log("Save new username to db! " + this.username);

@@ -4,24 +4,18 @@ import { NewActivityPage} from '../new-activity/new-activity';
 import { ActivityPage } from '../activity/activity';
 import { AddMemberPage } from '../add-member/add-member';
 
-
-
-/**
- * Generated class for the GroupPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-group',
   templateUrl: 'group.html',
 })
 export class GroupPage {
+  group:any;
   root = GroupPage;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    console.log(navParams.get('data'));
+    this.group = navParams.get('data');
   }
 
   ionViewDidLoad() {

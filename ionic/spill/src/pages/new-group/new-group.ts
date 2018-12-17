@@ -2,12 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { GroupPage } from '../group/group';
 
-/**
- * Generated class for the NewGroupPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -15,6 +9,9 @@ import { GroupPage } from '../group/group';
   templateUrl: 'new-group.html',
 })
 export class NewGroupPage {
+
+  name:string;
+  description:string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.navCtrl=navCtrl;
@@ -25,7 +22,8 @@ export class NewGroupPage {
   }
 
   addNewGroup(){
-    this.navCtrl.push(GroupPage);
+    var group = {name:this.name, description:this.description};
+    this.navCtrl.push(GroupPage, {data:group});
   }
 
 }
