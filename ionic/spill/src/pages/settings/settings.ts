@@ -4,7 +4,6 @@ import { ProfilePage } from './profile/profile';
 import { AppSettingsPage } from './app-settings/app-settings';
 import { AccountPage } from './account/account';
 
-@IonicPage()
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',

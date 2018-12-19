@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { GroupPage } from '../group/group';
 
 
-@IonicPage()
 @Component({
   selector: 'page-new-group',
   templateUrl: 'new-group.html',

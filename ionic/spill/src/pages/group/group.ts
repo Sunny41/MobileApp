@@ -4,7 +4,7 @@ import { NewActivityPage} from '../new-activity/new-activity';
 import { ActivityPage } from '../activity/activity';
 import { AddMemberPage } from '../add-member/add-member';
 
-@IonicPage()
+
 @Component({
   selector: 'page-group',
   templateUrl: 'group.html',

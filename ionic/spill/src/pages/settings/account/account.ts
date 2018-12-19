@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
-@IonicPage()
+
 @Component({
   selector: 'page-account',
   templateUrl: 'account.html',
