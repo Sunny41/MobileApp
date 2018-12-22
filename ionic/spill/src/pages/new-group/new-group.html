@@ -7,8 +7,17 @@
 
 </ion-header>
 <ion-content padding>
-
-Group Name<ion-input type="text" [(ngModel)]="name"></ion-input><br>
-Description <ion-input type="text" [(ngModel)]="description"></ion-input>
-<button ion-button (click)="addNewGroup()"><ion-icon name="checkmark-circle"></ion-icon></button>
+    <form id="NewGroupForm">
+    <ion-list>
+        <ion-item>
+          <ion-label color="primary">Group Name</ion-label>
+          <ion-input placeholder="Text Input"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label color="primary">Description</ion-label>
+            <ion-input placeholder="Text Input"></ion-input>
+          </ion-item>
+    </ion-list>
+   <button ion-button (click)="addNewGroup()"type="submit"><ion-icon name="checkmark-circle"></ion-icon></button>
+  </form>
 </ion-content>

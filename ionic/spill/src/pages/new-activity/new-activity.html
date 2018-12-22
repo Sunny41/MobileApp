@@ -12,7 +12,32 @@
 
 </ion-header>
 
-
 <ion-content padding>
-
+  <form id="NewActivityForm">
+      <ion-list>
+          <ion-item>
+            <ion-label color="primary">Name</ion-label>
+            <ion-input placeholder="Name of Activity"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label color="primary">Costs</ion-label>
+              <ion-input placeholder="How much did you spend" type="number"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label color="primary">Add Members</ion-label>
+              <ion-input placeholder="Search for Users"></ion-input>
+              <button ion-button id="addMemberToAct" (click)="addMemberToAct()"><ion-icon name="search"></ion-icon></button>
+          </ion-item>
+          <ion-item>
+              <ion-label color="primary">Location</ion-label>
+              <!--Google Maps-->
+          </ion-item>
+          <ion-item>
+            <ion-label color="primary">Members</ion-label>
+            <!--Show List of already added Members-->
+          </ion-item>
+      </ion-list>
+  
+    <button ion-button type="submit" id="createActBtn"><ion-icon name="add"></ion-icon></button>
+  </form>
 </ion-content>
