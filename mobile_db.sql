@@ -19,6 +19,7 @@ USE `mobileapp`;
 -- Dumping structure for table mobileapp.Activity
 CREATE TABLE IF NOT EXISTS `Activity` (
   `activityId` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
   `description` varchar(50) NOT NULL,
   `date` datetime NOT NULL,
   `place` varchar(50) NOT NULL,
