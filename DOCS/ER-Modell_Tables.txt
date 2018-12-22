@@ -1,0 +1,44 @@
+MobileComputing ER-Modell
+
+-User, Group, Activity, Asset, GroupUser, GroupActivity, ActivityUser, AssetUser
+
+User: 
+Mail (accountname)
+username (showingname)
+password
+
+Group:
+name
+description
+userID (Admin)
+
+Activity: 
+name
+description
+date
+place
+userID (Admin)
+
+Asset:
+amount
+usrID
+groupActivityID
+
+GroupUser:
+groupID
+userID
+
+GroupActivity:
+groupID
+activityID
+userID
+
+ActivityUSer:
+userID
+acticityID
+
+AssetUser:
+assetID
+userID (deptor)
+amount
+
