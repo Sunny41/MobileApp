@@ -7,16 +7,42 @@
   </ion-header>
   
   <ion-content padding>
-    <h1>Dashboard</h1>
 
-    <button ion-button (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
-    <button ion-button (click)="openNewGroup()"><ion-icon name="people"></ion-icon></button>
-    <ion-icon name="notifications"></ion-icon>
+      <ion-grid>
 
-    <ion-list>
-      <button ion-item *ngFor="let group of GROUPS" (click)="openSelectedGroup(group)">
-        {{ group.name }}
-      </button>  
-    </ion-list>
+        <ion-row>
+          <ion-col col-8>
+            <h1>Dashboard</h1>
+          </ion-col>
+          <ion-col col-2>
+            <button ion-button (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
+          </ion-col>
+          <ion-col col-2>
+            <button ion-button icon-start (click)="openSettings()"><ion-icon name="notifications">{{notifications}}</ion-icon></button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <button ion-button (click)="openNewGroup()"><ion-icon name="people"></ion-icon></button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+              <ion-list>
+                  <button ion-item *ngFor="let group of groupList" (click)="openSelectedGroup(group)">
+                    {{ group.name }}
+                  </button> 
+                </ion-list>
+               
+                <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+                  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+          </ion-col>
+        </ion-row>
+        
+      </ion-grid>
+
   </ion-content>
   
