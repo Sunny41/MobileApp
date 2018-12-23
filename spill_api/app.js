@@ -1,6 +1,7 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
+var bcryptjs = require('bcryptjs');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -47,7 +48,7 @@ app.use(function(req, res, next){
 //API GET Calls
 app.use('/', index);
 app.use('/activities', activities); //GET all Activities
-app.use('/activitiymembers', activitymembers); //GET all members of an activity
+app.use('/activitymembers', activitymembers); //GET all members of an activity
 app.use('/groups', groups); //GET all groups
 app.use('/groupactivities', groupactivities); //GET all activities of a group
 app.use('/groupmembers', groupmembers); //GET all members of a group
