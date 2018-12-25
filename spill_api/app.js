@@ -8,7 +8,6 @@ var bodyParser = require('body-parser');
 var mysql= require('mysql');
 var http = require('http');
 
-
 var index = require('./routes/index');
 var activities = require('./routes/activities');
 var activitymembers = require('./routes/activitymembers');
@@ -45,7 +44,6 @@ app.use(function(req, res, next){
 	next();
 });
 
-//API GET Calls
 app.use('/', index);
 app.use('/activities', activities); //GET all Activities
 app.use('/activitymembers', activitymembers); //GET all members of an activity
@@ -56,10 +54,6 @@ app.use('/invitations', invitations); //GET all invitations
 app.use('/items', items); //GET all items
 app.use('/itemsinvited', itemsinvited); //GET all items someone has been invited for
 app.use('/users', users); //GET all users
-
-
-//API POST Calls
-/*...*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -82,5 +76,7 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-var server = http.createServer(app);
-server.listen(3000);
+
+var port = (process.env.VCAP_APP_PORT || 3000);
+var host = (process.env.VCAP_APP_HOST || 'localhost');
+http.createServer(app).listen(port,host);
