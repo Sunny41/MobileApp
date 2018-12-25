@@ -63,7 +63,9 @@ Output:
 
 
 **POSTS**
+
 *Usage example: Add new item to the DB*
+
 https://spillapi.mybluemix.net/items/new?itemName=Cinema%20Tickets&itemDescription=Tickets%20for%20the%20cinema%20on%20friday%20night&itemUserId=28&amount=8.99&itemActivityId=36
 This is adding an new item with:
 **name:** Cinema Tickets
