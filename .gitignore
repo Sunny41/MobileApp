@@ -255,3 +255,4 @@ node_modules/
 
 
 # End of https://www.gitignore.io/api/intellij,webstorm,androidstudio
+spill_api/\.env

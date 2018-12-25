@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -33,15 +34,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //Database connection
-app.use(function(req, res, next){
-	global.connection = mysql.createConnection({
-	  	host     : 'cloudws1819.c0lwjxnry6gy.us-east-2.rds.amazonaws.com',
-	  	user     : 'mobile',
-        password : 'Mobile1234!',
-  		database : 'mobileapp'
-	});
-	connection.connect();
-	next();
+global.connection = mysql.createConnection({
+    host     : process.env.RDS_HOSTNAME,
+    user     : process.env.RDS_USERNAME,
+    password : process.env.RDS_PASSWORD,
+    port     : process.env.RDS_PORT,
+    database : process.env.RDS_DB_NAME
+});
+
+connection.connect(function(err) {
+    if (err) {
+        console.error('Database connection failed: ' + err.stack);
+        return;
+    }
+
+    console.log('Connected to database.');
 });
 
 app.use('/', index);
