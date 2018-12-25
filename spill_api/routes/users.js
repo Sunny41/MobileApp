@@ -14,6 +14,7 @@ router.get('/', function(req, res, next) {
   	});
 });
 
+/* GET user listing, search query for mail address. */
 router.get('/mail', function(req, res, next) {
 	connection.query('SELECT * from User WHERE mail like  ?','%'+req.query.s+'%', function (error, results, fields) {
 		if(error){
@@ -26,6 +27,7 @@ router.get('/mail', function(req, res, next) {
 	});
 });
 
+/* GET users listing, search query for username. */
 router.get('/name', function(req, res, next) {
 	connection.query('SELECT * from User WHERE username like ?','%'+req.query.s+'%', function (error, results, fields) {
 		if(error){
