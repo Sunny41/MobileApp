@@ -1,6 +1,8 @@
 # SPILLapi
 
+
 **GETs**
+
 https://spillapi.mybluemix.net/users
 https://spillapi.mybluemix.net/activities
 https://spillapi.mybluemix.net/activitymembers
@@ -61,6 +63,10 @@ Output:
 
 
 **POSTS**
-
-*Activities*
-https://spillapi.mybluemix.net/activities/new?name=OurNewActivity&description=Yaaay&date=2018-12-31
+*Usage example: Add new item to the DB*
+https://spillapi.mybluemix.net/items/new?itemName=Cinema%20Tickets&itemDescription=Tickets%20for%20the%20cinema%20on%20friday%20night&itemUserId=28&amount=8.99&itemActivityId=36
+This is adding an new item with:
+**name:** Cinema Tickets
+**description:** Tickets for the cinema on friday night
+**itemUserId:** User-ID 28
+**itemActivityId:** Activity-ID 36
