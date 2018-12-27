@@ -1,0 +1,6 @@
+---
+applications:
+- name: spillapi
+  path: .
+  memory: 256M
+  instances: 1
