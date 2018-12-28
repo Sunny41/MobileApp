@@ -20,13 +20,21 @@
             <ion-input placeholder="Name of Activity"></ion-input>
           </ion-item>
           <ion-item>
-              <ion-label color="primary">Costs</ion-label>
-              <ion-input placeholder="How much did you spend" type="number"></ion-input>
+              <ion-label color="primary">Date</ion-label>
+              <ion-datetime displayFormat= "DD/MM/YYYY" type="number"></ion-datetime>
           </ion-item>
           <ion-item>
-              <ion-label color="primary">Add Members</ion-label>
-              <ion-input placeholder="Search for Users"></ion-input>
-              <button ion-button id="addMemberToAct" (click)="addMemberToAct()"><ion-icon name="search"></ion-icon></button>
+            <ion-label color="primary">Time</ion-label>
+              <ion-datetime displayFormat= "HH:mm" type="number"></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-searchbar
+            [(ngModel)]="member"
+            name="searchBarMember"
+            [showCancelButton]="shouldShowCancel"
+            (ionInput)="onInput($event)"
+            (ionCancel)="onCancel($event)">
+          </ion-searchbar>
           </ion-item>
           <ion-item>
               <ion-label color="primary">Location</ion-label>
@@ -34,10 +42,11 @@
           </ion-item>
           <ion-item>
             <ion-label color="primary">Members</ion-label>
-            <!--Show List of already added Members-->
-          </ion-item>
+            <button ion-button *ngFor="let member of membersToAdd" (click)="delMember(member.id)">{{member.username}}</button>
+        </ion-item>
       </ion-list>
-  
-    <button ion-button type="submit" id="createActBtn"><ion-icon name="add"></ion-icon></button>
-  </form>
+    <ion-fab bottom right>
+      <button ion-fab type="submit" (click)="addActivity()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>  
+    </form>
 </ion-content>

@@ -14,8 +14,11 @@ export class GroupPage {
   root = GroupPage;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    console.log(navParams.get('data'));
-    this.group = navParams.get('data');
+    if(navParams.get('data')!=null){
+      console.log(navParams.get('data'));
+      this.group = navParams.get('data');
+    }
+    console.log('constructor');
   }
 
   ionViewDidLoad() {
