@@ -11,13 +11,14 @@
     <ion-list>
         <ion-item>
           <ion-label color="primary">Group Name</ion-label>
-          <ion-input placeholder="Text Input"></ion-input>
+          <ion-input placeholder="Text Input" [(ngModel)]="name" name="groupName"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label color="primary">Description</ion-label>
-            <ion-input placeholder="Text Input"></ion-input>
-          </ion-item>
+          <ion-label color="primary">Description</ion-label>
+          <ion-input placeholder="Text Input" [(ngModel)]="description" name="groupDescription"></ion-input>
+        </ion-item>
     </ion-list>
    <button ion-button (click)="addNewGroup()"type="submit"><ion-icon name="checkmark-circle"></ion-icon></button>
   </form>
+  <p>{{name}}</p>
 </ion-content>
