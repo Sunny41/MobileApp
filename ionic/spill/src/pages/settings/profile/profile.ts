@@ -14,6 +14,8 @@ export class ProfilePage {
     events.subscribe('save', () => {
       this.save();
     });
+    var user:any = navParams.data;
+    this.username = user.username;
   }
 
   ionViewDidLoad() {

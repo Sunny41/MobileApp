@@ -11,17 +11,12 @@
 <ion-content padding>
     <ion-list>
         <ion-item>
-          <ion-label color="primary">Account Name</ion-label>
-          <ion-input placeholder="Account Name" disabled></ion-input>
-        </ion-item>
-
-        <ion-item>
           <button ion-button color="primary" (click)="showChangePasswordAlert()">Change Password</button>
         </ion-item>
 
         <ion-item>
           <ion-label color="primary">Email</ion-label>
-          <ion-input placeholder="Email" disabled></ion-input>
+          <ion-input placeholder="Email" [(ngModel)]="user.mail" disabled></ion-input>
         </ion-item>
 
 

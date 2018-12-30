@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { HttpClient } from '@angular/common/http';
 import { SettingsPage } from '../settings/settings';
 import {NewGroupPage} from '../new-group/new-group';
 import { GroupPage } from '../group/group';
@@ -10,38 +11,44 @@ import { GroupPage } from '../group/group';
 })
 export class DashboardPage {
 
-  groupList = [];
-  GROUPS =  [
-    {id:1, name:"Shooters", description:"Meeting at shooter Rt at 20:00"},
-    {id:2, name:"Cinema", description:"With Mike and Ellie"},
-    {id:3, name:"Trip to Berlin", description:"Don't forget to create activities"}
-  ];
+  user:any;
+  groups:any = [];
+  notifications = "";
 
-  notifications = " 1";
+  constructor(public navCtrl: NavController, public http: HttpClient) {
 
-  constructor(public navCtrl: NavController) {
-    this.navCtrl = navCtrl;
+    //get user from nav
+    this.user = {"userId":1,"mail":"oliver.wagner@student.reutlingen-university.de","username":"Oli","password":"Hallo"};
 
-    for (let i = 0; i < this.GROUPS.length; i++) {
-      this.groupList.push( this.GROUPS[i] );
-    }
-  }
+    //Load groups
+    var url = 'https://spillapi.mybluemix.net/groups';
+    this.http.get(url).subscribe(data => {
+      var result:any = data;
+      if(result.error){
 
-  doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
-
-    setTimeout(() => {
-      for (let i = 0; i < this.GROUPS.length; i++) {
-        this.groupList.push( this.GROUPS[i] );
+      }else{
+        this.groups = result.response;
       }
+    });
 
-      console.log('Async operation has ended');
-      infiniteScroll.complete();
-    }, 500);
+    //Load invitations
+    var url = 'https://spillapi.mybluemix.net/invitations';
+    this.http.get(url).subscribe(data => {
+      var result:any = data;
+      if(result.error){
+
+      }else{
+        if(result.response.length == ''|| result.response.length == null || result.response.length == undefined){
+          this.notifications = "";
+        }else{
+          this.notifications = " " + result.response.length;
+        }        
+      }
+    });
   }
 
   openSettings(){
-    this.navCtrl.push(SettingsPage);
+    this.navCtrl.push(SettingsPage, {user:this.user});
   }
 
   openNewGroup(){

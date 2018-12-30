@@ -24,25 +24,18 @@
 
         <ion-row>
           <ion-col>
-            <button ion-button (click)="openNewGroup()"><ion-icon name="people"></ion-icon></button>
-          </ion-col>
-        </ion-row>
-
-        <ion-row>
-          <ion-col>
-              <ion-list>
-                  <button ion-item *ngFor="let group of groupList" (click)="openSelectedGroup(group)">
-                    {{ group.name }}
-                  </button> 
-                </ion-list>
-               
-                <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-                  <ion-infinite-scroll-content></ion-infinite-scroll-content>
-                </ion-infinite-scroll>
+            <ion-list>
+                <button ion-item *ngFor="let group of groups" (click)="openSelectedGroup(group)">
+                  {{ group.name }}
+                </button> 
+              </ion-list>
           </ion-col>
         </ion-row>
         
       </ion-grid>
 
+      <ion-fab middle right>
+          <button ion-button (click)="openNewGroup()"><ion-icon name="people"></ion-icon></button>
+        </ion-fab>
   </ion-content>
   

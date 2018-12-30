@@ -10,12 +10,14 @@ import { AccountPage } from './account/account';
 })
 export class SettingsPage {
 
+  user:any;
   tab1Root = ProfilePage;
   tab2Root = AccountPage;
   tab3Root = AppSettingsPage;
   
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events) {
+    this.user = navParams["user"];
   }
 
   ionViewDidLoad() {

@@ -8,8 +8,12 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 })
 export class AccountPage {
 
+  user:any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
     this.alertCtrl = alertCtrl;
+
+    this.user = navParams.data
   }
 
   ionViewDidLoad() {
@@ -51,8 +55,10 @@ export class AccountPage {
             var newPassword = data["New Password"];
             var confirmPassword = data["Confirm Password"];
 
-            if(newPassword != confirmPassword){
+            if(newPassword != confirmPassword || oldPassword != this.user.password){
               this.showNewPasswordIncorrectAlert();
+            }else{
+              this.changePasswordAlert();
             }
           }
         }
@@ -65,6 +71,18 @@ export class AccountPage {
     const alert = this.alertCtrl.create({
       title: 'Password could not be changed!',
       subTitle: "The old password was incorrect or the new one doesn' match",
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  changePasswordAlert(){
+    //Connect to server and try to change password
+
+    //If success
+    const alert = this.alertCtrl.create({
+      title: 'Success',
+      subTitle: "Your password has been changed",
       buttons: ['OK']
     });
     alert.present();
