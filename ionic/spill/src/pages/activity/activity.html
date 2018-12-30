@@ -14,5 +14,16 @@
 
 
 <ion-content padding>
-
+    <ion-fab top right>
+        <button ion-fab (click)="openNewPost()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab> 
+    <ion-label color="primary">Posts</ion-label>
+    <!--Show each post with deatils-->
+    <ion-list>
+      <ion-item *ngFor="let post of allPosts">
+        {{post.name}}
+        Costs: {{post.costs}}
+        Members: 
+      </ion-item>
+    </ion-list>
 </ion-content>

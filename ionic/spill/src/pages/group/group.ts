@@ -5,6 +5,7 @@ import { ActivityPage } from '../activity/activity';
 import { AddMemberPage } from '../add-member/add-member';
 
 
+
 @Component({
   selector: 'page-group',
   templateUrl: 'group.html',
@@ -31,6 +32,10 @@ export class GroupPage {
 
   openAddMember(){
     this.navCtrl.push(AddMemberPage);
+  }
+
+  openActivity(){
+    this.navCtrl.push(ActivityPage);
   }
 
 }

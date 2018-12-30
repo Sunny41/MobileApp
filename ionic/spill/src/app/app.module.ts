@@ -18,6 +18,7 @@ import { AccountPage } from '../pages/settings/account/account';
 import {ActivityPage} from '../pages/activity/activity';
 import {NewActivityPage} from '../pages/new-activity/new-activity';
 import {AddMemberPage} from '../pages/add-member/add-member';
+import {NewPostPage} from '../pages/new-post/new-post';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {AddMemberPage} from '../pages/add-member/add-member';
     AccountPage,
     ActivityPage,
     NewActivityPage,
-    AddMemberPage
+    AddMemberPage,
+    NewPostPage
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,8 @@ import {AddMemberPage} from '../pages/add-member/add-member';
     AccountPage,
     ActivityPage,
     NewActivityPage,
-    AddMemberPage
+    AddMemberPage,
+    NewPostPage
   ],
   providers: [
     StatusBar,

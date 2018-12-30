@@ -9,7 +9,7 @@ import {GroupPage} from '../group/group';
 })
 export class NewActivityPage {
   member:string;
-  membersToAdd = []
+  membersToAdd = [];
   allMembers=[
     {id:1, username:"max"},
     {id:2, username:"lisa"},
