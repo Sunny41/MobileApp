@@ -24,6 +24,7 @@ export class DashboardPage {
     var url = 'https://spillapi.mybluemix.net/groups';
     this.http.get(url).subscribe(data => {
       var result:any = data;
+      console.log(data);
       if(result.error){
 
       }else{

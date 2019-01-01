@@ -14,17 +14,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class NewPostPage {
   member:string;
-  allGroupMembers=[
-    {id:1, username:"max"},
-    {id:2, username:"lisa"},
-    {id:3, username:"jannik"},
-    {id:4, username:"sonja"}
-  ];
+  activityMembers=[];
   checkedMembers:boolean[];
   assetMembers=[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.checkedMembers= new Array(this.allGroupMembers.length);
+    this.checkedMembers= new Array(this.activityMembers.length);
   }
 
   ionViewDidLoad() {
@@ -32,6 +27,11 @@ export class NewPostPage {
   }
 
   addNewAsset(){
+    //store in db:
+    // in items table:
+    // {itemName, itemDescription, itemUserId, amount, itemActivityId}
+    // for each member one entry in itemsInvited:
+    // {itemName, itemDescription, itemUserId, amount, itemInviteActivityId, itemInviteUserId, itemInviteInvitedUserid}
     
    console.log(this.checkedMembers);
    this.navCtrl.pop();

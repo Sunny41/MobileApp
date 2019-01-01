@@ -7,11 +7,11 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Activity Details</ion-title>
+    <ion-title>{{activity.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
-
+{{activity.description}}
 
 <ion-content padding>
   <ion-fab top right #fab>
@@ -21,16 +21,14 @@
       <button ion-fab (click)="openNewPost()"><ion-icon name="add-circle"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
-    <ion-label color="primary">Posts</ion-label>
-    <!--Show each post with deatils-->
+    <h3>Items</h3>
     <ion-list>
-      <ion-item *ngFor="let post of allPosts">
-        {{post.name}}
-        Costs: {{post.costs}}
-        Members: 
-      </ion-item>
+      <ion-item *ngFor="let item of items" (click)="openItem(item)">
+        <button ion-button (click)="openItem(item)">{{ item.itemName }}</button><br>
+        Amount: {{ item.amount }}€ <br>
+        Members: {{ item.itemUserId }}
+      </ion-item> 
     </ion-list>
-    <ion-fab bottom>
-      Total: <!--Generate Total Costs of Activity-->
-    </ion-fab>
+  Total: <!--Generate Total Costs of Activity-->
+    
 </ion-content>

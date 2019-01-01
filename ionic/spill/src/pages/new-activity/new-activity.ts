@@ -45,6 +45,13 @@ export class NewActivityPage {
   }
   
   addActivity(){
+    //store in db:
+    // in activity table:
+    // {name, description, date, place, activityAdminId}
+    // for each member one entry in itemsInvited:
+    // {activityMembersActivityId, activityMembersUserId}
+    // in groupactivities:
+    // {groupId, activityId}
 
 
     this.navCtrl.pop();

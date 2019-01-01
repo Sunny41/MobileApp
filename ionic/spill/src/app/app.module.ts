@@ -19,6 +19,7 @@ import {ActivityPage} from '../pages/activity/activity';
 import {NewActivityPage} from '../pages/new-activity/new-activity';
 import {AddMemberPage} from '../pages/add-member/add-member';
 import {NewPostPage} from '../pages/new-post/new-post';
+import { EditItemPage } from '../pages/edit-item/edit-item';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {NewPostPage} from '../pages/new-post/new-post';
     ActivityPage,
     NewActivityPage,
     AddMemberPage,
-    NewPostPage
+    NewPostPage,
+    EditItemPage
   ],
   imports: [
     BrowserModule,
@@ -57,7 +59,8 @@ import {NewPostPage} from '../pages/new-post/new-post';
     ActivityPage,
     NewActivityPage,
     AddMemberPage,
-    NewPostPage
+    NewPostPage,
+    EditItemPage
   ],
   providers: [
     StatusBar,

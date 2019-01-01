@@ -7,13 +7,12 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Groupname</ion-title>
+    <ion-title>{{group.name}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
-  <h1>{{group.name}}</h1>
   <h3>{{group.description}}</h3>
 
   <ion-fab top right #fab>
@@ -23,5 +22,9 @@
       <button ion-fab (click)="openAddActivity()"><ion-icon name="add-circle"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>  
-  <button ion-button (click)="openActivity()">Example Activity</button>
+  <ion-list>
+    <ion-item>
+    <button ion-item *ngFor="let activity of activities" (click)="openActivity(activity)">{{ activity.name }}</button>
+    </ion-item> 
+  </ion-list>
 </ion-content>
