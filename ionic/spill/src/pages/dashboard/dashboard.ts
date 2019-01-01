@@ -56,6 +56,6 @@ export class DashboardPage {
   }
 
   openSelectedGroup(group){
-    this.navCtrl.push(GroupPage, {data:group})
+    this.navCtrl.push(GroupPage, {group:group, user:this.user})
   }
 }
