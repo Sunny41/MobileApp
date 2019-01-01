@@ -14,9 +14,13 @@
 
 
 <ion-content padding>
-    <ion-fab top right>
-        <button ion-fab (click)="openNewPost()"><ion-icon name="add"></ion-icon></button>
-    </ion-fab> 
+  <ion-fab top right #fab>
+    <button ion-fab><ion-icon name="menu"></ion-icon></button>
+    <ion-fab-list side="top right">
+      <button ion-fab (click)="openEdit()"><ion-icon name="create"></ion-icon></button>
+      <button ion-fab (click)="openNewPost()"><ion-icon name="add-circle"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
     <ion-label color="primary">Posts</ion-label>
     <!--Show each post with deatils-->
     <ion-list>
@@ -26,4 +30,7 @@
         Members: 
       </ion-item>
     </ion-list>
+    <ion-fab bottom>
+      Total: <!--Generate Total Costs of Activity-->
+    </ion-fab>
 </ion-content>

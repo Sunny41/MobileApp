@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, FormsModule } from 'ionic-angular';
-
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 /**
  * Generated class for the NewPostPage page.
  *
@@ -22,6 +21,7 @@ export class NewPostPage {
     {id:4, username:"sonja"}
   ];
   checkedMembers:boolean[];
+  assetMembers=[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.checkedMembers= new Array(this.allGroupMembers.length);
@@ -31,8 +31,9 @@ export class NewPostPage {
     console.log('ionViewDidLoad NewPostPage');
   }
 
-  addNewPost(){
+  addNewAsset(){
     
    console.log(this.checkedMembers);
+   this.navCtrl.pop();
   }
 }

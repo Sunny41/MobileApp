@@ -8,12 +8,18 @@ import {NewPostPage} from '../new-post/new-post';
 })
 export class ActivityPage {
   post:string;
-  allPosts = [
+  allAssets = [
     {id:1, name:"Pizza", costs:30},
     {id:2, name:"Cinema", costs: 45}
   ];
+  allAssetMembers =[
+    {pID:1, uID:1},
+    {pID:1, uID:2},
+    {pID:2, uID:1},
+    {pID:2, uID:2},
+  ];
   allActivityMembers=[];
-  postMembers = [];
+  assetMembers = [];
   location = '';
   memberCreated = '';
   
