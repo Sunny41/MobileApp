@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ActivityPage } from '../activity/activity';
+import { HttpClient } from '@angular/common/http';
 /**
  * Generated class for the NewPostPage page.
  *
@@ -15,18 +16,20 @@ import { ActivityPage } from '../activity/activity';
 })
 export class NewItemPage {
   member:string;
-  activityMembers=[];
+  activityMembers:any;
   checkedMembers:boolean[];
   assetMembers=[];
   group:any;
   user:any;
   activity:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
     this.checkedMembers= new Array(this.activityMembers.length);
     this.group = navParams.get('group');
     this.user = navParams.get('user');
     this.activity = navParams.get('activity');
+    this.activityMembers = navParams.get('activityMembers');
+
   }
 
   ionViewDidLoad() {

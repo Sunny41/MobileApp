@@ -37,7 +37,7 @@ import { RegisterPage } from '../pages/register/register';
     ActivityPage,
     NewActivityPage,
     AddMemberPage,
-    NewPostPage,
+    NewItemPage,
     EditItemPage,
     RegisterPage
   ],
@@ -61,10 +61,8 @@ import { RegisterPage } from '../pages/register/register';
     ActivityPage,
     NewActivityPage,
     AddMemberPage,
-    NewPostPage,
-    EditItemPage,
-    RegisterPage
     NewItemPage,
+    RegisterPage,
     EditItemPage
   ],
   providers: [
