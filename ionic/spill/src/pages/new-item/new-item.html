@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>New Post</ion-title>
+    <ion-title>New Item</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -28,7 +28,7 @@
                 <ion-label color="primary">Costs</ion-label>
                 <ion-input type="number" placeholder="€€€"></ion-input>
             </ion-item>
-            <ion-item *ngFor="let member of allGroupMembers; let i=index">
+            <ion-item *ngFor="let member of activityMembers; let i=index">
               <!--Checkboxes with group members-->
               <ion-label>{{member.username}}</ion-label>
               <ion-checkbox [(ngModel)]="checkedMembers[i]"name="checkedMember" ></ion-checkbox>

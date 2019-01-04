@@ -18,7 +18,7 @@ import { AccountPage } from '../pages/settings/account/account';
 import {ActivityPage} from '../pages/activity/activity';
 import {NewActivityPage} from '../pages/new-activity/new-activity';
 import {AddMemberPage} from '../pages/add-member/add-member';
-import {NewPostPage} from '../pages/new-post/new-post';
+import {NewItemPage} from '../pages/new-item/new-item';
 import { EditItemPage } from '../pages/edit-item/edit-item';
 import { RegisterPage } from '../pages/register/register';
 
@@ -64,6 +64,8 @@ import { RegisterPage } from '../pages/register/register';
     NewPostPage,
     EditItemPage,
     RegisterPage
+    NewItemPage,
+    EditItemPage
   ],
   providers: [
     StatusBar,

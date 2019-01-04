@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { NewActivityPage} from '../new-activity/new-activity';
+import { NewActivityPage } from '../new-activity/new-activity';
 import { ActivityPage } from '../activity/activity';
 import { AddMemberPage } from '../add-member/add-member';
 import { HttpClient } from '@angular/common/http';
@@ -12,50 +12,60 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: 'group.html',
 })
 export class GroupPage {
-  user:any;
-  activity: any=[];
-  group:any;
-  activities:any=[];
+  user: any;
+  activity: any = [];
+  group: any;
+  activities: any = [];
+  groupactivities: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
-    if(navParams.get('group')!=null){
+    if (navParams.get('group') != null) {
       //get ids from navparams
       this.group = navParams.get('group');
       this.user = navParams.get('user');
 
       //Load activities
-      // @Hanna: load only the groups activities! this url loads all activities.
-      // oli will do one that loads only the activities from a given group id
-      var url = 'https://spillapi.mybluemix.net/activities';
+      var url = 'https://spillapi.mybluemix.net/groupactivities/id?s=' + this.group.groupId;
       this.http.get(url).subscribe(data => {
-      var result:any = data;
-      console.log(data);
-      if(result.error){
+        var result: any = data;
+        if (result.error) {
 
-      }else{
-        this.activities = result.response;
-      }
-    });
+        } else {
+          this.groupactivities = result.response;
+          for (let i = 0; i < this.groupactivities.length; i++) {
+            //get activities from id
+            var url = 'https://spillapi.mybluemix.net/activities/id?s=' + this.groupactivities[i].activityId;
+            this.http.get(url).subscribe(data => {
+              var result: any = data;
+              if (result.error) {
+
+              } else {
+                this.activities.append(result.response);
+              }
+            });
+          }
+        }
+      });
     }
-    console.log('constructor');
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GroupPage');
   }
 
-  openAddActivity(){
+  openAddActivity() {
     //@Hanna: already did that for u, bc i needed the params :)
-    this.navCtrl.push(NewActivityPage,{ user:this.user, group:this.group});
+    this.navCtrl.push(NewActivityPage, { user: this.user, group: this.group });
   }
 
-  openAddMember(){
+  openAddMember() {
     this.navCtrl.push(AddMemberPage);
   }
 
-  openActivity(activity:any){
+  openActivity(activity: any) {
     //@Hanna: already did that for u, bc i needed the params :)
-    this.navCtrl.push(ActivityPage, {activity:activity, user:this.user, group:this.group});
+    this.navCtrl.push(ActivityPage, { activity: activity, user: this.user, group: this.group });
   }
+
 
 }

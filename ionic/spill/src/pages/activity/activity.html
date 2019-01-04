@@ -22,12 +22,21 @@
     </ion-fab-list>
   </ion-fab>
     <h3>Items</h3>
+    <ion-item *ngFor="let user of activityMembers">
+      {{user.name}}
+    </ion-item>
     <ion-list>
-      <ion-item *ngFor="let item of items" (click)="openItem(item)">
-        <button ion-button (click)="openItem(item)">{{ item.itemName }}</button><br>
-        Amount: {{ item.amount }}€ <br>
-        Members: {{ item.itemUserId }}
+      <ion-item *ngFor="let item of userItems" >
+        {{ item.itemName }}<br>
+        <!--show positive balance-->
+        <!--show users who have to pay to u-->
       </ion-item> 
+      <ion-item *ngFor="let item of userInvitedItems">
+          {{ item.itemName }}><br>
+          <!--show negative balance-->
+          <!--show pay button-->
+          <!--show other users-->
+      </ion-item>
     </ion-list>
   Total: <!--Generate Total Costs of Activity-->
     

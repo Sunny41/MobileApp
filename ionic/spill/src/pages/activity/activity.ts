@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, } from 'ionic-angular';
-import { NewPostPage } from '../new-post/new-post';
+import { NewItemPage } from '../new-item/new-item';
 import { HttpClient } from '@angular/common/http';
 import { EditItemPage } from '../edit-item/edit-item';
+
 
 @Component({
   selector: 'page-activity',
@@ -14,8 +15,10 @@ export class ActivityPage {
   items:any;
   group:any;
   activity:any;
-  itemMembers:any;
-  activityMembers:any;
+  itemMembers:any=[];
+  activityMembers:any=[];
+  userItems:any=[];
+  userInvitedItems:any=[];
   
   
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient ) {
@@ -25,20 +28,39 @@ export class ActivityPage {
       this.user = navParams.get('user');
       this.activity = navParams.get('activity');
 
-    //Load assets
-      var url = 'https://spillapi.mybluemix.net/items';
-      this.http.get(url).subscribe(data => {
-        var result:any = data;
-        console.log(data);
+      //load activity members
+      var url = 'https://spillapi.mybluemix.net/activitymembers/'+'id?s='+this.activity.id;
+      this.http.get(url).subscribe(data=>{
+        var result:any=data;
         if(result.error){
 
         }else{
-          this.items = result.response;
+          this.activityMembers=result.response;
+        }
+
+      });
+
+      //load my added items
+      var url = 'https://spillapi.mybluemix.net/itemsinvited/'+'user?s='+this.user.id;
+      this.http.get(url).subscribe(data=>{
+        var result:any=data;
+        if(result.error){
+        }else{
+          this.userItems=result.response;
         }
       });
-      //load activity members
 
-      //load item members of each activity in this group
+      //load the items i am invited to
+      var url = 'https://spillapi.mybluemix.net/itemsinvited/'+'invited?s='+this.user.id;
+      this.http.get(url).subscribe(data=>{
+        var result:any=data;
+        if(result.error){
+
+        }else{
+          this.userInvitedItems=result.response;
+        }
+
+      });
     }
   }
     
@@ -48,7 +70,7 @@ export class ActivityPage {
   }
 
   openNewPost(){
-    this.navCtrl.push(NewPostPage,{user:this.user,activity:this.activity});
+    this.navCtrl.push(NewItemPage,{user:this.user,activity:this.activity, group:this.group, activityMembers:this.activityMembers});
   }
 
   openItem(item){
@@ -56,8 +78,10 @@ export class ActivityPage {
     //if yes: show edit screen, params needed: itemid, activityid, userid, groupid
     this.navCtrl.push(EditItemPage,{user:this.user,activity:this.activity, item:this.item, group:this.group});
     //if no: do nothing
-    
+  }
 
+  editActivity(){
+    // params needed: user, groupid, activityid
   }
 
 }
