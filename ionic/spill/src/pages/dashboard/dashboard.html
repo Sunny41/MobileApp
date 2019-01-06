@@ -11,19 +11,25 @@
             <ion-title>Dashboard</ion-title>
           </ion-col>
           <ion-col col-2>
-            <button ion-button (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
+            <button ion-button full (click)="openSettings()"><ion-icon name="settings"></ion-icon></button>
           </ion-col>
           <ion-col col-2>
-            <button ion-button icon-start (click)="openSettings()"><ion-icon name="notifications">{{notifications}}</ion-icon></button>
+            <button ion-button full icon-start (click)="openSettings()"><ion-icon name="notifications">{{notifications}}</ion-icon></button>
           </ion-col>
         </ion-row>
 
         <ion-row>
           <ion-col>
             <ion-list>
-                <button ion-item *ngFor="let group of groups" (click)="openSelectedGroup(group)">
-                  {{ group.name }}
-                </button> 
+              <ion-list-header>
+                Groups
+              </ion-list-header>
+
+              <ion-item *ngFor="let group of groups" (click)="openSelectedGroup(group)">
+                <h2>{{group.name}}</h2>
+                <h3>{{group.description}}</h3>
+              </ion-item>
+
               </ion-list>
           </ion-col>
         </ion-row>

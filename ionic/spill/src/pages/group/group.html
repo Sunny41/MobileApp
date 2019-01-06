@@ -12,7 +12,7 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content padding center text-center>
   <h3>{{group.description}}</h3>
 
   <ion-fab top right #fab>
@@ -23,8 +23,12 @@
     </ion-fab-list>
   </ion-fab>  
   <ion-list>
-    <ion-item>
-    <button ion-item *ngFor="let activity of activities" (click)="openActivity(activity)">{{ activity.name }}</button>
+      <ion-list-header>
+        Activities
+      </ion-list-header>
+    <ion-item *ngFor="let activity of activities" (click)="openActivity(activity)">
+      <h2>{{activity.name}}</h2>
+      <h3>{{activity.description}}</h3>
     </ion-item> 
   </ion-list>
 </ion-content>

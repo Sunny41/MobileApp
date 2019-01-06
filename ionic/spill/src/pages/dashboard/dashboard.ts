@@ -20,15 +20,25 @@ export class DashboardPage {
     //get user from nav
     this.user = {"userId":1,"mail":"oliver.wagner@student.reutlingen-university.de","username":"Oli","password":"Hallo"};
 
-    //Load groups
-    var url = 'https://spillapi.mybluemix.net/groups';
+    //Load groupmembers
+    var url = 'https://spillapi.mybluemix.net/groupmembers/user?s=' + this.user.userId;
     this.http.get(url).subscribe(data => {
       var result:any = data;
-      console.log(data);
       if(result.error){
 
       }else{
-        this.groups = result.response;
+        for(var i=0; i<result.response.length; i++){
+          //Load group
+          var url = 'https://spillapi.mybluemix.net/groups/id?s=' + result.response[i].groupId;
+          this.http.get(url).subscribe(data => {
+            var result:any = data;
+            if(result.error){
+
+            }else{
+              this.groups.push(result.response[0]);
+            }
+          });
+        }
       }
     });
 

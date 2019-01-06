@@ -24,6 +24,7 @@ export class GroupPage {
       this.group = navParams.get('group');
       this.user = navParams.get('user');
 
+      console.log("GroupID: " + this.group.groupId);
       //Load activities
       var url = 'https://spillapi.mybluemix.net/groupactivities/id?s=' + this.group.groupId;
       this.http.get(url).subscribe(data => {
@@ -32,6 +33,7 @@ export class GroupPage {
 
         } else {
           this.groupactivities = result.response;
+          
           for (let i = 0; i < this.groupactivities.length; i++) {
             //get activities from id
             var url = 'https://spillapi.mybluemix.net/activities/id?s=' + this.groupactivities[i].activityId;
@@ -40,7 +42,9 @@ export class GroupPage {
               if (result.error) {
 
               } else {
-                this.activities.append(result.response);
+                for(var i=0; i<result.response.length; i++){
+                  this.activities.push(result.response[i]);
+                }
               }
             });
           }
