@@ -28,10 +28,9 @@
                 <ion-label color="primary">Costs</ion-label>
                 <ion-input type="number" placeholder="€€€"></ion-input>
             </ion-item>
-            <ion-item *ngFor="let member of activityMembers; let i=index">
-              <!--Checkboxes with group members-->
-              <ion-label>{{member.username}}</ion-label>
-              <ion-checkbox [(ngModel)]="checkedMembers[i]"name="checkedMember" ></ion-checkbox>
+            <ion-item *ngFor="let activityMember of activityMembers; let k=index">
+              <ion-label>{{ activityMember.username }}</ion-label>
+              <ion-checkbox [(ngModel)]="checkedMembers[k]"name="checkedMember" ></ion-checkbox>
             </ion-item>
         </ion-list>
       <ion-fab bottom right>

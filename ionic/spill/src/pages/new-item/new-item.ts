@@ -15,35 +15,31 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: 'new-item.html',
 })
 export class NewItemPage {
-  member:string;
-  activityMembers:any;
-  checkedMembers:boolean[];
-  assetMembers=[];
-  group:any;
-  user:any;
-  activity:any;
+  activityMembers: any = [];
+  checkedMembers: boolean[];
+  group: any;
+  user: any;
+  activity: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
-    this.checkedMembers= new Array(this.activityMembers.length);
     this.group = navParams.get('group');
     this.user = navParams.get('user');
     this.activity = navParams.get('activity');
     this.activityMembers = navParams.get('activityMembers');
-
+    this.checkedMembers = new Array(this.activityMembers.length);
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NewPostPage');
+    //console.log('ionViewDidLoad NewPostPage');
   }
 
-  addNewAsset(){
+  addNewAsset() {
     //store in db:
     // in items table:
     // {itemName, itemDescription, itemUserId, amount, itemActivityId}
-    // for each member one entry in itemsInvited:
+    // for each member one entry in itemsInvited (checkedMembers):
     // {itemName, itemDescription, itemUserId, amount, itemInviteActivityId, itemInviteUserId, itemInviteInvitedUserid}
-    
-   console.log(this.checkedMembers);
-   this.navCtrl.push(ActivityPage, { activity:this.activity, user: this.user, group: this.group });
+
+    this.navCtrl.push(ActivityPage, { activity: this.activity, user: this.user, group: this.group });
   }
 }

@@ -17,6 +17,8 @@ export class GroupPage {
   group: any;
   activities: any = [];
   groupactivities: any = [];
+  groupMembers: any = [];
+  groupMembersID: any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
     if (navParams.get('group') != null) {
@@ -24,7 +26,7 @@ export class GroupPage {
       this.group = navParams.get('group');
       this.user = navParams.get('user');
 
-      console.log("GroupID: " + this.group.groupId);
+      //console.log("GroupID: " + this.group.groupId);
       //Load activities
       var url = 'https://spillapi.mybluemix.net/groupactivities/id?s=' + this.group.groupId;
       this.http.get(url).subscribe(data => {
@@ -33,7 +35,7 @@ export class GroupPage {
 
         } else {
           this.groupactivities = result.response;
-          
+
           for (let i = 0; i < this.groupactivities.length; i++) {
             //get activities from id
             var url = 'https://spillapi.mybluemix.net/activities/id?s=' + this.groupactivities[i].activityId;
@@ -42,8 +44,33 @@ export class GroupPage {
               if (result.error) {
 
               } else {
-                for(var i=0; i<result.response.length; i++){
-                  this.activities.push(result.response[i]);
+                for (var j = 0; j < result.response.length; j++) {
+                  this.activities.push(result.response[j]);
+                }
+              }
+            });
+          }
+        }
+      });
+      //load group members
+      var url = 'https://spillapi.mybluemix.net/groupmembers/id?s=' + this.group.groupId;
+      this.http.get(url).subscribe(data => {
+        var result: any = data;
+        if (result.error) {
+
+        } else {
+          this.groupMembersID = result.response;
+
+          for (let i = 0; i < this.groupMembersID.length; i++) {
+            //get members from id
+            var url = 'https://spillapi.mybluemix.net/users/id?s=' + this.groupMembersID[i].userId;
+            this.http.get(url).subscribe(data => {
+              var result: any = data;
+              if (result.error) {
+
+              } else {
+                for (var j = 0; j < result.response.length; j++) {
+                  this.groupMembers.push(result.response[j]);
                 }
               }
             });
@@ -54,12 +81,12 @@ export class GroupPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad GroupPage');
+    //console.log('ionViewDidLoad GroupPage');
   }
 
   openAddActivity() {
     //@Hanna: already did that for u, bc i needed the params :)
-    this.navCtrl.push(NewActivityPage, { user: this.user, group: this.group });
+    this.navCtrl.push(NewActivityPage, { user: this.user, group: this.group, groupMembers: this.groupMembers });
   }
 
   openAddMember() {
@@ -69,6 +96,11 @@ export class GroupPage {
   openActivity(activity: any) {
     //@Hanna: already did that for u, bc i needed the params :)
     this.navCtrl.push(ActivityPage, { activity: activity, user: this.user, group: this.group });
+  }
+
+  deleteActivity() {
+    //only possible when current user is admin
+    //button has to be created
   }
 
 

@@ -28,22 +28,14 @@
               <ion-datetime displayFormat= "HH:mm" type="number"></ion-datetime>
           </ion-item>
           <ion-item>
-            <ion-searchbar
-            [(ngModel)]="member"
-            name="searchBarMember"
-            [showCancelButton]="shouldShowCancel"
-            (ionInput)="onInput($event)"
-            (ionCancel)="onCancel($event)">
-          </ion-searchbar>
+            <ion-label color="primary">Place</ion-label>
+              <ion-input placeholder= "Where did you go?"></ion-input>
           </ion-item>
-          <ion-item>
-              <ion-label color="primary">Location</ion-label>
-              <!--Google Maps-->
+          <ion-item *ngFor="let groupmember of groupMembers; let k=index">
+            <!--Checkboxes with group members-->
+            <ion-label>{{groupmember.username}}</ion-label>
+            <ion-checkbox [(ngModel)]="checkedMembers[k]"name="checkedMember" ></ion-checkbox>
           </ion-item>
-          <ion-item>
-            <ion-label color="primary">Members</ion-label>
-            <button ion-button *ngFor="let member of membersToAdd" (click)="delMember(member.id)">{{member.username}}</button>
-        </ion-item>
       </ion-list>
     <ion-fab bottom right>
       <button ion-fab type="submit" (click)="addActivity()"><ion-icon name="add"></ion-icon></button>
