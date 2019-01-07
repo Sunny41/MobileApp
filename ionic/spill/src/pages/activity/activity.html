@@ -1,9 +1,4 @@
-<!--
-  Generated template for the ActivityPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -31,7 +26,7 @@
         <!--show positive balance-->
         <!--show users who have to pay to u-->
       </ion-item> 
-      <ion-item *ngFor="let item of userInvitedItems" (click)="editItem(item)" >
+      <ion-item *ngFor="let item of userInvitedItems" (click)="presentActionSheet(item)" >
           <h2>USERNAME</h2>
           <h3>{{item.itemName}}</h3>
           <h2>{{-item.amount + "€"}}</h2>

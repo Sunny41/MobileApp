@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
 import { NewItemPage } from '../new-item/new-item';
 import { HttpClient } from '@angular/common/http';
 import { EditItemPage } from '../edit-item/edit-item';
@@ -19,14 +19,16 @@ export class ActivityPage {
   activityMembers:any=[];
   userItems:any=[];
   userInvitedItems:any=[];
+  isAdmin:boolean;
   
-  
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public alertCtrl: AlertController ) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+     public http: HttpClient, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController) {
 
     if(navParams.get('group')!=null){
       this.group = navParams.get('group');
       this.user = navParams.get('user');
       this.activity = navParams.get('activity');
+      this.isAdmin = true;//this.activity.activityAdminId == this.user.userId;
 
       //load activity members
       var url = 'https://spillapi.mybluemix.net/activitymembers/'+'id?s='+this.activity.activityId;
@@ -90,8 +92,44 @@ export class ActivityPage {
 
   editItem(item){
     const prompt = this.alertCtrl.create({
+      title: 'Edit Item',
+      message: "Change item properties",
+      inputs: [
+        {
+          type: 'text',
+          name: 'itemName',
+          placeholder: 'Item Name'
+        },
+        {
+          type: 'text',
+          name: 'itemDescription',
+          placeholder: 'Item Description'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            console.log("SAVE ITEM " + data.itemName + " " + data.itemDescription);
+            item.itemName = data.itemName;
+            item.itemDescription = data.itemDescription;
+            this.updateItem(item);
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  payItem(item){
+    const prompt = this.alertCtrl.create({
       title: 'Set paid status',
-      message: "Have you paid the item?",
+      message: "How much have you paid?",
       inputs: [
         {
           type: 'tel',
@@ -104,7 +142,6 @@ export class ActivityPage {
         {
           text: 'Cancel',
           handler: data => {
-
           }
         },
         {
@@ -116,6 +153,89 @@ export class ActivityPage {
       ]
     });
     prompt.present();
+  }
+
+  updateItem(item){
+    var url = 'https://spillapi.mybluemix.net/items/';
+    this.http.get(url).subscribe(data => {
+      var result:any = data;
+      if(result.error){
+
+      }else{
+              
+      }
+    });
+  }
+
+  deleteItem(item){
+    var url = 'https://spillapi.mybluemix.net/items/';
+    this.http.get(url).subscribe(data => {
+      var result:any = data;
+      if(result.error){
+
+      }else{
+              
+      }
+    });
+  }
+
+  presentActionSheet(item) {
+    var title = "Modify the item";
+    //Admin options
+    if(this.isAdmin){
+      const actionSheet = this.actionSheetCtrl.create({
+        title: title,
+        buttons: [
+          {
+            text: 'Delete',
+            role: 'destructive',
+            handler: () => {
+              this.deleteItem(item);
+            }
+          },
+          {
+            text: 'Edit',
+            handler: () => {
+              this.editItem(item);
+            }
+          },
+          {
+            text: 'Pay',
+            handler: () => {
+              this.payItem(item);
+            }
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+            }
+          }
+        ]
+      });
+      actionSheet.present();
+    }else {
+      //Not Admin options
+      const actionSheet = this.actionSheetCtrl.create({
+        title: title,
+        buttons: [
+          {
+            text: 'Pay',
+            handler: () => {
+              this.payItem(item);
+            }
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+            }
+          }
+        ]
+      });
+      actionSheet.present();
+    }
+    
   }
 
 }
