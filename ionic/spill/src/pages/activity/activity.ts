@@ -48,7 +48,9 @@ export class ActivityPage {
                 if (result2.error) {
 
                 } else {
-                  this.activityMembers.push(result2.response);
+                  for(var j=0; j<result2.response.length; j++){
+                    this.activityMembers.push(result2.response[j]);
+                  }
                 }
               });
             }
