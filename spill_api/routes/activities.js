@@ -88,4 +88,43 @@ router.post('/new', function (req,res,next) {
 	});
 });
 
+/* edit existing activity */
+router.post('/edit', function (req,res,next) {
+	var name = req.query.name;
+	var description = req.query.description;
+	var date = req.query.date;
+	var place = req.query.place;
+	if (name==undefined) {
+		name = null;
+	}
+	if (description==undefined) {
+		console.log(true);
+		description = null;
+	}
+	if (date==undefined) {
+		date = null;
+	}
+	if (place==undefined) {
+		place = null;
+	}
+	connection.query('UPDATE Activity SET name = IfNull(@name,?), description = IfNull(@description,?), date = IfNull(@date,?), place = IfNull(@place,?) WHERE activityId = ? ', [name, description, date, place, req.query.activityId], function (error, results, fields) {
+		var activityId = req.query.activityId;
+		if(error){
+			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+			//If there is error, we send the error in the error section with 500 status
+		} else {
+			//res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+			connection.query('SELECT * from Activity WHERE activityId = ?',activityId, function (error, results, fields) {
+				if(error){
+					res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+					//If there is error, we send the error in the error section with 500 status
+				} else {
+					res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+					//If there is no error, all is good and response is 200OK.
+				}
+			});
+		}
+	});
+});
+
 module.exports = router;
