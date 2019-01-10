@@ -100,4 +100,26 @@ router.post('/new', function (req,res,next) {
     });
 });
 
+/* edit existing Item */
+router.put('/edit', function (req,res,next) {
+	connection.query('UPDATE Item SET itemName = IfNull(?,itemName), itemDescription = IfNull(?,itemDescription) WHERE itemId = ? ', [req.query.itemName, req.query.itemDescription, req.query.itemId], function (error, results, fields) {
+		var itemId = req.query.itemId;
+		if(error){
+			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+			//If there is error, we send the error in the error section with 500 status
+		} else {
+			//res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+			connection.query('SELECT * from Item WHERE ItemId = ?',itemId, function (error, results, fields) {
+				if(error){
+					res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+					//If there is error, we send the error in the error section with 500 status
+				} else {
+					res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+					//If there is no error, all is good and response is 200OK.
+				}
+			});
+		}
+	});
+});
+
 module.exports = router;

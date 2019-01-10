@@ -89,25 +89,8 @@ router.post('/new', function (req,res,next) {
 });
 
 /* edit existing activity */
-router.post('/edit', function (req,res,next) {
-	var name = req.query.name;
-	var description = req.query.description;
-	var date = req.query.date;
-	var place = req.query.place;
-	if (name==undefined) {
-		name = null;
-	}
-	if (description==undefined) {
-		console.log(true);
-		description = null;
-	}
-	if (date==undefined) {
-		date = null;
-	}
-	if (place==undefined) {
-		place = null;
-	}
-	connection.query('UPDATE Activity SET name = IfNull(@name,?), description = IfNull(@description,?), date = IfNull(@date,?), place = IfNull(@place,?) WHERE activityId = ? ', [name, description, date, place, req.query.activityId], function (error, results, fields) {
+router.put('/edit', function (req,res,next) {
+	connection.query('UPDATE Activity SET name = IfNull(?,name), description = IfNull(?,description), date = IfNull(?,date), place = IfNull(?,place) WHERE activityId = ? ', [req.query.name, req.query.description, req.query.date, req.query.place, req.query.activityId], function (error, results, fields) {
 		var activityId = req.query.activityId;
 		if(error){
 			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
