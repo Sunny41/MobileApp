@@ -42,7 +42,10 @@ router.get('/description', function(req, res, next) {
 
 /* GET items  listing, search query for item id. */
 router.get('/id', function(req, res, next) {
-	connection.query('SELECT * from Item WHERE itemId like ?', req.query.s, function (error, results, fields) {
+	connection.query('SELECT Item.*, User.username\n' +
+		'FROM Item\n' +
+		'JOIN User ON Item.itemUserId = User.userId\n' +
+		'WHERE Item.itemId=?', req.query.s, function (error, results, fields) {
 		if(error){
 			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
 			//If there is error, we send the error in the error section with 500 status
