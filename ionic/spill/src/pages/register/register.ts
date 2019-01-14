@@ -1,3 +1,5 @@
+//Author: Jannik Renner
+
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';

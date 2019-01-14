@@ -1,3 +1,4 @@
+//Author: Hanna Schulze
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
@@ -6,6 +7,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'add-member.html',
 })
 export class AddMemberPage {
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }

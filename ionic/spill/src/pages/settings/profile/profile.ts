@@ -1,3 +1,4 @@
+//Author: Jannik Renner
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
 

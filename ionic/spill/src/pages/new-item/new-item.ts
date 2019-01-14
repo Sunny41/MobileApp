@@ -1,3 +1,4 @@
+//Author: Sonja Czernotzky
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ActivityPage } from '../activity/activity';

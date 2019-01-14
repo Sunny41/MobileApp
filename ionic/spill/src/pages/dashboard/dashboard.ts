@@ -1,3 +1,4 @@
+//Author: Jannik Renner
 import { Component, NgModule } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';

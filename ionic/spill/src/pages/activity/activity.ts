@@ -1,3 +1,5 @@
+//Author: Sonja Czernotzky
+
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
 import { NewItemPage } from '../new-item/new-item';

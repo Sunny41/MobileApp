@@ -1,22 +1,22 @@
-
+<!--Jannik Renner-->
 <ion-header>
 
-    <ion-navbar hideBackButton >
+    <ion-navbar hideBackButton>
         <ion-buttons left>
             <button ion-button (click)="goBack()">
                 <ion-icon class="customIcon" name="arrow-back" color="light"></ion-icon>
             </button>
         </ion-buttons>
-     </ion-navbar>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding center text-center>
     <ion-tabs tabsLayout="icon-top" tabsPlacement="top">
-      <ion-tab [root]="tab1Root" [rootParams]="navParams.get('user')" tabTitle="Profile" tabIcon="person"></ion-tab>
-      <ion-tab [root]="tab2Root" [rootParams]="navParams.get('user')" tabTitle="Account" tabIcon="key"></ion-tab>
-      <ion-tab [root]="tab3Root" tabTitle="General" tabIcon="settings"></ion-tab>      
+        <ion-tab [root]="tab1Root" [rootParams]="navParams.get('user')" tabTitle="Profile" tabIcon="person"></ion-tab>
+        <ion-tab [root]="tab2Root" [rootParams]="navParams.get('user')" tabTitle="Account" tabIcon="key"></ion-tab>
+        <ion-tab [root]="tab3Root" tabTitle="General" tabIcon="settings"></ion-tab>
     </ion-tabs>
 
 </ion-content>

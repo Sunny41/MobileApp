@@ -1,3 +1,4 @@
+//Author: Jannik Renner
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { DashboardPage } from '../dashboard/dashboard';
