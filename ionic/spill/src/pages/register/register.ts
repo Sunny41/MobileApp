@@ -2,7 +2,7 @@
 
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { HttpClient } from '@angular/common/http';
+import { HTTP } from '@ionic-native/http';
 import { DashboardPage } from '../dashboard/dashboard';
 
 @Component({
@@ -16,7 +16,7 @@ export class RegisterPage {
   password:string;
   rePassword:string;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP) {
   }
 
   ionViewDidLoad() {
@@ -30,14 +30,17 @@ export class RegisterPage {
       alert("Please fill in all fields");
     }else{
       //Try register
-      var url = 'https://spillapi.mybluemix.net/invitations';
-      this.http.get(url).subscribe(data => {
-        var result:any = data;
+      var body;
+      var url = 'https://spillapi.mybluemix.net/users/new?mail=' + this.email + '&username=' + this.username + 
+        '&password=' + this.password;
+      this.http.post(url, {}, {}).then(data => {
+        var result:any = JSON.parse(data.data);
         if(result.error){
           //Show error
         }else{
           //Login user
-          this.navCtrl.push(DashboardPage);
+          var user = result.response[0];
+          this.navCtrl.push(DashboardPage, {user:user});
         }
       });
     }

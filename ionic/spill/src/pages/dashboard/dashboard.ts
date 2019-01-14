@@ -1,10 +1,10 @@
 //Author: Jannik Renner
 import { Component, NgModule } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { HttpClient } from '@angular/common/http';
+import { NavController, NavParams } from 'ionic-angular';
 import { SettingsPage } from '../settings/settings';
 import {NewGroupPage} from '../new-group/new-group';
 import { GroupPage } from '../group/group';
+import { HTTP } from '@ionic-native/http';
 
 @Component({
   selector: 'page-dashboard',
@@ -16,37 +16,39 @@ export class DashboardPage {
   groups:any = [];
   notifications = "";
 
-  constructor(public navCtrl: NavController, public http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP) {
 
     //get user from nav
-    this.user = {"userId":1,"mail":"oliver.wagner@student.reutlingen-university.de","username":"Oli","password":"Hallo"};
+    this.user =  navParams.get('user');
 
     //Load groupmembers
     var url = 'https://spillapi.mybluemix.net/groupmembers/user?s=' + this.user.userId;
-    this.http.get(url).subscribe(data => {
-      var result:any = data;
+
+    this.http.get(url, {}, {}).then(data =>{
+      var result:any = JSON.parse(data.data);
+      console.log("result: " + result.response[0]);
       if(result.error){
 
       }else{
         for(var i=0; i<result.response.length; i++){
           //Load group
           var url = 'https://spillapi.mybluemix.net/groups/id?s=' + result.response[i].groupId;
-          this.http.get(url).subscribe(data => {
-            var result:any = data;
+          this.http.get(url, {}, {}).then(data => {
+            var result:any = JSON.parse(data.data);
             if(result.error){
 
             }else{
               this.groups.push(result.response[0]);
             }
           });
-        }
+        }        
       }
     });
 
     //Load invitations
     var url = 'https://spillapi.mybluemix.net/invitations';
-    this.http.get(url).subscribe(data => {
-      var result:any = data;
+    this.http.get(url, {}, {}).then(data =>{
+      var result:any = JSON.parse(data.data);
       if(result.error){
 
       }else{
@@ -56,7 +58,7 @@ export class DashboardPage {
           this.notifications = " " + result.response.length;
         }        
       }
-    });
+    });    
   }
 
   openSettings(){

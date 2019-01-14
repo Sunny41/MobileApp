@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { DashboardPage } from '../dashboard/dashboard';
 import { RegisterPage } from '../register/register';
-import { HttpClient } from '@angular/common/http';
+import { HTTP } from '@ionic-native/http';
 
 @Component({
   selector: 'page-login',
@@ -14,7 +14,7 @@ export class LoginPage {
   email:string;
   password:string;
 
-  constructor(public navCtrl: NavController, public http: HttpClient){
+  constructor(public navCtrl: NavController, private http: HTTP){
   }
 
   login(){
@@ -24,15 +24,20 @@ export class LoginPage {
       alert("Please fill in all fields");
     }else{
       //Try login
-      var url = 'https://spillapi.mybluemix.net/invitations';
-      this.http.get(url).subscribe(data => {
+      var url = 'https://spillapi.mybluemix.net/users';
+
+      this.http.get(url, {}, {})
+      .then(data => {
         var result:any = data;
         if(result.error){
           //Show error
         }else{
           //Login user
-          this.navCtrl.push(DashboardPage);
+          var user = {"userId":1,"mail":"oliver.wagner@student.reutlingen-university.de","username":"Oli","password":"Hallo"};
+          this.navCtrl.push(DashboardPage, {user:user});
         }
+      })
+      .catch(error => {
       });
     }      
   }
