@@ -6,7 +6,7 @@ var bcrypt = require('bcryptjs');
 router.get('/', function(req, res, next) {
 	connection.query('SELECT * from User', function (error, results, fields) {
 	  	if(error){
-	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
+	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
 	  		//If there is error, we send the error in the error section with 500 status
 	  	} else {
   			res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
@@ -98,6 +98,29 @@ router.put('/edit', function (req,res,next) {
             });
         }
     });
+});
+
+/* login */
+router.post('/login', function(req, res, next) {
+	connection.query('SELECT userId, password from User WHERE mail = ?',req.query.mail, function (error, results, fields) {
+		if(error){
+			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+		} else {
+			var hash = results[0].password;
+			var userId = results[0].userId;
+			if (bcrypt.compareSync(req.query.password, hash)) {
+				connection.query('SELECT userId, username, mail from User WHERE userId = ?',userId, function (error, results, fields) {
+					if(error){
+						res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+					} else {
+						res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+					}
+				});
+			} else {
+				res.send(JSON.stringify({"status": 500, "error": error, "response": "invalid credentials"}));
+			}
+		}
+	});
 });
 
 module.exports = router;
