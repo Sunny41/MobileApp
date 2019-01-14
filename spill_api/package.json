@@ -6,11 +6,11 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "dotenv": "*",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
+    "dotenv": "*",
     "ejs": "~2.5.6",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
