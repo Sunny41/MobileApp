@@ -69,19 +69,21 @@ router.get('/description', function(req, res, next) {
 
 /* insert new group */
 router.post('/new', function (req,res,next) {
-    connection.query('INSERT INTO mobileapp.Group SET name = ?, description = groupAdminId = ?', [req.query.name, req.query.description, req.query.groupAdminId], function (error, results, fields) {
+    connection.query('INSERT INTO mobileapp.Group SET name = ?, description = ?, groupAdminId = ?', [req.query.name, req.query.description, req.query.groupAdminId], function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
         } else {
             var groupId = results.insertId;
+            var userId = req.query.groupAdminId;
+            //adding the group admin to the group
             connection.query('SELECT * from mobileapp.Group WHERE groupId = ?',groupId, function (error, results, fields) {
                 if(error){
                     res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
                     //If there is error, we send the error in the error section with 500 status
                 } else {
                     res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-                    //If there is no error, all is good and response is 200OK.
+                    connection.query('INSERT INTO GroupMembers SET groupID= ?, userId = ?', [groupId, userId]);
                 }
             });
         }

@@ -13,7 +13,6 @@ var index = require('./routes/index');
 var activities = require('./routes/activities');
 var activitymembers = require('./routes/activitymembers');
 var groups = require('./routes/groups');
-var groupactivities = require('./routes/groupactivities');
 var groupmembers = require('./routes/groupmembers');
 var invitations = require('./routes/invitations');
 var items = require('./routes/items');
@@ -55,7 +54,6 @@ app.use('/', index);
 app.use('/activities', activities); //GET all Activities
 app.use('/activitymembers', activitymembers); //GET all members of an activity
 app.use('/groups', groups); //GET all groups
-app.use('/groupactivities', groupactivities); //GET all activities of a group
 app.use('/groupmembers', groupmembers); //GET all members of a group
 app.use('/invitations', invitations); //GET all invitations
 app.use('/items', items); //GET all items
