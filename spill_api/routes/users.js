@@ -55,25 +55,37 @@ router.get('/id', function(req, res, next) {
 
 //insert a new user into the db
 router.post('/new', function (req,res,next) {
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(req.query.password, salt);
-	connection.query('INSERT INTO User SET mail = ?, username = ?, password = ?', [req.query.mail, req.query.username, hash], function (error, results, fields) {
-		if(error){
-			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
-			//If there is error, we send the error in the error section with 500 status
-		} else {
-		    var userId = results.insertId;
-            connection.query('SELECT * from User WHERE userId = ?',userId, function (error, results, fields) {
+    var mail = req.query.mail.trim();
+    connection.query('SELECT COUNT (*) as count from User WHERE mail =  ?',mail, function (error, results, fields) {
+        console.log(results[0].count);
+        if(error){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+            //If there is error, we send the error in the error section with 500 status
+        } else if (results[0].count > 0){
+            res.send(JSON.stringify({"status": 500, "error": error, "response": "email-address already taken"}));
+            //If there is no error, all is good and response is 200OK.
+        } else {
+            var salt = bcrypt.genSaltSync(10);
+            var hash = bcrypt.hashSync(req.query.password, salt);
+            connection.query('INSERT INTO User SET mail = ?, username = ?, password = ?', [mail, req.query.username, hash], function (error, results, fields) {
                 if(error){
                     res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
                     //If there is error, we send the error in the error section with 500 status
                 } else {
-                    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-                    //If there is no error, all is good and response is 200OK.
+                    var userId = results.insertId;
+                    connection.query('SELECT * from User WHERE userId = ?',userId, function (error, results, fields) {
+                        if(error){
+                            res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                            //If there is error, we send the error in the error section with 500 status
+                        } else {
+                            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                            //If there is no error, all is good and response is 200OK.
+                        }
+                    });
                 }
             });
-		}
-	});
+        }
+    });
 });
 
 /* edit existing User */
