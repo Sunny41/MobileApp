@@ -24,16 +24,16 @@ export class LoginPage {
       alert("Please fill in all fields");
     }else{
       //Try login
-      var url = 'https://spillapi.mybluemix.net/users';
+      var url = 'https://spillapi.mybluemix.net/users/login?mail=' + this.email + '&password=' + this.password;
 
-      this.http.get(url, {}, {})
+      this.http.post(url, {}, {})
       .then(data => {
-        var result:any = data;
+        var result:any = JSON.parse(data.data);
         if(result.error){
           //Show error
         }else{
           //Login user
-          var user = {"userId":1,"mail":"oliver.wagner@student.reutlingen-university.de","username":"Oli","password":"Hallo"};
+          var user = result.response[0];
           this.navCtrl.push(DashboardPage, {user:user});
         }
       })

@@ -26,7 +26,6 @@ export class DashboardPage {
 
     this.http.get(url, {}, {}).then(data =>{
       var result:any = JSON.parse(data.data);
-      console.log("result: " + result.response[0]);
       if(result.error){
 
       }else{
