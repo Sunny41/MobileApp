@@ -26,9 +26,8 @@ export class DashboardPage {
 
     this.http.get(url, {}, {}).then(data =>{
       var result:any = JSON.parse(data.data);
-      if(result.error){
 
-      }else{
+      if(data.status == 200){
         for(var i=0; i<result.response.length; i++){
           //Load group
           var url = 'https://spillapi.mybluemix.net/groups/id?s=' + result.response[i].groupId;
@@ -40,7 +39,9 @@ export class DashboardPage {
               this.groups.push(result.response[0]);
             }
           });
-        }        
+        } 
+      }else{
+        //logout
       }
     });
 
@@ -48,14 +49,12 @@ export class DashboardPage {
     var url = 'https://spillapi.mybluemix.net/invitations';
     this.http.get(url, {}, {}).then(data =>{
       var result:any = JSON.parse(data.data);
-      if(result.error){
-
-      }else{
+      if(data.status == 200){
         if(result.response.length == ''|| result.response.length == null || result.response.length == undefined){
           this.notifications = "";
         }else{
           this.notifications = " " + result.response.length;
-        }        
+        } 
       }
     });    
   }
@@ -65,7 +64,7 @@ export class DashboardPage {
   }
 
   openNewGroup(){
-    this.navCtrl.push(NewGroupPage);
+    this.navCtrl.push(NewGroupPage, {user:this.user});
   }
 
   openSelectedGroup(group){

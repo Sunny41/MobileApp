@@ -29,15 +29,17 @@ export class LoginPage {
       this.http.post(url, {}, {})
       .then(data => {
         var result:any = JSON.parse(data.data);
-        if(result.error){
-          //Show error
-        }else{
-          //Login user
+        console.log("status " + data.status + " " + (data.status == 200) + " " + (data.status === 200));
+        if(data.status === 200){
           var user = result.response[0];
           this.navCtrl.push(DashboardPage, {user:user});
+        }else{
+          alert("Wrong username or password! Please try again.")
         }
+        
       })
       .catch(error => {
+        alert("Something went wrong... please try again.");
       });
     }      
   }
