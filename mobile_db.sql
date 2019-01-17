@@ -2,7 +2,7 @@
 -- Host:                         cloudws1819.c0lwjxnry6gy.us-east-2.rds.amazonaws.com
 -- Server version:               5.6.41-log - Source distribution
 -- Server OS:                    Linux
--- HeidiSQL Version:             9.4.0.5125
+-- HeidiSQL Version:             9.5.0.5196
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -13,48 +13,86 @@
 
 
 -- Dumping database structure for mobileapp
+DROP DATABASE IF EXISTS `mobileapp`;
 CREATE DATABASE IF NOT EXISTS `mobileapp` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `mobileapp`;
 
 -- Dumping structure for table mobileapp.Activity
+DROP TABLE IF EXISTS `Activity`;
 CREATE TABLE IF NOT EXISTS `Activity` (
   `activityId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) DEFAULT NULL,
+  `name` varchar(50) NOT NULL,
   `description` varchar(50) NOT NULL,
   `date` datetime NOT NULL,
   `place` varchar(50) NOT NULL,
   `activityAdminId` int(11) NOT NULL DEFAULT '0' COMMENT 'user who created the activity',
+  `activityGroupId` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`activityId`),
   KEY `activityAdminId` (`activityAdminId`),
-  CONSTRAINT `activityAdminId` FOREIGN KEY (`activityAdminId`) REFERENCES `User` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  KEY `activityGroupId` (`activityGroupId`),
+  CONSTRAINT `activityAdminId` FOREIGN KEY (`activityAdminId`) REFERENCES `User` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `activityGroupId` FOREIGN KEY (`activityGroupId`) REFERENCES `Group` (`groupId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mobileapp.Activity: ~1 rows (approximately)
+-- Dumping data for table mobileapp.Activity: ~17 rows (approximately)
 DELETE FROM `Activity`;
 /*!40000 ALTER TABLE `Activity` DISABLE KEYS */;
-INSERT INTO `Activity` (`activityId`, `name`, `description`, `date`, `place`, `activityAdminId`) VALUES
-	(2, 'Clubnight', 'Party hard!', '2018-12-31 23:00:00', 'FlyHighClub', 2);
+INSERT INTO `Activity` (`activityId`, `name`, `description`, `date`, `place`, `activityAdminId`, `activityGroupId`) VALUES
+	(1, 'Pub Night', 'Todays activity: Pub Night', '2019-12-12 00:00:00', 'Arevshat', 13, 52),
+	(2, 'Pub Night', 'Todays activity: Pub Night', '2018-02-21 00:00:00', 'Bastan', 19, 59),
+	(3, 'City Tour', 'Todays activity: City Tour', '2019-06-03 00:00:00', 'Xianglan', 39, 95),
+	(4, 'Skydiving', 'Todays activity: Skydiving', '2018-02-13 00:00:00', 'Loppi', 21, 63),
+	(5, 'Cinema', 'Todays activity: Cinema', '2018-07-09 00:00:00', 'Santa Maria', 54, 60),
+	(6, 'Pub Night', 'Todays activity: Pub Night', '2018-05-10 00:00:00', 'Mocupe', 104, 39),
+	(7, 'Playing games', 'Todays activity: Playing games', '2019-05-23 00:00:00', 'Bonanza', 26, 58),
+	(8, 'Cinema', 'Todays activity: Cinema', '2018-04-16 00:00:00', 'Dushk', 32, 44),
+	(9, 'City Tour', 'Todays activity: City Tour', '2019-10-25 00:00:00', 'Yanqul', 66, 103),
+	(10, 'Cinema', 'Todays activity: Cinema', '2018-02-28 00:00:00', 'Gancheng', 23, 14),
+	(11, 'Swimming', 'Todays activity: Swimming', '2018-10-28 00:00:00', 'El Cerrito', 8, 75),
+	(12, 'Club Night', 'Todays activity: Club Night', '2019-11-20 00:00:00', 'Libacao', 13, 62),
+	(13, 'Swimming', 'Todays activity: Swimming', '2018-07-22 00:00:00', 'Phanom Sarakham', 30, 37),
+	(14, 'Sightseeing', 'Todays activity: Sightseeing', '2018-09-16 00:00:00', 'Colmar', 102, 73),
+	(15, 'Playing games', 'Todays activity: Playing games', '2018-08-30 00:00:00', 'Banag', 30, 105),
+	(16, 'Doing sports', 'Todays activity: Doing sports', '2019-02-25 00:00:00', 'McFit', 23, 14),
+	(17, 'Having a walk', 'Todays activity: Having a walk', '2019-02-01 00:00:00', 'Park', 5, 12);
 /*!40000 ALTER TABLE `Activity` ENABLE KEYS */;
 
 -- Dumping structure for table mobileapp.ActivityMembers
+DROP TABLE IF EXISTS `ActivityMembers`;
 CREATE TABLE IF NOT EXISTS `ActivityMembers` (
   `activityMembersActivityId` int(11) DEFAULT NULL COMMENT 'ID of the activity',
   `activityMembersUserId` int(11) DEFAULT NULL COMMENT 'ID of the participating user',
   KEY `activityMembersActivityId` (`activityMembersActivityId`),
   KEY `activityMembersUserId` (`activityMembersUserId`),
-  CONSTRAINT `activityMembersActivityId` FOREIGN KEY (`activityMembersActivityId`) REFERENCES `Activity` (`activityId`),
-  CONSTRAINT `activityMembersUserId` FOREIGN KEY (`activityMembersUserId`) REFERENCES `User` (`userId`)
+  CONSTRAINT `activityMembersActivityId` FOREIGN KEY (`activityMembersActivityId`) REFERENCES `Activity` (`activityId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `activityMembersUserId` FOREIGN KEY (`activityMembersUserId`) REFERENCES `User` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This table contains all the members participating in an activity';
 
--- Dumping data for table mobileapp.ActivityMembers: ~2 rows (approximately)
+-- Dumping data for table mobileapp.ActivityMembers: ~17 rows (approximately)
 DELETE FROM `ActivityMembers`;
 /*!40000 ALTER TABLE `ActivityMembers` DISABLE KEYS */;
 INSERT INTO `ActivityMembers` (`activityMembersActivityId`, `activityMembersUserId`) VALUES
-	(2, 1),
-	(2, 2);
+	(11, 8),
+	(1, 13),
+	(12, 13),
+	(2, 19),
+	(4, 21),
+	(10, 23),
+	(7, 26),
+	(13, 30),
+	(15, 30),
+	(8, 32),
+	(3, 39),
+	(5, 54),
+	(9, 66),
+	(14, 102),
+	(6, 104),
+	(16, 23),
+	(17, 5);
 /*!40000 ALTER TABLE `ActivityMembers` ENABLE KEYS */;
 
 -- Dumping structure for table mobileapp.Group
+DROP TABLE IF EXISTS `Group`;
 CREATE TABLE IF NOT EXISTS `Group` (
   `groupId` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '0',
@@ -62,64 +100,282 @@ CREATE TABLE IF NOT EXISTS `Group` (
   `groupAdminId` int(11) NOT NULL DEFAULT '0' COMMENT 'user who created the group',
   PRIMARY KEY (`groupId`),
   KEY `groupAdminId` (`groupAdminId`),
-  CONSTRAINT `groupAdminId` FOREIGN KEY (`groupAdminId`) REFERENCES `User` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  CONSTRAINT `groupAdminId` FOREIGN KEY (`groupAdminId`) REFERENCES `User` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mobileapp.Group: ~1 rows (approximately)
+-- Dumping data for table mobileapp.Group: ~104 rows (approximately)
 DELETE FROM `Group`;
 /*!40000 ALTER TABLE `Group` DISABLE KEYS */;
 INSERT INTO `Group` (`groupId`, `name`, `description`, `groupAdminId`) VALUES
-	(1, 'Berlin Trip', 'Our trip to Berlin', 1);
+	(1, 'Berlin Trip', 'Our trip to Berlin', 1),
+	(6, 'Al Ma?jal Trip', 'Our trip to Petung', 24),
+	(7, 'Czerwie?sk Trip', 'Our trip to Sinarbakti', 16),
+	(8, 'Kamionka Strumitowa Trip', 'Our trip to Vólos', 12),
+	(9, 'Växjö Trip', 'Our trip to Beutong Ateuh', 35),
+	(10, 'Magang Trip', 'Our trip to Harjavalta', 8),
+	(11, 'Franca Trip', 'Our trip to Cândido Mota', 49),
+	(12, 'Lexington Trip', 'Our trip to Kushnytsya', 8),
+	(13, 'Florianópolis Trip', 'Our trip to Megulung', 17),
+	(14, 'Si Bun Rueang Trip', 'Our trip to Sardasht', 1),
+	(15, 'Stuttgart Trip', 'Our trip to Wushi', 4),
+	(16, 'Ibiporã Trip', 'Our trip to George Town', 23),
+	(17, 'Wushi Trip', 'Our trip to Tlogocilik', 41),
+	(18, 'Cantoria Trip', 'Our trip to Kingston', 29),
+	(19, 'Washington Trip', 'Our trip to Songkhla', 44),
+	(20, 'Kufa Trip', 'Our trip to Angered', 32),
+	(21, 'Santo Domingo Trip', 'Our trip to Estelí', 45),
+	(22, 'Shizuishan Trip', 'Our trip to Qijia', 27),
+	(23, 'Zarumilla Trip', 'Our trip to Yuyue', 24),
+	(24, 'Ouzini Trip', 'Our trip to Gouveia', 30),
+	(25, 'Ekerö Trip', 'Our trip to Datian', 29),
+	(26, 'Casais de Vera Cruz Trip', 'Our trip to Inawashiro', 10),
+	(27, 'Tercena Trip', 'Our trip to Long Thành', 18),
+	(28, 'Obršani Trip', 'Our trip to Hewan', 31),
+	(29, 'Kemil Trip', 'Our trip to ?noj?', 13),
+	(30, 'Denver Trip', 'Our trip to Gandiaye', 8),
+	(31, 'Santa Elena Trip', 'Our trip to Chauk', 28),
+	(32, 'Zhushan Trip', 'Our trip to Kloangpopot', 10),
+	(33, 'Youdian Trip', 'Our trip to Maralal', 5),
+	(34, 'Kasangulu Trip', 'Our trip to Damascus', 30),
+	(35, 'Svenljunga Trip', 'Our trip to Puyo', 5),
+	(36, 'Itapemirim Trip', 'Our trip to Huoshaoping', 4),
+	(37, 'Luopu Trip', 'Our trip to Kolomanu', 21),
+	(38, 'Palestina Trip', 'Our trip to Sebeta', 37),
+	(39, 'Nanqi Trip', 'Our trip to Kole', 2),
+	(40, 'Pasirjaya Trip', 'Our trip to Baihe', 26),
+	(41, 'Fujikawaguchiko Trip', 'Our trip to Lagos', 44),
+	(42, 'Longwood Trip', 'Our trip to Bërxull', 48),
+	(43, 'Qacha’s Nek Trip', 'Our trip to Wengang', 37),
+	(44, 'Satinka Trip', 'Our trip to Bang Kruai', 2),
+	(45, 'Strasbourg Trip', 'Our trip to Kaeng Khro', 26),
+	(46, 'Al Kh?nkah Trip', 'Our trip to Aktsyabrski', 24),
+	(47, 'Góra Trip', 'Our trip to Staryy Krym', 11),
+	(48, 'Lingbei Trip', 'Our trip to Mauraro', 35),
+	(49, 'Pingxiang Trip', 'Our trip to Sarband', 2),
+	(50, 'Jingzhou Trip', 'Our trip to Zhangcun', 10),
+	(51, 'Cariaco Trip', 'Our trip to Sloboda', 26),
+	(52, 'Rožna Dolina Trip', 'Our trip to Enyerhyetykaw', 20),
+	(53, 'Yuandianhui Trip', 'Our trip to Montería', 24),
+	(54, 'Kyurdarmir Trip', 'Our trip to La Jutosa', 1),
+	(55, 'Repatriación Trip', 'Our trip to Cuilco', 24),
+	(56, 'Maharagama Trip', 'Our trip to Shirokaya Rechka', 24),
+	(57, 'Erfurt Trip', 'Our trip to Wangren', 6),
+	(58, 'Ledenice Trip', 'Our trip to Baracoa', 8),
+	(59, 'Gudauta Trip', 'Our trip to Sobrosa', 29),
+	(60, 'Gubu Trip', 'Our trip to Lousa', 35),
+	(61, 'Temperak Trip', 'Our trip to Thành Ph? Bà R?a', 25),
+	(62, 'Pushkino Trip', 'Our trip to Xinglong', 33),
+	(63, 'Red Hill Trip', 'Our trip to Liulin', 41),
+	(64, 'Aguachica Trip', 'Our trip to Chlumec', 1),
+	(65, 'Xinhua Trip', 'Our trip to Tõrva', 36),
+	(66, 'Quxi Trip', 'Our trip to Kohlu', 13),
+	(67, 'Zachepylivka Trip', 'Our trip to Pengshi', 4),
+	(68, 'Pucallpa Trip', 'Our trip to Jarash', 28),
+	(69, 'Golubac Trip', 'Our trip to Skellefteå', 39),
+	(70, 'Sydney Trip', 'Our trip to Xianshuigu', 48),
+	(71, 'Sukošan Trip', 'Our trip to Majengo', 49),
+	(72, 'Krasnogvardeyets Trip', 'Our trip to In?ija', 11),
+	(73, 'Yero?am Trip', 'Our trip to Cruz del Eje', 27),
+	(74, 'Umunede Trip', 'Our trip to Gelan', 15),
+	(75, 'Shenavan Trip', 'Our trip to Suchen', 9),
+	(76, 'Hwange Trip', 'Our trip to Delaware', 7),
+	(77, 'Auxerre Trip', 'Our trip to Maroantsetra', 11),
+	(78, 'Solidaridad Trip', 'Our trip to Guanlu', 48),
+	(79, 'Desa Gegempalan Trip', 'Our trip to Nakhon Pathom', 42),
+	(80, 'Xibing Trip', 'Our trip to Fram', 43),
+	(81, 'Tsinandali Trip', 'Our trip to Niba', 30),
+	(82, 'Riangbaring Trip', 'Our trip to Robatal', 10),
+	(83, 'Liancheng Trip', 'Our trip to Yanshang', 28),
+	(84, 'Samokov Trip', 'Our trip to Juan L. Lacaze', 47),
+	(85, 'Gebang Trip', 'Our trip to Chemnitz', 20),
+	(86, 'Puutura Trip', 'Our trip to El Soberbio', 33),
+	(87, 'Rathwire Trip', 'Our trip to Godong', 39),
+	(88, 'Pinillos Trip', 'Our trip to Pedinó', 35),
+	(89, 'Yulin Trip', 'Our trip to Braunschweig', 6),
+	(90, 'Ash Sh?m?yah Trip', 'Our trip to Longping', 2),
+	(91, '?af?shahr Trip', 'Our trip to Toulouse', 5),
+	(92, 'Bagalangit Trip', 'Our trip to Bílovec', 5),
+	(93, 'Dasuhe Trip', 'Our trip to Obihiro', 27),
+	(94, 'Jinjia Trip', 'Our trip to El Tejocote', 42),
+	(95, 'Bifeng Trip', 'Our trip to Tongyang', 24),
+	(96, 'Horní Be?va Trip', 'Our trip to Naprawa', 18),
+	(97, 'West Palm Beach Trip', 'Our trip to Las Parejas', 4),
+	(98, 'Pajagan Trip', 'Our trip to Nova Russas', 7),
+	(99, 'Watulabara Trip', 'Our trip to Sme?no', 31),
+	(100, 'Suocheng Trip', 'Our trip to Segodim', 40),
+	(101, 'Tetaf Trip', 'Our trip to Besisahar', 26),
+	(102, 'Yosowilangun Trip', 'Our trip to Yaita', 2),
+	(103, 'Gonghe Trip', 'Our trip to Ndendé', 21),
+	(104, 'Bicaj Trip', 'Our trip to Changning', 39),
+	(105, 'Lubao Trip', 'Our trip to Gielniów', 9),
+	(106, 'Test', '0', 1),
+	(108, 'NewTestGroup', 'Test Group for SQL Queries', 119),
+	(109, 'NewTestGroup2', 'Test Group for SQL Queries2', 118);
 /*!40000 ALTER TABLE `Group` ENABLE KEYS */;
 
--- Dumping structure for table mobileapp.GroupActivity
-CREATE TABLE IF NOT EXISTS `GroupActivity` (
-  `groupId` int(11) DEFAULT NULL,
-  `activityId` int(11) DEFAULT NULL,
-  KEY `GroupActivityGroupId` (`groupId`),
-  KEY `GroupActivityActivityId` (`activityId`),
-  CONSTRAINT `GroupActivityActivityId` FOREIGN KEY (`activityId`) REFERENCES `Activity` (`activityId`),
-  CONSTRAINT `GroupActivityGroupId` FOREIGN KEY (`groupId`) REFERENCES `Group` (`groupId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This table contains the activites of a group';
-
--- Dumping data for table mobileapp.GroupActivity: ~1 rows (approximately)
-DELETE FROM `GroupActivity`;
-/*!40000 ALTER TABLE `GroupActivity` DISABLE KEYS */;
-INSERT INTO `GroupActivity` (`groupId`, `activityId`) VALUES
-	(1, 2);
-/*!40000 ALTER TABLE `GroupActivity` ENABLE KEYS */;
-
 -- Dumping structure for table mobileapp.GroupMembers
+DROP TABLE IF EXISTS `GroupMembers`;
 CREATE TABLE IF NOT EXISTS `GroupMembers` (
   `groupId` int(11) DEFAULT NULL,
   `userId` int(11) DEFAULT NULL,
   KEY `groupMembersGroupId` (`groupId`),
   KEY `groupMembersUserId` (`userId`),
-  CONSTRAINT `groupMembersGroupId` FOREIGN KEY (`groupId`) REFERENCES `Group` (`groupId`),
-  CONSTRAINT `groupMembersUserId` FOREIGN KEY (`userId`) REFERENCES `User` (`userId`)
+  CONSTRAINT `groupMembersGroupId` FOREIGN KEY (`groupId`) REFERENCES `Group` (`groupId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `groupMembersUserId` FOREIGN KEY (`userId`) REFERENCES `User` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='This table contains all the members of a group';
 
--- Dumping data for table mobileapp.GroupMembers: ~2 rows (approximately)
+-- Dumping data for table mobileapp.GroupMembers: ~132 rows (approximately)
 DELETE FROM `GroupMembers`;
 /*!40000 ALTER TABLE `GroupMembers` DISABLE KEYS */;
 INSERT INTO `GroupMembers` (`groupId`, `userId`) VALUES
 	(1, 1),
-	(1, 2);
+	(1, 2),
+	(6, 24),
+	(7, 16),
+	(8, 12),
+	(9, 35),
+	(10, 8),
+	(11, 49),
+	(12, 8),
+	(13, 17),
+	(14, 1),
+	(15, 4),
+	(16, 23),
+	(17, 41),
+	(18, 29),
+	(19, 44),
+	(20, 32),
+	(21, 45),
+	(22, 27),
+	(23, 24),
+	(24, 30),
+	(25, 29),
+	(26, 10),
+	(27, 18),
+	(28, 31),
+	(29, 13),
+	(30, 8),
+	(31, 28),
+	(32, 10),
+	(33, 5),
+	(34, 30),
+	(35, 5),
+	(36, 4),
+	(37, 21),
+	(38, 37),
+	(39, 2),
+	(40, 26),
+	(41, 44),
+	(42, 48),
+	(43, 37),
+	(44, 2),
+	(45, 26),
+	(46, 24),
+	(47, 11),
+	(48, 35),
+	(49, 2),
+	(50, 10),
+	(51, 26),
+	(52, 20),
+	(53, 24),
+	(54, 1),
+	(55, 24),
+	(56, 24),
+	(57, 6),
+	(58, 8),
+	(59, 29),
+	(60, 35),
+	(61, 25),
+	(62, 33),
+	(63, 41),
+	(64, 1),
+	(65, 36),
+	(66, 13),
+	(67, 4),
+	(68, 28),
+	(69, 39),
+	(70, 48),
+	(71, 49),
+	(72, 11),
+	(73, 27),
+	(74, 15),
+	(75, 9),
+	(76, 7),
+	(77, 11),
+	(78, 48),
+	(79, 42),
+	(80, 43),
+	(81, 30),
+	(82, 10),
+	(83, 28),
+	(84, 47),
+	(85, 20),
+	(86, 33),
+	(87, 39),
+	(88, 35),
+	(89, 6),
+	(90, 2),
+	(91, 5),
+	(92, 5),
+	(93, 27),
+	(94, 42),
+	(95, 24),
+	(96, 18),
+	(97, 4),
+	(98, 7),
+	(99, 31),
+	(100, 40),
+	(101, 26),
+	(102, 2),
+	(103, 21),
+	(104, 39),
+	(105, 9),
+	(58, 18),
+	(21, 25),
+	(66, 47),
+	(91, 35),
+	(23, 18),
+	(89, 29),
+	(75, 45),
+	(42, 8),
+	(1, 38),
+	(32, 37),
+	(46, 3),
+	(1, 16),
+	(18, 30),
+	(95, 14),
+	(14, 31),
+	(94, 1),
+	(51, 26),
+	(104, 27),
+	(74, 15),
+	(97, 49),
+	(58, 23),
+	(85, 15),
+	(11, 44),
+	(85, 25),
+	(44, 41),
+	(91, 38),
+	(32, 19),
+	(24, 31),
+	(108, 119),
+	(109, 118);
 /*!40000 ALTER TABLE `GroupMembers` ENABLE KEYS */;
 
 -- Dumping structure for table mobileapp.Invitation
+DROP TABLE IF EXISTS `Invitation`;
 CREATE TABLE IF NOT EXISTS `Invitation` (
   `invitationId` int(11) NOT NULL AUTO_INCREMENT,
   `invitedUserId` int(11) NOT NULL DEFAULT '0' COMMENT 'ID of the user who is invited',
   `invitationFromUserId` int(11) NOT NULL DEFAULT '0' COMMENT 'ID of the user who sent the invitation',
   `invitationForGroupId` int(11) NOT NULL DEFAULT '0' COMMENT 'ID of the group the invitation was sent for',
   PRIMARY KEY (`invitationId`),
-  KEY `invitedUserId` (`invitedUserId`),
-  KEY `invitationFromUserId` (`invitationFromUserId`),
   KEY `invitationForGroupId` (`invitationForGroupId`),
-  CONSTRAINT `invitationForGroupId` FOREIGN KEY (`invitationForGroupId`) REFERENCES `Group` (`groupId`),
-  CONSTRAINT `invitationFromUserId` FOREIGN KEY (`invitationFromUserId`) REFERENCES `User` (`userId`),
-  CONSTRAINT `invitedUserId` FOREIGN KEY (`invitedUserId`) REFERENCES `User` (`userId`)
+  KEY `invitationFromUserId` (`invitationFromUserId`),
+  KEY `invitedUserId` (`invitedUserId`),
+  CONSTRAINT `invitationForGroupId` FOREIGN KEY (`invitationForGroupId`) REFERENCES `Group` (`groupId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `invitationFromUserId` FOREIGN KEY (`invitationFromUserId`) REFERENCES `User` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `invitedUserId` FOREIGN KEY (`invitedUserId`) REFERENCES `User` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table mobileapp.Invitation: ~0 rows (approximately)
@@ -128,6 +384,7 @@ DELETE FROM `Invitation`;
 /*!40000 ALTER TABLE `Invitation` ENABLE KEYS */;
 
 -- Dumping structure for table mobileapp.Item
+DROP TABLE IF EXISTS `Item`;
 CREATE TABLE IF NOT EXISTS `Item` (
   `itemId` int(11) NOT NULL AUTO_INCREMENT,
   `itemName` varchar(50) NOT NULL,
@@ -138,19 +395,118 @@ CREATE TABLE IF NOT EXISTS `Item` (
   PRIMARY KEY (`itemId`),
   KEY `itemActivityId` (`itemActivityId`),
   KEY `itemUserId` (`itemUserId`),
-  CONSTRAINT `itemActivityId` FOREIGN KEY (`itemActivityId`) REFERENCES `Activity` (`activityId`),
-  CONSTRAINT `itemUserId` FOREIGN KEY (`itemUserId`) REFERENCES `User` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1 COMMENT='This table will be used for normal queries - for invitations use itemInvited';
+  CONSTRAINT `itemActivityId` FOREIGN KEY (`itemActivityId`) REFERENCES `Activity` (`activityId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `itemUserId` FOREIGN KEY (`itemUserId`) REFERENCES `User` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=latin1 COMMENT='This table will be used for normal queries - for invitations use itemInvited';
 
--- Dumping data for table mobileapp.Item: ~2 rows (approximately)
+-- Dumping data for table mobileapp.Item: ~100 rows (approximately)
 DELETE FROM `Item`;
 /*!40000 ALTER TABLE `Item` DISABLE KEYS */;
 INSERT INTO `Item` (`itemId`, `itemName`, `itemDescription`, `itemUserId`, `amount`, `itemActivityId`) VALUES
-	(5, 'Fanta', NULL, 1, 2, 2),
-	(8, 'Pizza Quattro Formaggi', NULL, 2, 6.5, 2);
+	(30, 'Shiratamako - Rice Flour', 'Item: {name}', 108, 6.63, 15),
+	(31, 'Peach - Fresh', 'Item: {name}', 58, 8.21, 8),
+	(32, 'Carrots - Purple, Organic', 'Item: {name}', 10, 3.13, 4),
+	(33, 'Appetizer - Sausage Rolls', 'Item: {name}', 71, 4.36, 6),
+	(34, 'Lemonade - Natural, 591 Ml', 'Item: {name}', 78, 3.21, 2),
+	(35, 'Juice - Ocean Spray Kiwi', 'Item: {name}', 95, 6.11, 12),
+	(36, 'Roe - Lump Fish, Red', 'Item: {name}', 21, 6.74, 14),
+	(37, 'Tomatoes - Yellow Hot House', 'Item: {name}', 54, 7.64, 11),
+	(38, 'Aspic - Amber', 'Item: {name}', 52, 4.76, 1),
+	(39, 'Toothpick Frilled', 'Item: {name}', 61, 7.19, 2),
+	(40, 'Wine - Muscadet Sur Lie', 'Item: {name}', 109, 4.67, 9),
+	(41, 'Cookie Dough - Double', 'Item: {name}', 9, 3, 14),
+	(42, 'Juice - Orange 1.89l', 'Item: {name}', 73, 7.78, 13),
+	(43, 'Sobe - Liz Blizz', 'Item: {name}', 75, 2.7, 13),
+	(44, 'Capers - Pickled', 'Item: {name}', 55, 9.16, 12),
+	(45, 'Swiss Chard - Red', 'Item: {name}', 114, 3.51, 8),
+	(46, 'Salt - Sea', 'Item: {name}', 41, 6.33, 7),
+	(47, 'Emulsifier', 'Item: {name}', 111, 7.62, 13),
+	(48, 'Quiche Assorted', 'Item: {name}', 59, 3.2, 12),
+	(49, 'Pasta - Cannelloni, Sheets, Fresh', 'Item: {name}', 35, 6.84, 8),
+	(50, 'Wine - Magnotta - Cab Sauv', 'Item: {name}', 120, 7.34, 5),
+	(51, 'Lid - 0090 Clear', 'Item: {name}', 25, 8, 3),
+	(52, 'Pasta - Elbows, Macaroni, Dry', 'Item: {name}', 44, 1.62, 1),
+	(53, 'Cheese - Taleggio D.o.p.', 'Item: {name}', 56, 2.67, 8),
+	(54, 'Irish Cream - Baileys', 'Item: {name}', 78, 2.65, 4),
+	(55, 'Flour - Bran, Red', 'Item: {name}', 72, 3.89, 1),
+	(56, 'Scallops - 20/30', 'Item: {name}', 51, 9.76, 15),
+	(57, 'Chocolate - Unsweetened', 'Item: {name}', 15, 2.39, 7),
+	(58, 'Curry Paste - Madras', 'Item: {name}', 54, 1.61, 2),
+	(59, 'Wine - White, Concha Y Toro', 'Item: {name}', 77, 2.8, 11),
+	(60, 'Calvados - Boulard', 'Item: {name}', 36, 2.46, 4),
+	(61, 'Bread - Roll, Soft White Round', 'Item: {name}', 33, 2.06, 3),
+	(62, 'Chips - Potato Jalapeno', 'Item: {name}', 35, 8.34, 7),
+	(63, 'Goat - Whole Cut', 'Item: {name}', 55, 3.65, 13),
+	(64, 'Lamb - Leg, Bone In', 'Item: {name}', 112, 1.42, 15),
+	(65, 'Mudslide', 'Item: {name}', 117, 3.34, 7),
+	(66, 'Wine - Sauvignon Blanc', 'Item: {name}', 79, 2.11, 10),
+	(67, 'Cake - Mini Cheesecake', 'Item: {name}', 106, 5.21, 7),
+	(68, 'Wine La Vielle Ferme Cote Du', 'Item: {name}', 14, 9.61, 15),
+	(69, 'Gooseberry', 'Item: {name}', 102, 8.16, 12),
+	(70, 'Nantucket Pine Orangebanana', 'Item: {name}', 91, 8.25, 6),
+	(71, 'Pork - Inside', 'Item: {name}', 122, 2.36, 15),
+	(72, 'Sprouts - Peppercress', 'Item: {name}', 7, 9.52, 14),
+	(73, 'Pasta - Fettuccine, Dry', 'Item: {name}', 45, 1.35, 7),
+	(74, 'Browning Caramel Glace', 'Item: {name}', 32, 9.14, 12),
+	(75, 'Fondant - Icing', 'Item: {name}', 33, 6.73, 9),
+	(76, 'Pate Pans Yellow', 'Item: {name}', 69, 4.3, 5),
+	(77, 'Cake - Dulce De Leche', 'Item: {name}', 86, 8.99, 5),
+	(78, 'Chutney Sauce', 'Item: {name}', 16, 9.61, 15),
+	(79, 'Beef - Montreal Smoked Brisket', 'Item: {name}', 120, 3.26, 1),
+	(80, 'Wine - Barossa Valley Estate', 'Item: {name}', 70, 2.31, 6),
+	(81, 'Soup - Campbells Pasta Fagioli', 'Item: {name}', 3, 5.02, 14),
+	(82, 'Tequila - Sauza Silver', 'Item: {name}', 109, 4.9, 10),
+	(83, 'Flavouring - Orange', 'Item: {name}', 69, 4.05, 7),
+	(84, 'Mushroom - Porcini Frozen', 'Item: {name}', 26, 9.27, 12),
+	(85, 'Bag Stand', 'Item: {name}', 12, 3.5, 13),
+	(86, 'Chocolate - Milk, Callets', 'Item: {name}', 20, 3.68, 13),
+	(87, 'Greens Mustard', 'Item: {name}', 25, 3.78, 2),
+	(88, 'Cabbage - Savoy', 'Item: {name}', 42, 7.69, 12),
+	(89, 'Tart Shells - Savory, 2', 'Item: {name}', 117, 9.51, 12),
+	(90, 'Syrup - Monin, Amaretta', 'Item: {name}', 37, 3.38, 15),
+	(91, 'Wine - Magnotta, White', 'Item: {name}', 52, 4, 15),
+	(92, 'Pork - Side Ribs', 'Item: {name}', 119, 6.48, 14),
+	(93, 'Syrup - Monin - Blue Curacao', 'Item: {name}', 19, 6.38, 10),
+	(94, 'Cheese - Mascarpone', 'Item: {name}', 99, 9.74, 9),
+	(95, 'Beans - French', 'Item: {name}', 13, 8.63, 9),
+	(96, 'Onions - Cippolini', 'Item: {name}', 121, 9.75, 13),
+	(97, 'Soup - Base Broth Chix', 'Item: {name}', 112, 3.21, 12),
+	(98, 'Haggis', 'Item: {name}', 84, 7.36, 8),
+	(99, 'Tea - Apple Green Tea', 'Item: {name}', 94, 1.73, 2),
+	(100, 'Doilies - 5, Paper', 'Item: {name}', 112, 7.86, 4),
+	(101, 'Bagel - 12 Grain Preslice', 'Item: {name}', 8, 6.28, 14),
+	(102, 'Nori Sea Weed', 'Item: {name}', 25, 2.31, 11),
+	(103, 'Figs', 'Item: {name}', 86, 3.86, 6),
+	(104, 'Walkers Special Old Whiskey', 'Item: {name}', 3, 6.93, 5),
+	(105, 'Bread - Ciabatta Buns', 'Item: {name}', 92, 4.01, 2),
+	(106, 'Broccoli - Fresh', 'Item: {name}', 121, 2.61, 10),
+	(107, 'Pasta - Lasagna, Dry', 'Item: {name}', 61, 7.35, 3),
+	(108, 'Cranberries - Fresh', 'Item: {name}', 99, 8.2, 16),
+	(109, 'Pan Grease', 'Item: {name}', 88, 8.11, 1),
+	(110, 'Nut - Chestnuts, Whole', 'Item: {name}', 39, 7.7, 16),
+	(111, 'Soup - Campbells Asian Noodle', 'Item: {name}', 84, 6.21, 11),
+	(112, 'Pepper - Green, Chili', 'Item: {name}', 108, 4.43, 11),
+	(113, 'Fish - Scallops, Cold Smoked', 'Item: {name}', 90, 6.73, 11),
+	(114, 'Kippers - Smoked', 'Item: {name}', 101, 3.07, 2),
+	(115, 'Lettuce - Baby Salad Greens', 'Item: {name}', 95, 1.28, 11),
+	(116, 'Ecolab - Hand Soap Form Antibac', 'Item: {name}', 45, 2.91, 15),
+	(117, 'Foam Dinner Plate', 'Item: {name}', 18, 4.94, 1),
+	(118, 'Chocolate - Semi Sweet, Calets', 'Item: {name}', 54, 1.09, 2),
+	(119, 'Lid Tray - 16in Dome', 'Item: {name}', 107, 2.8, 2),
+	(120, 'Tart - Raisin And Pecan', 'Item: {name}', 115, 1.36, 3),
+	(121, 'Crab - Meat Combo', 'Item: {name}', 38, 6.48, 5),
+	(122, 'Laundry - Bag Cloth', 'Item: {name}', 2, 2.11, 2),
+	(123, 'Olive - Spread Tapenade', 'Item: {name}', 10, 2.36, 1),
+	(124, 'Wine - Pinot Noir Pond Haddock', 'Item: {name}', 110, 5.7, 11),
+	(125, 'Cake Sheet Combo Party Pack', 'Item: {name}', 118, 5.44, 16),
+	(126, 'Shiro Miso', 'Item: {name}', 9, 6.72, 5),
+	(127, 'Dome Lid Clear P92008h', 'Item: {name}', 39, 7.78, 3),
+	(128, 'Crush - Grape, 355 Ml', 'Item: {name}', 6, 7.93, 6),
+	(129, 'Oil - Truffle, Black', 'Item: {name}', 13, 1.17, 3);
 /*!40000 ALTER TABLE `Item` ENABLE KEYS */;
 
 -- Dumping structure for table mobileapp.ItemInvited
+DROP TABLE IF EXISTS `ItemInvited`;
 CREATE TABLE IF NOT EXISTS `ItemInvited` (
   `itemInvitedId` int(11) NOT NULL AUTO_INCREMENT,
   `itemName` varchar(50) NOT NULL DEFAULT '0',
@@ -160,36 +516,172 @@ CREATE TABLE IF NOT EXISTS `ItemInvited` (
   `itemInviteUserId` int(11) NOT NULL DEFAULT '0' COMMENT 'the user who''s inviting another person',
   `itemInviteInvitedUserId` int(11) NOT NULL DEFAULT '0' COMMENT 'the user who''s got invited by another person',
   PRIMARY KEY (`itemInvitedId`),
-  KEY `itemInviteUserId` (`itemInviteUserId`),
-  KEY `itemInviteInvitedUserId` (`itemInviteInvitedUserId`),
   KEY `itemInviteActivityId` (`itemInviteActivityId`),
-  CONSTRAINT `itemInviteActivityId` FOREIGN KEY (`itemInviteActivityId`) REFERENCES `Activity` (`activityId`),
-  CONSTRAINT `itemInviteInvitedUserId` FOREIGN KEY (`itemInviteInvitedUserId`) REFERENCES `User` (`userId`),
-  CONSTRAINT `itemInviteUserId` FOREIGN KEY (`itemInviteUserId`) REFERENCES `User` (`userId`)
+  KEY `itemInviteInvitedUserId` (`itemInviteInvitedUserId`),
+  KEY `itemInviteUserId` (`itemInviteUserId`),
+  CONSTRAINT `itemInviteActivityId` FOREIGN KEY (`itemInviteActivityId`) REFERENCES `Activity` (`activityId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `itemInviteInvitedUserId` FOREIGN KEY (`itemInviteInvitedUserId`) REFERENCES `User` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `itemInviteUserId` FOREIGN KEY (`itemInviteUserId`) REFERENCES `User` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='If someone takes an item for another person, this table will be used for queries';
 
--- Dumping data for table mobileapp.ItemInvited: ~1 rows (approximately)
+-- Dumping data for table mobileapp.ItemInvited: ~0 rows (approximately)
 DELETE FROM `ItemInvited`;
 /*!40000 ALTER TABLE `ItemInvited` DISABLE KEYS */;
-INSERT INTO `ItemInvited` (`itemInvitedId`, `itemName`, `itemDescription`, `amount`, `itemInviteActivityId`, `itemInviteUserId`, `itemInviteInvitedUserId`) VALUES
-	(2, 'Pizza Funghi', '0', 7.5, 2, 2, 1);
 /*!40000 ALTER TABLE `ItemInvited` ENABLE KEYS */;
 
+-- Dumping structure for table mobileapp.Payments
+DROP TABLE IF EXISTS `Payments`;
+CREATE TABLE IF NOT EXISTS `Payments` (
+  `paymentId` int(11) NOT NULL AUTO_INCREMENT,
+  `itemId` int(11) NOT NULL DEFAULT '0',
+  `amountPayed` double NOT NULL DEFAULT '0',
+  PRIMARY KEY (`paymentId`),
+  KEY `itemId` (`itemId`),
+  CONSTRAINT `itemId` FOREIGN KEY (`itemId`) REFERENCES `Item` (`itemId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table mobileapp.Payments: ~0 rows (approximately)
+DELETE FROM `Payments`;
+/*!40000 ALTER TABLE `Payments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Payments` ENABLE KEYS */;
+
 -- Dumping structure for table mobileapp.User
+DROP TABLE IF EXISTS `User`;
 CREATE TABLE IF NOT EXISTS `User` (
   `userId` int(11) NOT NULL AUTO_INCREMENT,
   `mail` varchar(50) NOT NULL DEFAULT '0',
   `username` varchar(50) NOT NULL DEFAULT '0' COMMENT 'display name',
-  `password` varchar(50) NOT NULL DEFAULT '0',
+  `password` varchar(100) NOT NULL DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
 
--- Dumping data for table mobileapp.User: ~2 rows (approximately)
+-- Dumping data for table mobileapp.User: ~126 rows (approximately)
 DELETE FROM `User`;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
 INSERT INTO `User` (`userId`, `mail`, `username`, `password`) VALUES
-	(1, 'oliver.wagner@student.reutlingen-university.de', 'Oli', 'Hallo'),
-	(2, 'peter.vogel@funfunfun.com', 'Peter', 'Pwd1212!');
+	(1, 'oliver.wagner@student.reutlingen-university.de', 'Oli', '$2a$10$Bwj6/B.Zvt2nCHl/UBn5k.VNmXbHgXqBSRF.oQe8qJE'),
+	(2, 'peter.vogel@funfunfun.com', 'Peter', 'Pwd1212!'),
+	(3, 'afreddi0@wordpress.org', 'Andriana', 'iuU4LDejGs'),
+	(4, 'dandrag1@nature.com', 'Dionysus', 'WDukRGoGA'),
+	(5, 'sbrinkman2@theatlantic.com', 'Saree', '4HUKMuexe'),
+	(6, 'praraty3@eventbrite.com', 'Petronia', 'tcoEXwuHN8B'),
+	(7, 'wcumine4@domainmarket.com', 'Wes', 'sJHEYRj2'),
+	(8, 'jhaszard5@alibaba.com', 'Jerrie', 'QT6H9FC'),
+	(9, 'krenak6@biblegateway.com', 'Kristofer', 'vY4aYlN'),
+	(10, 'ccheccuzzi7@webeden.co.uk', 'Carolyne', 'KjysRf'),
+	(11, 'fplenderleith8@woothemes.com', 'Farra', 'X37eUE99GOz'),
+	(12, 'bfriel9@goodreads.com', 'Bent', 'Qp85EVTIw1'),
+	(13, 'nkohrta@cmu.edu', 'Nathanil', 'k33eDliod4'),
+	(14, 'kliddicoatb@auda.org.au', 'Kimball', 'YuFEluU'),
+	(15, 'fewensonc@mozilla.com', 'Fredrika', 'FdqGNZbjl'),
+	(16, 'rgloyensd@typepad.com', 'Richart', 'gTLa1Tn'),
+	(17, 'vmeacheme@vinaora.com', 'Valencia', 'MiPqxeZnol'),
+	(18, 'csummerhayesf@npr.org', 'Chico', '9gx4RJWj'),
+	(19, 'gbollandsg@dell.com', 'Giuseppe', 'C23KLDM3pT'),
+	(20, 'bmoehlerh@sfgate.com', 'Berk', 'CkbYjsAO1O'),
+	(21, 'bsanbrookei@tumblr.com', 'Borg', 'vyMExCYWi'),
+	(22, 'tmonteauxj@kickstarter.com', 'Townie', 'erFgcW'),
+	(23, 'chamertonk@barnesandnoble.com', 'Claudianus', 'O4LOXVge1sq1'),
+	(24, 'gperottil@so-net.ne.jp', 'Guillema', 'BNdIYs'),
+	(25, 'mjobernem@aol.com', 'Maryjane', 'bly9Wk'),
+	(26, 'jtrematickn@narod.ru', 'Jannelle', 'xrrr3emOd'),
+	(27, 'jprowseo@go.com', 'Jerrilee', 'yImgepFW'),
+	(28, 'nlidgettp@opensource.org', 'Nerti', 'RIsBIyOqYyI'),
+	(29, 'kflorezq@pagesperso-orange.fr', 'Katrina', 'W2DuSa74y'),
+	(30, 'rgennerr@icq.com', 'Rozanna', 'cyZo3Csd'),
+	(31, 'astangels@theglobeandmail.com', 'Amelie', 'SZtOLImTaLOG'),
+	(32, 'djepensent@ucsd.edu', 'Dexter', 'sTSoyHMq'),
+	(33, 'dduffilu@prweb.com', 'Daron', '02phW5bDUp'),
+	(34, 'gberkav@ovh.net', 'Geraldine', 'TsGSQkv'),
+	(35, 'gcoatsworthw@mediafire.com', 'Gerty', 'lVmJG9'),
+	(36, 'ecashellx@goodreads.com', 'Elvira', 'X3na4de'),
+	(37, 'ibroadfieldy@time.com', 'Issie', 'd9qlh0ag'),
+	(38, 'groukez@shutterfly.com', 'Gale', 'csLQb902'),
+	(39, 'rmannin10@marriott.com', 'Read', 'RkeHhb'),
+	(40, 'pinsworth11@auda.org.au', 'Prudi', 'AZFr5DgyrO'),
+	(41, 'hottosen12@slate.com', 'Hali', 'sWpzl20'),
+	(42, 'lrenihan13@xing.com', 'Lucilia', 'CBQc71'),
+	(43, 'cpaik14@amazon.de', 'Cello', '55S2ADvpDc'),
+	(44, 'edemetz15@dailymotion.com', 'Emile', '3UtySaK'),
+	(45, 'dblything16@i2i.jp', 'Dierdre', 'dym7N7FRuNRz'),
+	(46, 'bborthwick17@technorati.com', 'Brandyn', 'cwWB3gu'),
+	(47, 'ceastgate18@bravesites.com', 'Cletus', 'mb1b6j2b'),
+	(48, 'hschoolfield19@wordpress.org', 'Hetty', 'KWYNBHGC0'),
+	(49, 'mspenclay1a@xinhuanet.com', 'Mersey', 'TBw1gg'),
+	(50, 'ocowcha1b@squarespace.com', 'Osmond', 'Np0fID'),
+	(51, 'fasaaf1c@cloudflare.com', 'Frants', 'JE6oK3GWWNz'),
+	(52, 'wcopcott1d@cbsnews.com', 'Wenonah', 't2Hg5oVP'),
+	(53, 'ptrazzi0@rediff.com', 'Percy', 'fPFDEcdJYld'),
+	(54, 'sallward1@chicagotribune.com', 'Sigfrid', 'VRvZPu'),
+	(55, 'pphinnessy2@instagram.com', 'Phineas', 'Si3UOXLVO4r'),
+	(56, 'mgerrietz3@go.com', 'Meta', 'eCrqh0jUIdwx'),
+	(57, 'msall4@guardian.co.uk', 'Maryellen', 'K5pg6Qc0zBx'),
+	(58, 'mwoolrich5@google.cn', 'Merwin', 'l0tbgjDeI1zk'),
+	(59, 'rvoase6@drupal.org', 'Rorie', 'X8xt8wnxKXTR'),
+	(60, 'shyne7@4shared.com', 'Saxon', '3gEEczv'),
+	(61, 'lduffy8@over-blog.com', 'Loren', 'WgKSuDgr'),
+	(62, 'cpalk9@skyrock.com', 'Caesar', 'KxyFpHvgG'),
+	(63, 'hbunta@behance.net', 'Hildegaard', 'aJ2fpxsJ'),
+	(64, 'atittertonb@paypal.com', 'Averyl', 'hAraBoY'),
+	(65, 'vbarreauc@vistaprint.com', 'Violante', 'q102KpIuB'),
+	(66, 'sserverd@google.co.jp', 'Seth', '1qrwT6T'),
+	(67, 'fwathene@ed.gov', 'Fairfax', 'HQf1IsiW'),
+	(68, 'hclapsonf@prnewswire.com', 'Hermon', 'pIy4DB'),
+	(69, 'gwoollonsg@time.com', 'Granny', 'trQQXfbAnyUl'),
+	(70, 'mabramoviczh@weebly.com', 'Mikey', 'XOaakLr'),
+	(71, 'aexrolli@mit.edu', 'Antonella', 'X9SdUQ'),
+	(72, 'hdunckleyj@umich.edu', 'Hurleigh', 'fGpKk6djJu'),
+	(73, 'lgrabbk@cocolog-nifty.com', 'Leonora', 'CWobWl'),
+	(74, 'abartonl@dion.ne.jp', 'Aridatha', 'JygRfQW0eJ9o'),
+	(75, 'bdarnellm@kickstarter.com', 'Blane', 'b47xn0pn'),
+	(76, 'ajearumn@rediff.com', 'Augusto', '49AlgYg985'),
+	(77, 'lcawthorneo@barnesandnoble.com', 'Lorianna', '7bafb85x5i'),
+	(78, 'twinterbothamp@ycombinator.com', 'Tess', 'GKioWM'),
+	(79, 'mtomainiq@whitehouse.gov', 'Merv', 'mw7PvspVXNx'),
+	(80, 'drheubottomr@yellowpages.com', 'D\'arcy', 'kNpXvfrTPE'),
+	(81, 'msuters@tinypic.com', 'Mada', 'RZWleJtwD0fI'),
+	(82, 'bbowrat@google.fr', 'Bobbee', 'bLaqy1936Ln'),
+	(83, 'srainforthu@geocities.com', 'Sheridan', 'Z3VmmR'),
+	(84, 'cgilfordv@whitehouse.gov', 'Carmine', '1FHD6zTedmEm'),
+	(85, 'vrembrandtw@arstechnica.com', 'Veronike', '9awdaMji'),
+	(86, 'tclougherx@multiply.com', 'Tessie', 'yZ5yVcCZ'),
+	(87, 'ljergery@woothemes.com', 'Libbey', 'wtU4LkutYA'),
+	(88, 'bnutmanz@deliciousdays.com', 'Bradly', 'qbfhW74H'),
+	(89, 'vnapthine10@opensource.org', 'Victor', 'zNPQzySaX0fz'),
+	(90, 'awoolliams11@fastcompany.com', 'Ari', 'nNsNNIO'),
+	(91, 'dlumm12@unesco.org', 'Dyanne', 'fkLbYW4Sr'),
+	(92, 'dbardill13@tripadvisor.com', 'Dynah', '2Zm2jlNVkG0'),
+	(93, 'aconrart14@hexun.com', 'Angie', 'mmGi7YqDiJ'),
+	(94, 'sdahlberg15@bravesites.com', 'Shela', 'k5XEHQjp'),
+	(95, 'cbeggs16@comsenz.com', 'Clarinda', 'grCh7TLkGfaZ'),
+	(96, 'bgoward17@live.com', 'Baudoin', 'jLoX6Xm'),
+	(97, 'grosenblad18@storify.com', 'Gage', 'oyIHOlcDF5'),
+	(98, 'tgemlett19@123-reg.co.uk', 'Tania', 'ZEI6LTbR'),
+	(99, 'rdungey1a@etsy.com', 'Robbie', 'EOlu4I'),
+	(100, 'umoakson1b@google.ca', 'Ursala', 'd44EP6TG'),
+	(101, 'ptalmadge1c@auda.org.au', 'Peirce', '8XCerykz'),
+	(102, 'fmcgall1d@sbwire.com', 'Fraser', 'OrTOm7FFpUhE'),
+	(103, 'gmulleary1e@examiner.com', 'Garland', 'giL6UkePi'),
+	(104, 'psummerson1f@storify.com', 'Pollyanna', 'hsOr1SQF'),
+	(105, 'gvaleri1g@dagondesign.com', 'Geoffry', 'OXRE1ze3DX'),
+	(106, 'dbatcock1h@so-net.ne.jp', 'Darin', 'rI5XoRz'),
+	(107, 'afihelly1i@nationalgeographic.com', 'Amalia', '8fOlbBG1'),
+	(108, 'ggerriessen1j@hhs.gov', 'Glenna', 'h90H82JOJDd'),
+	(109, 'ibaldacchino1k@amazon.de', 'Isidor', 'BO7ifO3iYgY'),
+	(110, 'rnicholl1l@sourceforge.net', 'Rorie', '3YAC40VB2a'),
+	(111, 'bduer1m@arizona.edu', 'Bria', 'oCmyThX'),
+	(112, 'ailyin1n@mapquest.com', 'Arthur', 'zebWWpR'),
+	(113, 'lstrutton1o@vimeo.com', 'Leonardo', 'WO7Gu3j'),
+	(114, 'jyepiskopov1p@biglobe.ne.jp', 'Jerri', '06eEuirpbPL'),
+	(115, 'mtabert1q@clickbank.net', 'Maurene', 'GFO1xdyixz'),
+	(116, 'vmandrier1r@accuweather.com', 'Vasily', 'WDn2wX62'),
+	(117, 'linns1s@youtube.com', 'Letizia', 'tLsiK3bt'),
+	(118, 'grothman1t@oracle.com', 'Gauthier', 'zvNBRU3oFCGY'),
+	(119, 'ilokalo@zleohkaqpt5.gq', 'ilokalo', '$2a$10$mFf.HKssmTcIhWVoceB.8OCugljcglQXCQFMeeNQ4ABefUo.qYbRO'),
+	(120, 'joecolombo@mafia.com', 'jcob', '$2a$10$WnTuYfY4iJWJrnofClok1u5VRTTkNketiOy7XRp3Sw7eN9sK7E1cy'),
+	(121, 'jannikrenner@web.de', 'Jannik', '$2a$10$YAPra406Q1QYDniNvbDxUOqRfBGm3/564NLW5BkKDVsg2QEOl0kd.'),
+	(122, 'sonja.czernotzky@hotmail.de', 'Sonja', '$2a$10$qN6WgMWO7uZt.VpcPo6Rnew2B3b000i.5VyeTWZ5D5R8f6vLMBUU.'),
+	(123, 'hanna.schulze@yahoo.de', 'Hanna', '$2a$10$qLYpPysOWNhl7TfFFV77kuadpouxHV//O4YxdxtjcngWKY6BOR3FO');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

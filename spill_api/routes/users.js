@@ -4,7 +4,7 @@ var bcrypt = require('bcryptjs');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-	connection.query('SELECT * from User', function (error, results, fields) {
+	connection.query('SELECT userId, mail, username from User', function (error, results, fields) {
 	  	if(error){
 	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
 	  		//If there is error, we send the error in the error section with 500 status
@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 
 /* GET user listing, search query for mail address. */
 router.get('/mail', function(req, res, next) {
-	connection.query('SELECT * from User WHERE mail like  ?','%'+req.query.s+'%', function (error, results, fields) {
+	connection.query('SELECT userId, mail, username from User WHERE mail like  ?','%'+req.query.s+'%', function (error, results, fields) {
 		if(error){
 			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
 			//If there is error, we send the error in the error section with 500 status
@@ -30,7 +30,7 @@ router.get('/mail', function(req, res, next) {
 
 /* GET users listing, search query for username. */
 router.get('/name', function(req, res, next) {
-	connection.query('SELECT * from User WHERE username like ?','%'+req.query.s+'%', function (error, results, fields) {
+	connection.query('SELECT userId, mail, username from User WHERE username like ?','%'+req.query.s+'%', function (error, results, fields) {
 		if(error){
 			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
 			//If there is error, we send the error in the error section with 500 status
@@ -42,7 +42,7 @@ router.get('/name', function(req, res, next) {
 });
 
 router.get('/id', function(req, res, next) {
-	connection.query('SELECT * from User WHERE userId = ?',req.query.s, function (error, results, fields) {
+	connection.query('SELECT userId, mail, username from User WHERE userId = ?',req.query.s, function (error, results, fields) {
 		if(error){
 			res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
 			//If there is error, we send the error in the error section with 500 status
