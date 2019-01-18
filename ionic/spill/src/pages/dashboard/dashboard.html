@@ -23,6 +23,11 @@
 
 <ion-content padding center text-center>
 
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
   <ion-grid>
     <ion-row>
       <ion-col>
@@ -39,8 +44,8 @@
         </ion-list>
       </ion-col>
     </ion-row>
-
   </ion-grid>
+  
 
   <ion-fab middle right>
     <button ion-button (click)="openNewGroup()">

@@ -12,6 +12,7 @@ import { HTTP } from '@ionic-native/http';
 })
 export class DashboardPage {
 
+  refresher:any;
   user:any;
   groups:any = [];
   notifications = "";
@@ -22,30 +23,43 @@ export class DashboardPage {
     this.user =  navParams.get('user');
 
     //Load groupmembers
+    this.loadGroups();
+
+    //Load invitations
+    this.loadInvitations();
+  }
+
+  loadGroups(){
     var url = 'https://spillapi.mybluemix.net/groupmembers/user?s=' + this.user.userId;
 
     this.http.get(url, {}, {}).then(data =>{
       var result:any = JSON.parse(data.data);
 
       if(data.status == 200){
+        this.groups = [];
         for(var i=0; i<result.response.length; i++){
           //Load group
           var url = 'https://spillapi.mybluemix.net/groups/id?s=' + result.response[i].groupId;
           this.http.get(url, {}, {}).then(data => {
             var result:any = JSON.parse(data.data);
-            if(result.error){
+            this.groups.push(result.response[0]);
 
-            }else{
-              this.groups.push(result.response[0]);
-            }
+            this.groups.sort(function(a, b) { 
+              return a.name.localeCompare(b.name);
+            });
           });
         } 
+        
+        if(this.refresher != null && this.refresher != undefined){
+          this.refresher.complete();
+        }
       }else{
         //logout
       }
     });
+  }
 
-    //Load invitations
+  loadInvitations(){
     var url = 'https://spillapi.mybluemix.net/invitations';
     this.http.get(url, {}, {}).then(data =>{
       var result:any = JSON.parse(data.data);
@@ -56,7 +70,13 @@ export class DashboardPage {
           this.notifications = " " + result.response.length;
         } 
       }
-    });    
+    }); 
+  }
+
+  doRefresh(refresher) {
+    this.refresher = refresher;
+    this.loadGroups();
+    this.loadInvitations();
   }
 
   openSettings(){
