@@ -1,6 +1,7 @@
 //Author: Jannik Renner
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { HTTP } from '@ionic-native/http';
 
 
 @Component({
@@ -9,14 +10,12 @@ import { IonicPage, NavController, NavParams, AlertController, Events } from 'io
 })
 export class ProfilePage {
 
+  user:any;
   username : String;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public events: Events) {
-    events.subscribe('save', () => {
-      this.save();
-    });
-    var user:any = navParams.data;
-    this.username = user.username;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, private http: HTTP) {
+    this.user = navParams.data;
+    console.log(this.user);
   }
 
   ionViewDidLoad() {
@@ -44,9 +43,9 @@ export class ProfilePage {
         {
           text: 'Save',
           handler: data => {
-            this.username = data["username"];
+             var username = data["username"];
 
-            if(this.username == undefined || this.username == null || this.username == ''){
+            if(username == undefined || username == null || username == ''){
               const alert = this.alertCtrl.create({
                 title: 'Username!',
                 subTitle: 'The username cannot be empty!',
@@ -55,7 +54,7 @@ export class ProfilePage {
               this.changeUsername();
               alert.present();
             }else{
-              console.log("Save new username to db! " + this.username);
+              this.updateUser(this.user.password, username);
             }
           }
         }
@@ -65,7 +64,75 @@ export class ProfilePage {
   }
 
   save(){
-    console.log("Save profile to database");
+  }
+
+  showChangePasswordAlert() {
+    const prompt = this.alertCtrl.create({
+      title: 'Change Password',
+      message: "Enter old password and confirm new one!",
+      inputs: [
+        {
+          type: 'password',
+          name:'New Password',
+          placeholder: 'new password'
+        },
+        {
+          type: 'password',
+          name: 'Confirm Password',
+          placeholder: 'new password confirm'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            var newPassword = data["New Password"];
+            var confirmPassword = data["Confirm Password"];
+
+            if(newPassword != confirmPassword){
+              this.showNewPasswordIncorrectAlert();
+            }else{
+              this.updateUser(newPassword, this.user.username);
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  showNewPasswordIncorrectAlert(){
+    const alert = this.alertCtrl.create({
+      title: 'Password could not be changed!',
+      subTitle: "The old password was incorrect or the new one doesn' match",
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  updateUser(newPassword, newUsername){
+    //Connect to server and try to change password
+    var url = 'https://spillapi.mybluemix.net/users/edit?mail=' + this.user.mail + '&username=' + newUsername + '&password=' + newPassword + '&userId=' + this.user.userId;
+    this.http.put(url, {}, {}).then(data =>{
+      var result:any = JSON.parse(data.data);
+      if(result.status == 200){
+        this.user.username = newUsername;
+        //If success
+        const alert = this.alertCtrl.create({
+          title: 'Success',
+          subTitle: "Your profile has been changed",
+          buttons: ['OK']
+        });
+        alert.present();
+      }
+    });
+
   }
 
 }

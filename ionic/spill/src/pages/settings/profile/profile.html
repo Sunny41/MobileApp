@@ -7,9 +7,16 @@
     <ion-list>
         <ion-item>
             <ion-label color="primary">User Name</ion-label>
-            <ion-input placeholder="User Name" [(ngModel)]="username" (click)="changeUsername()"></ion-input>
+            <ion-input placeholder="User Name" [(ngModel)]="user.username" (click)="changeUsername()" disabled></ion-input>
         </ion-item>
 
-
+        <ion-item>
+            <button ion-button color="primary" (click)="showChangePasswordAlert()">Change Password</button>
+          </ion-item>
+  
+          <ion-item>
+            <ion-label color="primary">Email</ion-label>
+            <ion-input placeholder="Email" [(ngModel)]="user.mail" disabled></ion-input>
+          </ion-item>
     </ion-list>
 </ion-content>

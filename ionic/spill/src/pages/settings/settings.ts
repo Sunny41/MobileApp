@@ -13,7 +13,6 @@ export class SettingsPage {
 
   user:any;
   tab1Root = ProfilePage;
-  tab2Root = AccountPage;
   tab3Root = AppSettingsPage;
   
 

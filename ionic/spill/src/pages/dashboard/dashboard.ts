@@ -35,7 +35,7 @@ export class DashboardPage {
     this.http.get(url, {}, {}).then(data =>{
       var result:any = JSON.parse(data.data);
 
-      if(data.status == 200){
+      if(result.status == 200){
         this.groups = [];
         for(var i=0; i<result.response.length; i++){
           //Load group
@@ -63,7 +63,7 @@ export class DashboardPage {
     var url = 'https://spillapi.mybluemix.net/invitations';
     this.http.get(url, {}, {}).then(data =>{
       var result:any = JSON.parse(data.data);
-      if(data.status == 200){
+      if(result.status == 200){
         if(result.response.length == ''|| result.response.length == null || result.response.length == undefined){
           this.notifications = "";
         }else{
