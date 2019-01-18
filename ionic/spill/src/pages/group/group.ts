@@ -5,7 +5,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NewActivityPage } from '../new-activity/new-activity';
 import { ActivityPage } from '../activity/activity';
 import { AddMemberPage } from '../add-member/add-member';
-import { HttpClient } from '@angular/common/http';
+import { HTTP } from '@ionic-native/http';
 
 
 
@@ -22,7 +22,7 @@ export class GroupPage {
   groupMembers: any = [];
   groupMembersID: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HTTP) {
     if (navParams.get('group') != null) {
       //get ids from navparams
       this.group = navParams.get('group');
@@ -30,22 +30,17 @@ export class GroupPage {
 
       //console.log("GroupID: " + this.group.groupId);
       //Load activities
-      var url = 'https://spillapi.mybluemix.net/groupactivities/id?s=' + this.group.groupId;
-      this.http.get(url).subscribe(data => {
-        var result: any = data;
-        if (result.error) {
-
-        } else {
+      var url = 'https://spillapi.mybluemix.net/activities/group?s=' + this.group.groupId;
+      this.http.get(url, {}, {}).then(data =>{
+        var result:any = JSON.parse(data.data);
+        if(data.status == 200){
           this.groupactivities = result.response;
-
           for (let i = 0; i < this.groupactivities.length; i++) {
             //get activities from id
             var url = 'https://spillapi.mybluemix.net/activities/id?s=' + this.groupactivities[i].activityId;
-            this.http.get(url).subscribe(data => {
-              var result: any = data;
-              if (result.error) {
-
-              } else {
+            this.http.get(url, {}, {}).then(data =>{
+              var result:any = JSON.parse(data.data);
+              if(data.status == 200){
                 for (var j = 0; j < result.response.length; j++) {
                   this.activities.push(result.response[j]);
                 }
@@ -56,21 +51,16 @@ export class GroupPage {
       });
       //load group members
       var url = 'https://spillapi.mybluemix.net/groupmembers/id?s=' + this.group.groupId;
-      this.http.get(url).subscribe(data => {
-        var result: any = data;
-        if (result.error) {
-
-        } else {
+      this.http.get(url, {}, {}).then(data =>{
+        var result:any = JSON.parse(data.data);
+        if(data.status == 200){
           this.groupMembersID = result.response;
-
           for (let i = 0; i < this.groupMembersID.length; i++) {
             //get members from id
             var url = 'https://spillapi.mybluemix.net/users/id?s=' + this.groupMembersID[i].userId;
-            this.http.get(url).subscribe(data => {
-              var result: any = data;
-              if (result.error) {
-
-              } else {
+            this.http.get(url, {}, {}).then(data =>{
+              var result:any = JSON.parse(data.data);
+              if(data.status == 200){
                 for (var j = 0; j < result.response.length; j++) {
                   this.groupMembers.push(result.response[j]);
                 }

@@ -3,8 +3,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
 import { NewItemPage } from '../new-item/new-item';
-import { HttpClient } from '@angular/common/http';
-import { EditItemPage } from '../edit-item/edit-item';
+import { HTTP } from '@ionic-native/http';
 
 
 @Component({
@@ -25,7 +24,7 @@ export class ActivityPage {
   isAdmin: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public http: HttpClient, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController) {
+    public http: HTTP, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController) {
 
       if (navParams.get('group') != null) {
         this.group = navParams.get('group');
@@ -36,20 +35,15 @@ export class ActivityPage {
 
         //load activity members
         var url = 'https://spillapi.mybluemix.net/activitymembers/id?s=' + this.activity.activityId;
-        this.http.get(url).subscribe(data => {
-          var result: any = data;
-          if (result.error) {
-
-          } else {
+        this.http.get(url, {}, {}).then(data =>{
+          var result:any = JSON.parse(data.data);
+          if(data.status == 200){
             this.activityMembersId = result.response;
-            
             for (var i = 0; i < this.activityMembersId.length; i++) {
               var url2 = 'https://spillapi.mybluemix.net/users/id?s=' + this.activityMembersId[i].activityMembersUserId;
-              this.http.get(url2).subscribe(data => {
-                var result2: any = data;
-                if (result2.error) {
-
-                } else {
+              this.http.get(url, {}, {}).then(data =>{
+                var result2:any = JSON.parse(data.data);
+                if(data.status == 200){
                   for(var j=0; j<result2.response.length; j++){
                     this.activityMembers.push(result2.response[j]);
                   }
@@ -61,27 +55,25 @@ export class ActivityPage {
 
         //load my added items
         var url = 'https://spillapi.mybluemix.net/itemsinvited/user?s=' + this.user.userId;
-        this.http.get(url).subscribe(data => {
-          var result: any = data;
-          if (result.error) {
-          } else {
+        this.http.get(url, {}, {}).then(data =>{
+          var result:any = JSON.parse(data.data);
+          if(data.status == 200){
             this.userItems = result.response;
+          } else {
+
           }
         });
 
         //load the items i am invited to
         var url = 'https://spillapi.mybluemix.net/itemsinvited/invited?s=' + this.user.userId;
-        this.http.get(url).subscribe(data => {
-          var result: any = data;
-          if (result.error) {
-
-          } else {
+        this.http.get(url, {}, {}).then(data =>{
+          var result:any = JSON.parse(data.data);
+          if(data.status == 200){
             //initialize balances[]
             for (var i = 0; i < result.response.length; i++) {
               this.userInvitedItems.push(result.response[i]);
             }
           }
-
         });
       }
     }
@@ -166,9 +158,9 @@ export class ActivityPage {
 
     updateItem(item){
       var url = 'https://spillapi.mybluemix.net/items/';
-      this.http.get(url).subscribe(data => {
-        var result: any = data;
-        if (result.error) {
+      this.http.get(url, {}, {}).then(data =>{
+        var result:any = JSON.parse(data.data);
+        if(data.status == 200){
 
         } else {
 
@@ -178,9 +170,9 @@ export class ActivityPage {
 
     deleteItem(item){
       var url = 'https://spillapi.mybluemix.net/items/';
-      this.http.get(url).subscribe(data => {
-        var result: any = data;
-        if (result.error) {
+      this.http.get(url, {}, {}).then(data =>{
+        var result:any = JSON.parse(data.data);
+        if(data.status == 200){
 
         } else {
 
