@@ -23,6 +23,7 @@ import {AddMemberPage} from '../pages/add-member/add-member';
 import {NewItemPage} from '../pages/new-item/new-item';
 import { EditItemPage } from '../pages/edit-item/edit-item';
 import { RegisterPage } from '../pages/register/register';
+import { InvitationPage } from '../pages/invitation/invitation';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { RegisterPage } from '../pages/register/register';
     AddMemberPage,
     NewItemPage,
     EditItemPage,
-    RegisterPage
+    RegisterPage,
+    InvitationPage
   ],
   imports: [
     BrowserModule,
@@ -65,7 +67,8 @@ import { RegisterPage } from '../pages/register/register';
     AddMemberPage,
     NewItemPage,
     RegisterPage,
-    EditItemPage
+    EditItemPage,
+    InvitationPage
   ],
   providers: [
     StatusBar,

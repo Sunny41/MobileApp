@@ -1,0 +1,32 @@
+<!--
+Author: Jannik Renner
+-->
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Invitation</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding center text-center>
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list>
+        <ion-list-header>
+          Invitations
+        </ion-list-header>
+
+        <ion-item *ngFor="let invitation of invitationsFull" (click)="openInvitation(invitation.groupId, invitation.invitationId)">
+          <p>{{invitation.userName}} has invited u into "{{invitation.groupName}}" group. Accept?</p>
+        </ion-item>
+
+      </ion-list>
+
+</ion-content>

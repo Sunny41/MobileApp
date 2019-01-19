@@ -5,6 +5,7 @@ import { SettingsPage } from '../settings/settings';
 import {NewGroupPage} from '../new-group/new-group';
 import { GroupPage } from '../group/group';
 import { HTTP } from '@ionic-native/http';
+import { InvitationPage } from '../invitation/invitation';
 
 @Component({
   selector: 'page-dashboard',
@@ -16,6 +17,7 @@ export class DashboardPage {
   user:any;
   groups:any = [];
   notifications = "";
+  invitations:any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP) {
 
@@ -60,7 +62,7 @@ export class DashboardPage {
   }
 
   loadInvitations(){
-    var url = 'https://spillapi.mybluemix.net/invitations';
+    var url = 'https://spillapi.mybluemix.net/invitations/invitedUser?s=' + this.user.userId;
     this.http.get(url, {}, {}).then(data =>{
       var result:any = JSON.parse(data.data);
       if(result.status == 200){
@@ -68,6 +70,12 @@ export class DashboardPage {
           this.notifications = "";
         }else{
           this.notifications = " " + result.response.length;
+
+          this.invitations = [];
+          
+          for(var i=0; i<result.response.length; i++){
+            this.invitations.push(result.response[i]);
+          }
         } 
       }
     }); 
@@ -89,5 +97,11 @@ export class DashboardPage {
 
   openSelectedGroup(group){
     this.navCtrl.push(GroupPage, {group:group, user:this.user})
+  }
+
+  openInvitations(){
+    if(this.notifications != ''){
+      this.navCtrl.push(InvitationPage, {user: this.user, invitations: this.invitations});
+    }    
   }
 }
