@@ -1,4 +1,4 @@
-<!--Jannik Renner, Sonja czernotzky-->
+<!--Jannik Renner, Sonja czernotzky, Hanna Schulze-->
 <ion-header>
 
   <ion-navbar>
@@ -21,9 +21,13 @@
       <ion-list-header>
         Activities
       </ion-list-header>
-    <ion-item *ngFor="let activity of activities" (click)="openActivity(activity)">
-      <h2>{{activity.name}}</h2>
-      <h3>{{activity.description}}</h3>
-    </ion-item> 
+      <ion-item *ngFor="let activity of activities">
+        <h2>{{activity.name}}</h2>
+        <h3>{{activity.description}}</h3>
+        <button ion-button (click)="joinActivity(activity)" *ngIf="!join;else checkmark">
+            <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-icon name="checkmark" #checkmark (click)="openActivity(activity)"></ion-icon>
+      </ion-item>  
   </ion-list>
 </ion-content>
