@@ -26,7 +26,6 @@ export class InvitationPage {
   }
 
   loadInvitations(){
-    this.invitations = [];
     //Load groups
     var groups:any = [];
     for(var i=0; i<this.invitations.length; i++){
@@ -52,7 +51,6 @@ export class InvitationPage {
                     var invitationFull = {"invitationFromUserId":this.invitations[k].invitationFromUserId, "invitationForGroupId":this.invitations[k].invitationForGroupId, "userName":user.username, "groupName":group.name, "invitationId":this.invitations[k].invitationId}
                     this.invitationsFull.push(invitationFull);
                   }
-                  
                 }
 
                 if(this.refresher != null && this.refresher != undefined){
@@ -96,7 +94,7 @@ export class InvitationPage {
               alert.present();
 
               //Delete invitation
-              var url = "https://spillapi.mybluemix.net/invitations/" + invitiationId;
+              var url = "https://spillapi.mybluemix.net/invitations/delete/?id=" + invitiationId;
               this.http.delete(url, {}, {}).then(data =>{
                 this.loadInvitations();
               });
