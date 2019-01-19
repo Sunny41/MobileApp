@@ -27,7 +27,10 @@ export class NewItemPage {
     this.user = navParams.get('user');
     this.activity = navParams.get('activity');
     this.activityMembers = navParams.get('activityMembers');
-    console.log(this.activityMembers);
+    console.log('activityMembers');
+    for(var i=0;i<this.activityMembers.length;i++){
+      console.log(this.activityMembers[i]);
+    }
     this.checkedMembers = new Array(this.activityMembers.length);
   }
 
