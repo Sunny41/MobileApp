@@ -11,14 +11,11 @@ export class InvitationPage {
 
   refresher:any;
   user:any;
-  invitationsFull:any = [];
   invitations:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP, private alertCtrl: AlertController) {
     this.user = navParams.get('user');
     this.invitations = navParams.get('invitations');
-
-    this.loadInvitations();
   }
 
   ionViewDidLoad() {
@@ -26,42 +23,16 @@ export class InvitationPage {
   }
 
   loadInvitations(){
-    //Load groups
-    var groups:any = [];
-    for(var i=0; i<this.invitations.length; i++){
-      
-      var url = 'https://spillapi.mybluemix.net/groups/id?s=' + this.invitations[i].invitationForGroupId;
-      this.http.get(url, {}, {}).then(data =>{
-        if(data.status == 200){
-          var response = JSON.parse(data.data);
-          groups.push(response.response[0]);
-          var group = response.response[0];
-
-          for(var j=0; j<this.invitations.length; j++){
-            //Load user who invited
-            var url = 'https://spillapi.mybluemix.net/users/id?s=' + this.invitations[j].invitationFromUserId;
-            this.http.get(url, {}, {}).then(data =>{
-              if(data.status == 200){
-                var response = JSON.parse(data.data);
-                var user = response.response[0];
-
-                for(var k=0; k<this.invitations.length; k++){
-                  if(this.invitations[k].invitationFromUserId == user.userId){
-                    
-                    var invitationFull = {"invitationFromUserId":this.invitations[k].invitationFromUserId, "invitationForGroupId":this.invitations[k].invitationForGroupId, "userName":user.username, "groupName":group.name, "invitationId":this.invitations[k].invitationId}
-                    this.invitationsFull.push(invitationFull);
-                  }
-                }
-
-                if(this.refresher != null && this.refresher != undefined){
-                  this.refresher.complete();
-                }
-              }
-            });
-          }
+    this.invitations = [];
+    var url = 'https://spillapi.mybluemix.net/invitations/invitedUser?s=' + this.user.userId;
+    this.http.get(url, {}, {}).then(data =>{
+      var result:any = JSON.parse(data.data);
+      if(result.status == 200){
+        for(var i=0; i<result.response.length; i++){
+          this.invitations.push(result.response[i]);
         }
-      });
-    }
+      }
+    }); 
   }
 
   doRefresh(refresher) {

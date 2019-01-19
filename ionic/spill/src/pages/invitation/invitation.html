@@ -23,8 +23,8 @@ Author: Jannik Renner
           Invitations
         </ion-list-header>
 
-        <ion-item *ngFor="let invitation of invitationsFull" (click)="openInvitation(invitation.groupId, invitation.invitationId)">
-          <p>{{invitation.userName}} has invited u into "{{invitation.groupName}}" group. Accept?</p>
+        <ion-item *ngFor="let invitation of invitations" (click)="openInvitation(invitation.invitationForGroupId, invitation.invitationId)">
+          <p>{{invitation.sender}} has invited u into "{{invitation.groupname}}" group. Accept?</p>
         </ion-item>
 
       </ion-list>
