@@ -31,8 +31,6 @@ export class NewGroupPage {
         console.log("status " + data.status);
         if(data.status == 200){
           console.log("data " + data.data);
-          console.log("group " + result.response);
-          console.log("group " + result.response[0]);
           var group = result.response[0];
           this.navCtrl.push(GroupPage, {group: group, user:this.user});
         } else{

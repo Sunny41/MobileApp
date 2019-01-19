@@ -9,31 +9,37 @@
 
 <ion-content padding>
   <form id="NewActivityForm">
-      <ion-list>
-          <ion-item>
-            <ion-label color="primary">Name</ion-label>
-            <ion-input placeholder="Name of Activity"></ion-input>
-          </ion-item>
-          <ion-item>
-              <ion-label color="primary">Date</ion-label>
-              <ion-datetime displayFormat= "DD/MM/YYYY" type="number"></ion-datetime>
-          </ion-item>
-          <ion-item>
+    <ion-list>
+        <ion-item>
+          <ion-label floating color="primary">Name</ion-label>
+          <ion-input placeholder="Name of Activity" [(ngModel)]="name" name="activityName"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating color="primary">Description</ion-label>
+          <ion-input placeholder="Description of Activity" [(ngModel)]="description" name="activityDescription"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label color="primary">Date</ion-label>
+            <ion-datetime displayFormat= "DD/MMM/YYYY" type="number" [(ngModel)]="date" name="activityDateTime"></ion-datetime>
+        </ion-item>
+        <ion-item>
             <ion-label color="primary">Time</ion-label>
-              <ion-datetime displayFormat= "HH:mm" type="number"></ion-datetime>
-          </ion-item>
-          <ion-item>
-            <ion-label color="primary">Place</ion-label>
-              <ion-input placeholder= "Where did you go?"></ion-input>
-          </ion-item>
-          <ion-item *ngFor="let groupmember of groupMembers; let k=index">
-            <!--Checkboxes with group members-->
-            <ion-label>{{groupmember.username}}</ion-label>
-            <ion-checkbox [(ngModel)]="checkedMembers[k]"name="checkedMember" ></ion-checkbox>
-          </ion-item>
-      </ion-list>
-    <ion-fab bottom right>
-      <button ion-fab type="submit" (click)="addActivity()"><ion-icon name="add"></ion-icon></button>
+            <ion-datetime displayFormat= "HH:mm "  type="number" [(ngModel)]="time" name="activityTime"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label floating color="primary">Place</ion-label>
+            <ion-input placeholder= "Where did you go?" [(ngModel)]="place" name="activityPlace"></ion-input>
+        </ion-item>
+        <ion-item *ngFor="let groupmember of groupMembers; let k=index">
+          <!--Checkboxes with group members-->
+          <ion-label>{{groupmember.username}}</ion-label>
+          <ion-checkbox [(ngModel)]="checkedMembers[k]" name="checkedMember" ></ion-checkbox>
+        </ion-item>
+    </ion-list>
+  <ion-fab bottom right>
+      <button ion-fab type="submit" (click)="addActivity()">
+        <ion-icon name="add"></ion-icon>
+      </button>
     </ion-fab>  
     </form>
 </ion-content>
