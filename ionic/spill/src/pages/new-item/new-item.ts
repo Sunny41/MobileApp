@@ -1,4 +1,4 @@
-//Author: Sonja Czernotzky
+//Author: Sonja Czernotzky Tim Herold
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ActivityPage } from '../activity/activity';
@@ -62,8 +62,7 @@ export class NewItemPage {
     // {itemName, itemDescription, itemUserId, amount, itemInviteActivityId, itemInviteUserId, itemInviteInvitedUserid}
     for (var i = 0; i <= this.checkedMembers.length-1; i += 1) {
       if(this.checkedMembers[i]== true){
-
-        var url = 'https://spillapi.mybluemix.net/items/new?itemName=' + this.name + '&itemDescription=' + this.description
+        var url = 'https://spillapi.mybluemix.net/itemsinvited/new?itemName=' + this.name + '&itemDescription=' + this.description
         + '&itemUserId=' + this.user.userId + '&amount=' + this.costs
         + '&itemInviteActivityId=' + this.activity.activityId + '&itemInviteUserId=' + this.user.userId + '&itemInviteInvitedUserid=' + this.activityMembers[i].userId;
         this.http.post(url, {},{}).then(data=>{
