@@ -95,7 +95,7 @@ router.get('/activity', function(req, res, next) {
 
 
 router.post('/new', function (req,res,next) {
-    connection.query('INSERT INTO ItemInvited SET itemName = ?, itemDescription = ?, itemUserId = ?, amount = ?, itemInviteActivityId = ?, itemInviteUserId = ?, itemInviteInvitedUserId = ?', [req.query.itemName, req.query.itemDescription, req.query.itemInviteUserId, req.query.amount, req.query.itemInviteActivityId, req.query.itemInviteInvitedUserId], function (error, results, fields) {
+    connection.query('INSERT INTO ItemInvited SET itemName = ?, itemDescription = ?, amount = ?, itemInviteActivityId = ?, itemInviteUserId = ?, itemInviteInvitedUserId = ?', [req.query.itemName, req.query.itemDescription, req.query.itemInviteUserId, req.query.amount, req.query.itemInviteActivityId, req.query.itemInviteInvitedUserId], function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
