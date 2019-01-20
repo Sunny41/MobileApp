@@ -13,15 +13,15 @@
         <ion-list>
             <ion-item>
               <ion-label color="primary">Name</ion-label>
-              <ion-input [(ngModel)]="name" placeholder="What did you do?"></ion-input>
+              <ion-input [(ngModel)]="itemName" placeholder="What did you do?"></ion-input>
             </ion-item>
             <ion-item>
                 <ion-label color="primary">Description</ion-label>
-                <ion-input [(ngModel)]="description" placeholder="optional"></ion-input>
+                <ion-input [(ngModel)]="itemDescription" placeholder="optional"></ion-input>
               </ion-item>
             <ion-item>
                 <ion-label color="primary">Costs</ion-label>
-                <ion-input type="number" [(ngModel)]="costs" placeholder="€€€"></ion-input>
+                <ion-input type="number" [(ngModel)]="cost" placeholder="€€€"></ion-input>
             </ion-item>
             <ion-item *ngFor="let activityMember of activityMembers; let k=index">
               <ion-label>{{ activityMember.username }}</ion-label>
