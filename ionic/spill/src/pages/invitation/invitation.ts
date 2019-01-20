@@ -71,6 +71,22 @@ export class InvitationPage {
               });
             });
           }
+        },
+        {
+          text: 'Deny',
+          handler: () => {
+            //Delete invitation
+            var url = "https://spillapi.mybluemix.net/invitations/delete/?id=" + invitiationId;
+            this.http.delete(url, {}, {}).then(data =>{
+              let alert = this.alertCtrl.create({
+                title: 'Success',
+                subTitle: 'You have denied joining the group.',
+                buttons: ['Dismiss']
+              });
+              alert.present();
+              this.loadInvitations();
+            });
+          }
         }
       ]
     });

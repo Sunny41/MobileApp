@@ -20,15 +20,8 @@ export class DashboardPage {
   invitations:any = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private http: HTTP) {
-
     //get user from nav
     this.user =  navParams.get('user');
-
-    //Load groupmembers
-    this.loadGroups();
-
-    //Load invitations
-    this.loadInvitations();
   }
 
   loadGroups(){
@@ -59,6 +52,14 @@ export class DashboardPage {
         //logout
       }
     });
+  }
+
+  ionViewWillEnter(){
+    //Load groupmembers
+    this.loadGroups();
+
+    //Load invitations
+    this.loadInvitations();
   }
 
   loadInvitations(){

@@ -9,6 +9,11 @@
 {{activity.description}}
 
 <ion-content padding center text-center>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
+
   <ion-fab top right #fab>
     <button ion-fab color="yellowButton" ><ion-icon name="menu" color="light"></ion-icon></button>
     <ion-fab-list side="top right">
@@ -18,7 +23,7 @@
   </ion-fab>
     <h3>Items</h3>
     <ion-item *ngFor="let user of activityMembers">
-      {{user.name}}
+      {{user.username}}
     </ion-item>
     <ion-list>
       <ion-item *ngFor="let myItem of userItems" >

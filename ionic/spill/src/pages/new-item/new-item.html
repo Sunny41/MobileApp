@@ -25,7 +25,7 @@
             </ion-item>
             <ion-item *ngFor="let activityMember of activityMembers; let k=index">
               <ion-label>{{ activityMember.username }}</ion-label>
-              <ion-checkbox [(ngModel)]="checkedMembers[k]" name="checkedMember" ></ion-checkbox>
+              <ion-checkbox [checked]="false" (click)="checkMember(activityMember)" name="checkedMember" ></ion-checkbox>
             </ion-item>
         </ion-list>
       <ion-fab bottom right>

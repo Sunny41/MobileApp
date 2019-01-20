@@ -11,6 +11,8 @@ import { HTTP } from '@ionic-native/http';
   templateUrl: 'activity.html',
 })
 export class ActivityPage {
+
+  refresher:any;
   user: any;
   item: any;
   items: any;
@@ -32,55 +34,85 @@ export class ActivityPage {
       this.activity = navParams.get('activity');
       this.isAdmin = true;
       //this.activity.activityAdminId == this.user.userId;
-
-      //load activity members
-      var url = 'https://spillapi.mybluemix.net/activitymembers/id?s=' + this.activity.activityId;
-      this.http.get(url, {}, {}).then(data => {
-        var result: any = JSON.parse(data.data);
-        if (data.status == 200) {
-          this.activityMembersId = result.response;
-          for (var i = 0; i < this.activityMembersId.length; i++) {
-            var url2 = 'https://spillapi.mybluemix.net/users/id?s=' + this.activityMembersId[i].activityMembersUserId;
-            this.http.get(url2, {}, {}).then(data => {
-              var result2: any = JSON.parse(data.data);
-              if (data.status == 200) {
-                for (var j = 0; j < result2.response.length; j++) {
-                  this.activityMembers.push(result2.response[j]);
-                }
-              }
-            });
-          }
-        }
-        });
+    }else{
+      //show error
     }
-    //load my added items
-    var url = 'https://spillapi.mybluemix.net/itemsinvited/user?s=' + this.user.userId;
-    this.http.get(url, {}, {}).then(data => {
-      var result: any = JSON.parse(data.data);
-      if (data.status == 200) {
-        for( var j =0; j<result.response.length;j++){
-          this.userItems.push(result.respone[j]);
-        }
-      } 
-    });
-
-    //load the items i am invited to
-    var url = 'https://spillapi.mybluemix.net/itemsinvited/invited?s=' + this.user.userId;
-    this.http.get(url, {}, {}).then(data => {
-      var result: any = JSON.parse(data.data);
-      if (data.status == 200) {
-        //initialize balances[]
-        for (var i = 0; i < result.response.length; i++) {
-          this.userInvitedItems.push(result.response[i]);
-        }
-      }
-    });
+    
   }
 
 
 
 ionViewDidLoad() {
   //console.log('ionViewDidLoad ActivityPage');
+}
+
+ionViewWillEnter(){
+  this.load();
+}
+
+load(){
+//load activity members
+var url = 'https://spillapi.mybluemix.net/activitymembers/id?s=' + this.activity.activityId;
+this.http.get(url, {}, {}).then(data => {
+  var result: any = JSON.parse(data.data);
+  if (data.status == 200) {
+    this.activityMembersId = result.response;
+    this.activityMembers = [];
+    for (var i = 0; i < this.activityMembersId.length; i++) {
+      var url2 = 'https://spillapi.mybluemix.net/users/id?s=' + this.activityMembersId[i].activityMembersUserId;
+      this.http.get(url2, {}, {}).then(data => {
+        var result2: any = JSON.parse(data.data);
+        if (data.status == 200) {
+          for (var j = 0; j < result2.response.length; j++) {
+            this.activityMembers.push(result2.response[j]);
+          }
+        }
+      });
+    }
+
+    if(this.refresher != null && this.refresher != undefined){
+      this.refresher.complete();
+    }
+  }
+  });
+
+  //load my added items
+  var url = 'https://spillapi.mybluemix.net/itemsinvited/user?s=' + this.user.userId;
+  this.http.get(url, {}, {}).then(data => {
+    var result: any = JSON.parse(data.data);
+    this.userItems = [];
+    if (data.status == 200) {
+      for( var j =0; j<result.response.length;j++){
+        this.userItems.push(result.respone[j]);
+      }
+
+      if(this.refresher != null && this.refresher != undefined){
+        this.refresher.complete();
+      }
+    } 
+  });
+
+  //load the items i am invited to
+  var url = 'https://spillapi.mybluemix.net/itemsinvited/invited?s=' + this.user.userId;
+  this.http.get(url, {}, {}).then(data => {
+    var result: any = JSON.parse(data.data);
+    this.userInvitedItems = [];
+    if (data.status == 200) {
+      //initialize balances[]
+      for (var i = 0; i < result.response.length; i++) {
+        this.userInvitedItems.push(result.response[i]);
+      }
+
+      if(this.refresher != null && this.refresher != undefined){
+        this.refresher.complete();
+      }
+    }
+  });
+}
+
+doRefresh(refresher) {
+  this.refresher = refresher;
+  this.load();
 }
 
 openNewItem() {

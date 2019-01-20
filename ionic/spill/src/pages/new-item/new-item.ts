@@ -11,17 +11,18 @@ import { HTTP } from '@ionic-native/http';
  * Ionic pages and navigation.
  */
 
-
 @Component({
   selector: 'page-new-item',
   templateUrl: 'new-item.html',
 })
 export class NewItemPage {
   activityMembers: any = [];
-  checkedMembers: boolean[];
   group: any;
   user: any;
   activity: any;
+  itemName:string;
+  itemDescription:string;
+  cost:number;
 
   name: String;
   description: string;
@@ -31,16 +32,21 @@ export class NewItemPage {
     this.group = navParams.get('group');
     this.user = navParams.get('user');
     this.activity = navParams.get('activity');
-    this.activityMembers = navParams.get('activityMembers');
-    console.log('activityMembers');
-    for(var i=0;i<this.activityMembers.length;i++){
-      console.log(this.activityMembers[i]);
+    var activityMemberObj:any = [] = navParams.get('activityMembers');
+    for(var i=0; i<activityMemberObj.length; i++){
+      if(this.user.userId != activityMemberObj[i].userId) {
+        var json = {"userId":activityMemberObj[i].userId, "username":activityMemberObj[i].username, "checked":false};
+        this.activityMembers.push(json);
+      }     
     }
-    this.checkedMembers = new Array(this.activityMembers.length);
   }
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad NewPostPage');
+  }
+
+  checkMember(activityMember){
+    activityMember.checked = true;
   }
 
   addNewAsset() {
