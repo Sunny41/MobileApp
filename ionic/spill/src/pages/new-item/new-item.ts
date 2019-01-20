@@ -2,7 +2,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ActivityPage } from '../activity/activity';
-import { HttpClient } from '@angular/common/http';
+//import { HttpClient } from '@angular/common/http';
+import { HTTP } from '@ionic-native/http';
 /**
  * Generated class for the NewPostPage page.
  *
@@ -22,7 +23,11 @@ export class NewItemPage {
   user: any;
   activity: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient) {
+  name: String;
+  description: string;
+  costs: number;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HTTP) {
     this.group = navParams.get('group');
     this.user = navParams.get('user');
     this.activity = navParams.get('activity');
@@ -42,9 +47,39 @@ export class NewItemPage {
     //store in db:
     // in items table:
     // {itemName, itemDescription, itemUserId, amount, itemActivityId}
+    var url = 'https://spillapi.mybluemix.net/items/new?itemName=' + this.name + '&itemDescription=' + this.description
+    + '&itemUserId=' + this.user.userId + '&amount=' + this.costs + '&itemActivityId=' + this.activity.activityId ;
+    this.http.post(url, {}, {}).then(data=>{
+      var result: any = JSON.parse(data.data);
+      console.log("status " + data.status);
+      if(data.status == 200){
+        alert(1)
+        console.log("data " + data.data);
+        var item: any = result.response[0];
+        this.navCtrl.push(ActivityPage, { activity: this.activity, user: this.user, group: this.group, item: item });
+
     // for each member one entry in itemsInvited (checkedMembers):
     // {itemName, itemDescription, itemUserId, amount, itemInviteActivityId, itemInviteUserId, itemInviteInvitedUserid}
+    for (var i = 0; i <= this.checkedMembers.length-1; i += 1) {
+      if(this.checkedMembers[i]== true){
 
-    this.navCtrl.push(ActivityPage, { activity: this.activity, user: this.user, group: this.group });
+        var url = 'https://spillapi.mybluemix.net/items/new?itemName=' + this.name + '&itemDescription=' + this.description
+        + '&itemUserId=' + this.user.userId + '&amount=' + this.costs
+        + '&itemInviteActivityId=' + this.activity.activityId + '&itemInviteUserId=' + this.user.userId + '&itemInviteInvitedUserid=' + this.activityMembers[i].userId;
+        this.http.post(url, {},{}).then(data=>{
+          var result: any = JSON.parse(data.data);
+          console.log("status " + data.status);
+          if(data.status == 200){
+            console.log("data " + data.data);
+          }else{
+            alert("something went wrong with adding members to the Acticity. please try again!")
+          }
+        });
+      }
+
+    }
+
   }
+});
+}
 }

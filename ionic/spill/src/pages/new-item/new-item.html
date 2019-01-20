@@ -9,19 +9,19 @@
 
 
 <ion-content padding>
-    <form>
+
         <ion-list>
             <ion-item>
               <ion-label color="primary">Name</ion-label>
-              <ion-input placeholder="What did you do?"></ion-input>
+              <ion-input [(ngModel)]="name" placeholder="What did you do?"></ion-input>
             </ion-item>
             <ion-item>
                 <ion-label color="primary">Description</ion-label>
-                <ion-input placeholder="optional"></ion-input>
+                <ion-input [(ngModel)]="description" placeholder="optional"></ion-input>
               </ion-item>
             <ion-item>
                 <ion-label color="primary">Costs</ion-label>
-                <ion-input type="number" placeholder="€€€"></ion-input>
+                <ion-input type="number" [(ngModel)]="costs" placeholder="€€€"></ion-input>
             </ion-item>
             <ion-item *ngFor="let activityMember of activityMembers; let k=index">
               <ion-label>{{ activityMember.username }}</ion-label>
@@ -30,7 +30,7 @@
         </ion-list>
       <ion-fab bottom right>
         <button ion-fab type="submit" (click)="addNewAsset()"><ion-icon name="add"></ion-icon></button>
-      </ion-fab>  
-      </form>
+      </ion-fab>
+
 
 </ion-content>
