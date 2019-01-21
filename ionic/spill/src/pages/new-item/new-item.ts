@@ -57,8 +57,7 @@ export class NewItemPage {
     for (var i = 0; i <= this.activityMembers.length-1; i += 1) {
       if(this.activityMembers[i].checked){
         var url = 'https://spillapi.mybluemix.net/itemsinvited/new?itemName=' + this.itemName + '&itemDescription=' + this.itemDescription
-        + '&itemUserId=' + this.user.userId + '&amount=' + amount
-        + '&itemInviteActivityId=' + this.activity.activityId + '&itemInviteUserId=' + this.user.userId + '&itemInviteInvitedUserid=' + this.activityMembers[i].userId;
+        + '&amount=' + amount + '&itemInviteActivityId=' + this.activity.activityId + '&itemInviteUserId=' + this.user.userId + '&itemInviteInvitedUserId=' + this.activityMembers[i].userId;
         this.http.post(url, {},{}).then(data=>{
           var result: any = JSON.parse(data.data);
           if(data.status == 200){
