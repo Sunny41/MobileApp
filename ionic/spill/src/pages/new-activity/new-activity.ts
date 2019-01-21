@@ -55,6 +55,7 @@ export class NewActivityPage {
         // for each member one entry in itemsInvited:
         // {activityMembersActivityId, activityMembersUserId}
         this.membersToAdd.forEach((member: any) => {
+          console.log("UserId to Add: " + member.userId);
           var url = 'https://spillapi.mybluemix.net/activitymembers/new?activityMembersActivityId='+ activity.activityId + '&activityMembersUserId=' + member.userId;
           this.http.post(url, {},{}).then(data=>{
             var result: any = JSON.parse(data.data);

@@ -2,12 +2,17 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Members</ion-title>
+    <ion-title>Add Members</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
-<ion-content padding>
+<ion-content  padding center text-center>
+      <ion-item>
+        <ion-input type="email" placeholder="Email" [(ngModel)]="mail"></ion-input>
+      </ion-item>
+      <button ion-button (click)="inviteUser()" type="submit" end>
+        <ion-icon name="paper-plane">Send</ion-icon>
+      </button>
 
 </ion-content>

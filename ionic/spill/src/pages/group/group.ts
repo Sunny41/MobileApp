@@ -13,6 +13,8 @@ import { HTTP } from '@ionic-native/http';
   templateUrl: 'group.html',
 })
 export class GroupPage {
+  
+  refresher:any;
   user: any;
   activity: any = [];
   group: any;
@@ -27,55 +29,69 @@ export class GroupPage {
       //get ids from navparams
       this.group = navParams.get('group');
       this.user = navParams.get('user');
-
-      //console.log("GroupID: " + this.group.groupId);
-      //Load activities
-      var url = 'https://spillapi.mybluemix.net/activities/group?s=' + this.group.groupId;
-      this.http.get(url, {}, {}).then(data =>{
-        var result:any = JSON.parse(data.data);
-        if(data.status == 200){
-          this.groupactivities = result.response;
-
-          for (let i = 0; i < this.groupactivities.length; i++) {
-            //get activities from id
-            var url = 'https://spillapi.mybluemix.net/activities/id?s=' + this.groupactivities[i].activityId;
-            this.http.get(url, {}, {}).then(data =>{
-              var result:any = JSON.parse(data.data);
-              if(data.status == 200){
-                for (var j = 0; j < result.response.length; j++) {
-                  this.activities.push(result.response[j]);
-                }
-              }
-            });
-          }
-        }
-      });
-      //load group members
-      var url = 'https://spillapi.mybluemix.net/groupmembers/id?s=' + this.group.groupId;
-      this.http.get(url, {}, {}).then(data =>{
-        var result:any = JSON.parse(data.data);
-        if(data.status == 200){
-          this.groupMembersID = result.response;
-
-          for (let i = 0; i < this.groupMembersID.length; i++) {
-            //get members from id
-            var url = 'https://spillapi.mybluemix.net/users/id?s=' + this.groupMembersID[i].userId;
-            this.http.get(url, {}, {}).then(data =>{
-              var result:any = JSON.parse(data.data);
-              if(data.status == 200){
-                for (var j = 0; j < result.response.length; j++) {
-                  this.groupMembers.push(result.response[j]);
-                }
-              }
-            });
-          }
-        }
-      });
     }
   }
 
-  ionViewDidLoad() {
-    //console.log('ionViewDidLoad GroupPage');
+
+  ionViewWillEnter(){
+    this.load();
+  }
+
+  doRefresh(refresher){
+    this.refresher = refresher;
+    this.load();
+  }
+
+  load(){
+    //Load activities
+    var url = 'https://spillapi.mybluemix.net/activities/group?s=' + this.group.groupId;
+    this.http.get(url, {}, {}).then(data =>{
+      var result:any = JSON.parse(data.data);
+      if(data.status == 200){
+        this.groupactivities = [];  
+        this.activities = [];
+        this.groupactivities = result.response;
+
+        for (let i = 0; i < this.groupactivities.length; i++) {
+          //get activities from id
+          var url = 'https://spillapi.mybluemix.net/activities/id?s=' + this.groupactivities[i].activityId;
+          this.http.get(url, {}, {}).then(data =>{
+            var result:any = JSON.parse(data.data);
+            if(data.status == 200){
+              for (var j = 0; j < result.response.length; j++) {
+                this.activities.push(result.response[j]);
+              }
+            }
+          });
+        }
+        if(this.refresher != null && this.refresher != undefined){
+          this.refresher.complete();
+        }
+      }
+    });
+    //load group members
+    var url = 'https://spillapi.mybluemix.net/groupmembers/id?s=' + this.group.groupId;
+    this.http.get(url, {}, {}).then(data =>{
+      var result:any = JSON.parse(data.data);
+      if(data.status == 200){
+        this.groupMembersID = [];
+        this.groupMembers = [];
+        this.groupMembersID = result.response;
+
+        for (let i = 0; i < this.groupMembersID.length; i++) {
+          //get members from id
+          var url = 'https://spillapi.mybluemix.net/users/id?s=' + this.groupMembersID[i].userId;
+          this.http.get(url, {}, {}).then(data =>{
+            var result:any = JSON.parse(data.data);
+            if(data.status == 200){
+              for (var j = 0; j < result.response.length; j++) {
+                this.groupMembers.push(result.response[j]);
+              }
+            }
+          });
+        }
+      }
+    });
   }
 
   openAddActivity() {
@@ -149,6 +165,7 @@ export class GroupPage {
   deleteActivity() {
     //only possible when current user is admin
     //button has to be created
+    
   }
 
 

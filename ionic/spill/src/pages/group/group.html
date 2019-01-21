@@ -10,6 +10,11 @@
 <ion-content padding center text-center class="masters">
   <h3>{{group.description}}</h3>
 
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content>
+      </ion-refresher-content>
+    </ion-refresher>
+    
   <ion-fab top right #fab>
     <button ion-fab color="yellowButton"><ion-icon name="menu" color="light"></ion-icon></button>
     <ion-fab-list side="bottom">
