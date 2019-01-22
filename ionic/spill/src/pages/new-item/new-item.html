@@ -27,9 +27,9 @@
         </ion-list>
 
         <ion-list radio-group>
-          <ion-item *ngFor="let activityMember of activityMembers; let k=index">
-            <ion-label>{{ activityMember.username }}</ion-label>
-            <ion-radio [checked]="false" (click)="checkMember(activityMember)" name="checkedMember"  value=""></ion-radio>
+          <ion-item *ngFor="let member of activityMembers">
+            <ion-label>{{ member.username }}</ion-label>
+            <ion-radio [checked]="false" (ionSelect)="checkMember(member)" name="checkMember"></ion-radio>
           </ion-item>
         </ion-list>
       <ion-fab bottom right>

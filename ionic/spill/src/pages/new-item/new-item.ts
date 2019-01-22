@@ -34,11 +34,11 @@ export class NewItemPage {
     //console.log('ionViewDidLoad NewPostPage');
   }
 
-  checkMember(activityMember) {
+  checkMember(member) {
     for (var i = 0; i < this.activityMembers.length; i++) {
       this.activityMembers[i].checked = false;
     }
-    activityMember.checked = true;
+    member.checked = true;
   }
 
   addNewAsset() {
