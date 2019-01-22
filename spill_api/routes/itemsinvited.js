@@ -108,7 +108,7 @@ router.post('/new', function (req,res,next) {
 
 /* edit existing Item */
 router.put('/edit', function (req,res,next) {
-    connection.query('UPDATE ItemInvited SET itemName = IfNull(?,itemName), itemDescription = IfNull(?,itemDescription) WHERE itemId = ? ', [req.query.itemName, req.query.itemDescription, req.query.itemId], function (error, results, fields) {
+    connection.query('UPDATE ItemInvited SET itemName = IfNull(?,itemName), itemDescription = IfNull(?,itemDescription) WHERE itemInvitedId = ? ', [req.query.itemName, req.query.itemDescription, req.query.itemId], function (error, results, fields) {
         var itemId = req.query.itemId;
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
