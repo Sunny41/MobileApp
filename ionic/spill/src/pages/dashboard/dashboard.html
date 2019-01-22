@@ -36,7 +36,7 @@
             Groups
           </ion-list-header>
 
-          <ion-item *ngFor="let group of groups" (click)="openSelectedGroup(group)">
+          <ion-item *ngFor="let group of groups" (click)="presentActionSheet(group)">
             <h2>{{group.name}}</h2>
             <h3>{{group.description}}</h3>
           </ion-item>
