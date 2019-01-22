@@ -3,7 +3,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
 import { NewItemPage } from '../new-item/new-item';
-import { EditItemPage } from '../edit-item/edit-item';
 import { HTTP } from '@ionic-native/http';
 
 
@@ -135,9 +134,6 @@ openNewItem() {
   this.navCtrl.push(NewItemPage, { user: this.user, activity: this.activity, group: this.group, activityMembers: this.activityMembers });
 }
 
-openEdit() {
-  this.navCtrl.push(EditItemPage, { user: this.user, activity: this.activity, group: this.group });
-}
 
 editItem(item) {
   const prompt = this.alertCtrl.create({

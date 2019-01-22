@@ -21,7 +21,6 @@ import {ActivityPage} from '../pages/activity/activity';
 import {NewActivityPage} from '../pages/new-activity/new-activity';
 import {AddMemberPage} from '../pages/add-member/add-member';
 import {NewItemPage} from '../pages/new-item/new-item';
-import { EditItemPage } from '../pages/edit-item/edit-item';
 import { RegisterPage } from '../pages/register/register';
 import { InvitationPage } from '../pages/invitation/invitation';
 
@@ -41,7 +40,6 @@ import { InvitationPage } from '../pages/invitation/invitation';
     NewActivityPage,
     AddMemberPage,
     NewItemPage,
-    EditItemPage,
     RegisterPage,
     InvitationPage
   ],
@@ -67,7 +65,6 @@ import { InvitationPage } from '../pages/invitation/invitation';
     AddMemberPage,
     NewItemPage,
     RegisterPage,
-    EditItemPage,
     InvitationPage
   ],
   providers: [
