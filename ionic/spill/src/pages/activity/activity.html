@@ -24,6 +24,7 @@
     <ion-list>
       <ion-item *ngFor="let myItem of userItems" (click)="presentActionSheetMyItem(myItem)">
         <h3>{{myItem.itemName}}</h3>
+        <h2>{{myItem.invitedUser}}</h2>
         <h2>{{+myItem.amount + "€"}}</h2>
       </ion-item>
 

@@ -108,6 +108,7 @@ this.http.get(url, {}, {}).then(data => {
       this.userInvitedItems = [];
       if(result.status == 200){
         //initialize balances[]
+        this.totalDepth = 0;
         for (var i = 0; i < result.response.length; i++) {
           this.totalDepth += result.response[i].amount;
 
@@ -117,6 +118,7 @@ this.http.get(url, {}, {}).then(data => {
         if(this.totalDepth == undefined || this.totalDepth == NaN){
           this.totalDepth = 0;
         }
+
         if(this.refresher != null && this.refresher != undefined){
           this.refresher.complete();
         }
@@ -214,6 +216,7 @@ updateItem(item){
       var result: any = JSON.parse(data.data);
       if(result.status == 200){
         this.simpleToast("Success", "The item has been updated successfully");
+        this.load();
       }else{
         this.simpleToast("Error", "Something went wrong updating the item");
       }
@@ -224,12 +227,13 @@ updateItem(item){
 }
 
 deleteItem(item){
-  var url = 'https://spillapi.mybluemix.net/itemsinvited/delete?id=' + item.itemId;
+  var url = 'https://spillapi.mybluemix.net/itemsinvited/delete?id=' + item.itemInvitedId;
   this.http.delete(url, {}, {}).then(data => {
     if (data.status == 200) {
       var result: any = JSON.parse(data.data);
       if(result.status == 200){
         this.simpleToast("Success", "The item has been deleted successfully.");
+        this.load();
       }else{
         this.simpleToast("Error", "Something went wrong deleting the item.");
       }
