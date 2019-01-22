@@ -1,6 +1,6 @@
-//Author: Sonja Czernotzky
+//Author: Sonja Czernotzky Tim Herold
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
 
 @Component({
@@ -15,18 +15,16 @@ export class EditItemPage {
   group: any;
   activity: any;
   userItems: any = [];
-
-  itemNAME:string;
-  itemDescription:string;
-  itemID: number;
+  userInvitedItems: any = []
+  isAdmin:boolean;
 
 
-  constructor(public navCtrl: NavController,public alertCtrl: AlertController, public navParams: NavParams, public http: HTTP) {
+  constructor(public navCtrl: NavController,public alertCtrl: AlertController, public navParams: NavParams, public http: HTTP, public actionSheetCtrl: ActionSheetController) {
     if (navParams.get('group') != null) {
       this.group = navParams.get('group');
       this.user = navParams.get('user');
       this.activity = navParams.get('activity');
-      //this.isAdmin = true;
+      this.isAdmin = true;
       //this.activity.activityAdminId == this.user.userId;
     }else{
       //show error
@@ -48,39 +46,41 @@ export class EditItemPage {
   }
 
   loadOwnItems(){
-    var url = 'https://spillapi.mybluemix.net/items/user?s=' + this.user.userId;
+    //load my added items
+    var url = 'https://spillapi.mybluemix.net/itemsinvited/invited?userId=' + this.user.userId + '&activityId=' + this.activity.activityId;
     this.http.get(url, {}, {}).then(data => {
-      var result: any = JSON.parse(data.data);
-      this.userItems = [];
       if (data.status == 200) {
-        var change: any =[];
-        change=result.response;
-        for(var i=0;i<=change.length-1;i++){
-          if(change[i].itemActivityId==this.activity.activityId){
-            this.userItems.push(change[i])
-          }
+        var result: any = JSON.parse(data.data);
+        this.userInvitedItems = [];
+        if(result.status == 200){
 
-        }
-        if(this.refresher != null && this.refresher != undefined){
-          this.refresher.complete();
+          if(this.refresher != null && this.refresher != undefined){
+            this.refresher.complete();
+          }
         }
       }
-
     });
-
   }
-/*
-  editItem() {
+
+
+
+
+
+  editItem(item) {
     const prompt = this.alertCtrl.create({
-      title: 'ID',
+      title: 'Edit Item',
       message: "Change item properties",
       inputs: [
         {
           type: 'text',
-          name: 'itemId',
-          placeholder: 'id'
+          name: 'itemName',
+          value: item.itemName
         },
-
+        {
+          type: 'text',
+          name: 'itemDescription',
+          placeholder: item.itemDescription
+        }
       ],
       buttons: [
         {
@@ -91,23 +91,62 @@ export class EditItemPage {
         {
           text: 'Save',
           handler: data => {
-            console.log("SAVE ITEM ");
-            this.item.itemId = data.itemId;
-            //item.itemDescription = data.itemDescription;
-            this.updateItem(this.item);
+            console.log("SAVE ITEM " + data.itemName + " " + data.itemDescription);
+            item.itemName = data.itemName;
+            item.itemDescription = data.itemDescription;
+            this.updateItem(item);
           }
         }
       ]
     });
     prompt.present();
   }
+
+  payItem(item){
+    const prompt = this.alertCtrl.create({
+      title: 'Set paid status',
+      message: "How much have you paid?",
+      inputs: [
+        {
+          type: 'tel',
+          name: 'amount',
+          placeholder: item.amount,
+          value: item.amount
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            console.log("SAVE ITEM");
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
   updateItem(item){
-    alert(this.item.itemID)
+    var url = 'https://spillapi.mybluemix.net/itemsinvited/edit?itemInvitedId='+item.itemInvitedId+'';
+    this.http.put(url, {}, {}).then(data => {
+      var result: any = JSON.parse(data.data);
+      if (data.status == 200) {
 
+      } else {
+        alert(Error);
+      }
+    });
+  }
 
-
-    /*var url = 'https://spillapi.mybluemix.net/items/';
-    this.http.get(url, {}, {}).then(data => {
+  deleteItem(item){
+    alert(item.ItemId + " "+item.itemInvitedId)
+    var url = 'https://spillapi.mybluemix.net/itemsinvited/delete?itemInvitedId='+item.invitedId;
+    this.http.delete(url, {}, {}).then(data => {
       var result: any = JSON.parse(data.data);
       if (data.status == 200) {
 
@@ -115,42 +154,67 @@ export class EditItemPage {
 
       }
     });
-  }*/
-  editItem2(){
-    //var idIsInUserItems= false;
-    if(this.itemNAME == undefined || this.itemDescription == undefined ||
-      this.itemNAME.length == 0 || this.itemDescription.length == 0||
-         this.itemID == null){
-          alert("Please fill in all fields")
-        }else{
-          /*
-          var i:number;
-          for(i=0:i<=this.userItems.length-1;i++){
-              if(this.userItems[i].itemId==this.itemID){
-                idIsInUserItems=true;
-              }
-          }
-          if(idIsInUserItems=true){*/
-            alert("X")
+  }
 
-          //url chanche must be to edit
-          var url = 'https://spillapi.mybluemix.net/items/itemId=' + this.itemID +'&itemName'+ this.itemNAME +'&itemDescription=' + this.itemDescription;
-          this.http.delete(url, {}, {}).then(data => {
-            var result: any = JSON.parse(data.data);
-            if (data.status == 200) {
-              if(this.refresher != null && this.refresher != undefined){
-                this.refresher.complete();
-              }
+  presentActionSheet(item) {
+    var title = "Modify the item";
+    //Admin options
+    if (this.isAdmin) {
+      const actionSheet = this.actionSheetCtrl.create({
+        title: title,
+        buttons: [
+          {
+            text: 'Delete',
+            role: 'destructive',
+            handler: () => {
+              this.deleteItem(item);
             }
-          }).catch(error => {
-            alert("Something went wrong... please try again.");
-          });
-        /*}else{
-          alert("this item is not yours");
-        }*/
+          },
+          {
+            text: 'Edit',
+            handler: () => {
+              this.editItem(item);
+            }
+          },
+          {
+            text: 'Pay',
+            handler: () => {
+              this.payItem(item);
+            }
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+            }
+          }
+        ]
+      });
+      actionSheet.present();
+    } else {
+      //Not Admin options
+      const actionSheet = this.actionSheetCtrl.create({
+        title: title,
+        buttons: [
+          {
+            text: 'Pay',
+            handler: () => {
+              this.payItem(item);
+            }
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+            }
+          }
+        ]
+      });
+      actionSheet.present();
+    }
 
-        }
-      }
+  }
+
 
 
 

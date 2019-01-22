@@ -1,4 +1,4 @@
-<!--Sonja Czernotzky-->
+<!--Sonja Czernotzky--><!--Tim Herold-->
 <ion-header>
 
   <ion-navbar>
@@ -13,29 +13,15 @@
     <ion-refresher-content>
     </ion-refresher-content>
   </ion-refresher>
-  <h3>Deine Items:</h3>
-  <!--<ion-list>
-    <ion-item *ngFor="let item of userItems; let k=index">
-      <ion-label floating color="primary">ID: {{this.userItems[k].itemId}}   Name: {{this.userItems[k].itemName}}:</ion-label><ion-input value="{{this.userItems[k].itemName}}" [(ngModel)]="a" name="iName">{{userItems.itemName}}</ion-input>
-      <ion-label floating color="primary"></ion-label><ion-input value="{{this.userItems[k].itemDescription}}" [(ngModel)]="name" name="iBeschreibung"></ion-input>
-    </ion-item>
-  </ion-list>-->
+  <h3>Your Items to manage:</h3>
+
   <ion-list>
-    <ion-item *ngFor="let item of userItems; let k=index" (click)="editItem()">
-      <h4>ID: {{this.userItems[k].itemId}}   Name: {{this.userItems[k].itemName}}   Description: {{this.userItems[k].itemDescription}}</h4>
+    <ion-item *ngFor="let item of userInvitedItems; let k=index" (click)="presentActionSheet(item)">
+      <h4>  Name: {{this.userInvitedItems[k].itemName}}   Description: {{this.userInvitedItems[k].itemDescription}} Amount: {{this.userInvitedItems[k].amount}}</h4>
     </ion-item>
   </ion-list>
-    <br>
-    <ion-item><ion-label color="primary">ID</ion-label>
-    <ion-input [(ngModel)]="itemID" placeholder="ID"></ion-input>
-      <ion-label color="primary">Name</ion-label>
-      <ion-input [(ngModel)]="itemNAME" placeholder="Name"></ion-input>
-        <ion-label color="primary">Description</ion-label>
-        <ion-input [(ngModel)]="itemDescription" placeholder="discription"></ion-input>
-      </ion-item>
 
-  <ion-fab bottom right>
-    <button ion-fab type="submit" (click)="editItem2()"><ion-icon name="edit"></ion-icon></button>
-  </ion-fab>
+
+
 
 </ion-content>
