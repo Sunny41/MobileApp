@@ -3,6 +3,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
 import { NewItemPage } from '../new-item/new-item';
+import { EditItemPage } from '../edit-item/edit-item';
 import { HTTP } from '@ionic-native/http';
 
 
@@ -37,13 +38,13 @@ export class ActivityPage {
     }else{
       //show error
     }
-    
+
   }
 
 
 
 ionViewDidLoad() {
-  //console.log('ionViewDidLoad ActivityPage');
+  console.log('ionViewDidLoad ActivityPage');
 }
 
 ionViewWillEnter(){
@@ -83,13 +84,13 @@ this.http.get(url, {}, {}).then(data => {
     this.userItems = [];
     if (data.status == 200) {
       for( var j =0; j<result.response.length;j++){
-        this.userItems.push(result.respone[j]);
+        this.userItems.push(result.response[j]);
       }
 
       if(this.refresher != null && this.refresher != undefined){
         this.refresher.complete();
       }
-    } 
+    }
   });
 
   //load the items i am invited to
@@ -121,6 +122,8 @@ openNewItem() {
 
 openEdit() {
   // params needed: user, groupid, activityid
+  this.navCtrl.push(EditItemPage, { user: this.user, activity: this.activity, group: this.group });
+
 }
 
 editItem(item) {
