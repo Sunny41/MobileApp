@@ -25,6 +25,7 @@ export class ActivityPage {
   userItems: any = [];
   userInvitedItems: any = [];
   isAdmin: boolean;
+  totalDepth:number = 0;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public http: HTTP, public alertCtrl: AlertController, public actionSheetCtrl: ActionSheetController) {
@@ -76,7 +77,6 @@ this.http.get(url, {}, {}).then(data => {
       }
     }
     
-
     if(this.refresher != null && this.refresher != undefined){
       this.refresher.complete();
     }
@@ -84,7 +84,7 @@ this.http.get(url, {}, {}).then(data => {
   });
 
   //load my added items
-  var url = 'https://spillapi.mybluemix.net/itemsinvited/user?s=' + this.user.userId + '&activityId=' + this.activity.activityId;
+  var url = 'https://spillapi.mybluemix.net/itemsinvited/user?userId=' + this.user.userId + '&activityId=' + this.activity.activityId;
   this.http.get(url, {}, {}).then(data => {    
     if (data.status == 200) {
       var result: any = JSON.parse(data.data);
@@ -102,7 +102,7 @@ this.http.get(url, {}, {}).then(data => {
   });
 
   //load the items i am invited to
-  var url = 'https://spillapi.mybluemix.net/itemsinvited/invited?s=' + this.user.userId + '&activityId=' + this.activity.activityId;
+  var url = 'https://spillapi.mybluemix.net/itemsinvited/invited?userId=' + this.user.userId + '&activityId=' + this.activity.activityId;
   this.http.get(url, {}, {}).then(data => {    
     if (data.status == 200) {
       var result: any = JSON.parse(data.data);
@@ -110,9 +110,14 @@ this.http.get(url, {}, {}).then(data => {
       if(result.status == 200){
         //initialize balances[]
         for (var i = 0; i < result.response.length; i++) {
+          this.totalDepth += result.response[i].amount;
+
           this.userInvitedItems.push(result.response[i]);
         }
 
+        if(this.totalDepth == undefined || this.totalDepth == NaN){
+          this.totalDepth = 0;
+        }
         if(this.refresher != null && this.refresher != undefined){
           this.refresher.complete();
         }
@@ -131,9 +136,7 @@ openNewItem() {
 }
 
 openEdit() {
-  // params needed: user, groupid, activityid
   this.navCtrl.push(EditItemPage, { user: this.user, activity: this.activity, group: this.group });
-
 }
 
 editItem(item) {
@@ -161,7 +164,6 @@ editItem(item) {
       {
         text: 'Save',
         handler: data => {
-          console.log("SAVE ITEM " + data.itemName + " " + data.itemDescription);
           item.itemName = data.itemName;
           item.itemDescription = data.itemDescription;
           this.updateItem(item);
@@ -193,7 +195,15 @@ payItem(item){
       {
         text: 'Save',
         handler: data => {
-          console.log("SAVE ITEM");
+          if(data.amount <= 0 || data.amount > item.amount){
+            this.simpleToast("Error", "Please fill in a correct amount");
+          }else{
+            //Pay
+            var url="https://spillapi.mybluemix.net/payments/new?";
+            this.http.post(url, {}, {}).then(data => {
+  
+            });
+          }         
         }
       }
     ]
@@ -202,36 +212,47 @@ payItem(item){
 }
 
 updateItem(item){
-  var url = 'https://spillapi.mybluemix.net/items/';
+  var url = 'https://spillapi.mybluemix.net/items/edit?itemName=' + item.itemName + '&itemDescription=' + item.itemDescription + '&itemId=' + item.itemId;
   this.http.get(url, {}, {}).then(data => {
-    var result: any = JSON.parse(data.data);
     if (data.status == 200) {
-
+      var result: any = JSON.parse(data.data);
+      if(result.status == 200){
+        this.simpleToast("Success", "The item has been updated successfully");
+      }else{
+        this.simpleToast("Error", "Something went wrong updating the item");
+      }
     } else {
-
+      this.simpleToast("Error", "Something went wrong updating the item");
     }
   });
 }
 
 deleteItem(item){
-  var url = 'https://spillapi.mybluemix.net/items/';
-  this.http.get(url, {}, {}).then(data => {
-    var result: any = JSON.parse(data.data);
+  var url = 'https://spillapi.mybluemix.net/itemsinvited/delete?id=' + item.itemId;
+  this.http.delete(url, {}, {}).then(data => {
     if (data.status == 200) {
-
+      var result: any = JSON.parse(data.data);
+      if(result.status == 200){
+        this.simpleToast("Success", "The item has been deleted successfully.");
+      }else{
+        this.simpleToast("Error", "Something went wrong deleting the item.");
+      }
     } else {
-
+      this.simpleToast("Error", "Something went wrong deleting the item.");
     }
   });
 }
 
-presentActionSheet(item) {
-  var title = "Modify the item";
-  //Admin options
-  if (this.isAdmin) {
+  presentActionSheetMyItem(item) {
     const actionSheet = this.actionSheetCtrl.create({
-      title: title,
+      title: "Edit yout item",
       buttons: [
+        {
+          text: 'Edit',
+          handler: () => {
+            this.editItem(item);
+          }
+        },
         {
           text: 'Delete',
           role: 'destructive',
@@ -240,18 +261,6 @@ presentActionSheet(item) {
           }
         },
         {
-          text: 'Edit',
-          handler: () => {
-            this.editItem(item);
-          }
-        },
-        {
-          text: 'Pay',
-          handler: () => {
-            this.payItem(item);
-          }
-        },
-        {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
@@ -260,28 +269,14 @@ presentActionSheet(item) {
       ]
     });
     actionSheet.present();
-  } else {
-    //Not Admin options
-    const actionSheet = this.actionSheetCtrl.create({
+  }
+
+  simpleToast(title, message){
+    const alert = this.alertCtrl.create({
       title: title,
-      buttons: [
-        {
-          text: 'Pay',
-          handler: () => {
-            this.payItem(item);
-          }
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-          }
-        }
-      ]
+      subTitle: message,
+      buttons: ['OK']
     });
-    actionSheet.present();
+    alert.present();
   }
-
 }
-
-  }

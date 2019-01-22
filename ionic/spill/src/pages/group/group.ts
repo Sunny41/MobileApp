@@ -1,7 +1,7 @@
 //Author: Sonja Czernotzky, Hanna Schulze
 
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 import { NewActivityPage } from '../new-activity/new-activity';
 import { ActivityPage } from '../activity/activity';
 import { AddMemberPage } from '../add-member/add-member';
@@ -24,7 +24,8 @@ export class GroupPage {
   groupMembers: any = [];
   groupMembersID: any = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HTTP, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HTTP, 
+    public alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
     if (navParams.get('group') != null) {
       //get ids from navparams
       this.group = navParams.get('group');
@@ -61,6 +62,11 @@ export class GroupPage {
               for (var j = 0; j < result.response.length; j++) {
                 this.activities.push(result.response[j]);
               }
+
+              //Sort in alphabetical order
+              this.activities.sort(function(a, b) { 
+                return a.name.localeCompare(b.name);
+              });
             }
           });
         }
@@ -106,18 +112,14 @@ export class GroupPage {
   joinActivity(activity: any){
     //add Members to the Activity if not already in, show Pop Up if not already in 
     //get activitymembers over activityid
-    console.log("ActivityId: " + activity.activityId);
     var alreadyjoined: boolean = false;
     var url = 'https://spillapi.mybluemix.net/activitymembers/id?s=' + activity.activityId;
     this.http.get(url, {}, {}).then(data => {
-      var result: any = JSON.parse(data.data);
       if(data.status == 200){
+        var result: any = JSON.parse(data.data);
         if(result.status == 200){
-          console.log(result.response);
           for ( var k = 0; k < result.response.length; k++) {
-            //console.log("User: " + result.response[k].activityMembersUserId);
             if(this.user.userId == result.response[k].activityMembersUserId) {
-              //console.log("User: " + result.response[k].activityMembersUserId);
               alreadyjoined = true;
             }
           }
@@ -130,7 +132,6 @@ export class GroupPage {
                   text: 'Cancel',
                   role: 'cancel',
                   handler: () => {
-                    //console.log('Cancel clicked');
                   }
                 },
                 {
@@ -170,11 +171,13 @@ export class GroupPage {
         {
           type: 'text',
           name: 'activityName',
+          value: activity.name,
           placeholder: 'Activity Name'
         },
         {
           type: 'text',
           name: 'activityDescription',
+          value: activity.description,
           placeholder: 'Activity Description'
         },
         {
@@ -190,6 +193,7 @@ export class GroupPage {
         {
           type: 'text',
           name: 'activityPlace',
+          value: activity.place,
           placeholder: 'Activity Place'
         }
       ],
@@ -202,7 +206,10 @@ export class GroupPage {
         {
           text: 'Save',
           handler: data => {
-            console.log("SAVE Activity " + data.activityName + " " + data.activityDescription + " " + data.activityDate + " " + data.activityTime + " " + data.activityPlace);
+            if(data.activityName == undefined || data.activityName == ''){
+              this.simpleToast("Error", "Please enter a name for your activity.");
+              return;
+            }
             activity.name = data.activityName;
             activity.description = data.activityDescription;
             activity.date = data.activityDate + data.activityTime;
@@ -217,9 +224,7 @@ export class GroupPage {
 
   updateActivity(activity: any){
     var url = 'https://spillapi.mybluemix.net/activities/edit?name=' + activity.name + '&description=' + activity.description + '&date=' + activity.date + '&place=' + activity.place + '&activityId=' + activity.activityId;
-    console.log("updating...");
     this.http.put(url, {}, {}).then(data => {
-      console.log("updating...");
       var result: any = JSON.parse(data.data);
       if (data.status == 200) {
         if(result.status == 200){
@@ -250,25 +255,23 @@ export class GroupPage {
   }
 
   openActivity(activity: any) {
-    //@Hanna: already did that for u, bc i needed the params :)
     this.navCtrl.push(ActivityPage, { activity: activity, user: this.user, group: this.group });
   }
 
   deleteActivity(activity: any) {
     //only possible when current user is admin
     //button has to be created
-    console.log(activity.activityAdminId);
-    console.log(this.user.userId);
     if(this.user.userId == activity.activityAdminId){
-      console.log("you're the admin");
       var url = 'https://spillapi.mybluemix.net/activities/delete?id=' + activity.activityId;
-      console.log("deleting....");
       this.http.delete(url, {}, {}).then(data => {
         var result: any = JSON.parse(data.data);
-        console.log("deleting....");
         if (data.status == 200) {
           if(result.status == 200){
-            console.log("deleting....");
+            
+            //Reload data
+            this.load();
+
+            //Show success
             const prompt = this.alertCtrl.create({
               title: 'Success!',
               subTitle: 'Successfully deleted the Activity',
@@ -276,7 +279,6 @@ export class GroupPage {
                 {
                   text: 'OK',
                   handler: () => {
-                    this.navCtrl.pop();
                   }
                 }
               ]
@@ -294,5 +296,62 @@ export class GroupPage {
     }
   }
 
+
+  presentActionSheet(activity) {
+    //check if user is admin
+    var userIsAdmin = false;
+    if(this.user.userId == activity.activityAdminId){
+      userIsAdmin = true;
+    }
+
+    var title = "Modify the activity";
+    //Admin options
+    if (userIsAdmin) {
+      const actionSheet = this.actionSheetCtrl.create({
+        title: title,
+        buttons: [
+          {
+            text: 'Open',
+            handler: () => {
+              this.joinActivity(activity);
+            }
+          },
+          {
+            text: 'Edit',
+            handler: () => {
+              this.editActivity(activity);
+            }
+          },
+          {
+            text: 'Delete',
+            role: 'destructive',
+            handler: () => {
+              this.deleteActivity(activity);
+            }
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+            }
+          }
+        ]
+      });
+      actionSheet.present();
+    } else {
+      //Not Admin options. Just open the activity
+      this.joinActivity(activity);
+    }
+  }
+
+  //Show a simple toast with title and message
+  simpleToast(title, message){
+    const alert = this.alertCtrl.create({
+      title: title,
+      subTitle: message,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
 
 }
