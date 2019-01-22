@@ -13,20 +13,20 @@ export class NewItemPage {
   group: any;
   user: any;
   activity: any;
-  itemName:string;
-  itemDescription:string;
-  cost:number;
+  itemName: string;
+  itemDescription: string;
+  cost: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: HTTP, private alertCtrl: AlertController) {
     this.group = navParams.get('group');
     this.user = navParams.get('user');
     this.activity = navParams.get('activity');
-    var activityMemberObj:any = [] = navParams.get('activityMembers');
-    for(var i=0; i<activityMemberObj.length; i++){
-      if(this.user.userId != activityMemberObj[i].userId) {
-        var json = {"userId":activityMemberObj[i].userId, "username":activityMemberObj[i].username, "checked":false};
+    var activityMemberObj: any = [] = navParams.get('activityMembers');
+    for (var i = 0; i < activityMemberObj.length; i++) {
+      if (this.user.userId != activityMemberObj[i].userId) {
+        var json = { "userId": activityMemberObj[i].userId, "username": activityMemberObj[i].username, "checked": false };
         this.activityMembers.push(json);
-      }     
+      }
     }
   }
 
@@ -34,8 +34,8 @@ export class NewItemPage {
     //console.log('ionViewDidLoad NewPostPage');
   }
 
-  checkMember(activityMember){
-    for(var i=0; i<this.activityMembers.length; i++){
+  checkMember(activityMember) {
+    for (var i = 0; i < this.activityMembers.length; i++) {
       this.activityMembers[i].checked = false;
     }
     activityMember.checked = true;
@@ -43,24 +43,25 @@ export class NewItemPage {
 
   addNewAsset() {
     //store in db:
-    var activityMember:any;
-    for(var i=0; i<this.activityMembers.length; i++){
-      	if(this.activityMembers[i].checked){
-          activityMember = this.activityMembers[i];
-        }
+    var activityMember: any;
+    for (var i = 0; i < this.activityMembers.length; i++) {
+      if (this.activityMembers[i].checked) {
+        activityMember = this.activityMembers[i];
+      }
     }
-    
-    if(this.itemName == '' || this.cost == 0 || activityMember == undefined || activityMember == null){
+
+    if (this.itemName == '' || this.cost == 0 || activityMember == undefined || activityMember == null) {
       this.simpleToast("Error", "Please fill in the name, cost and select a user.");
       return;
     }
-
-    var url = 'https://spillapi.mybluemix.net/itemsinvited/new?itemName=' + this.itemName + '&itemDescription=' + this.itemDescription
-    + '&amount=' + this.cost + '&itemInviteActivityId=' + this.activity.activityId + '&itemInviteUserId=' + this.user.userId + '&itemInviteInvitedUserId=' + activityMember.activityMembersUserId;
-    this.http.post(url, {}, {}).then(data => {      
-      if(data.status == 200){
+    var url = 'https://spillapi.mybluemix.net/itemsinvited/new?itemName=' + this.itemName + '&itemDescription=' + this.itemDescription  + '&amount=' + this.cost + '&itemInviteActivityId=' + this.activity.activityId + '&itemInviteUserId=' + this.user.userId + '&itemInviteInvitedUserId=' + activityMember.userId;
+    this.http.post(url, {}, {}).then(data => {
+      if (data.status == 200) {
         var result: any = JSON.parse(data.data);
-        if(result.status == 200){
+        var resultString = JSON.stringify(result);
+        console.log("result complete: "+ resultString);
+        console.log("result: "+result.status);
+        if (result.status == 200) {
 
           const prompt = this.alertCtrl.create({
             title: 'Success',
@@ -77,16 +78,16 @@ export class NewItemPage {
           prompt.present();
 
         }
-        else{
+        else {
           alert("Something went wrong.");
         }
-      }else{
+      } else {
         alert("something went wrong with adding members to the Acticity. please try again!")
       }
     });
   }
-      
-  simpleToast(title, message){
+
+  simpleToast(title, message) {
     const alert = this.alertCtrl.create({
       title: title,
       subTitle: message,
