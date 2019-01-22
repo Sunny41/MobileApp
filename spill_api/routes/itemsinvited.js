@@ -3,15 +3,28 @@ var router = express.Router();
 
 
 router.get('/', function(req, res, next) {
-	connection.query('SELECT * from ItemInvited', function (error, results, fields) {
-	  	if(error){
-	  		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
-	  		//If there is error, we send the error in the error section with 500 status
-	  	} else {
-  			res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-  			//If there is no error, all is good and response is 200OK.
-	  	}
-  	});
+    if (req.query.userId!=null && req.query.activityId!=null) {
+        connection.query('SELECT * from ItemInvited WHERE itemInviteUserId = ? AND itemInviteActivityId = ?',[req.query.userId, req.query.activityId], function (error, results, fields) {
+            if(error){
+                res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                //If there is error, we send the error in the error section with 500 status
+            } else {
+                res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                //If there is no error, all is good and response is 200OK.
+            }
+        });
+    } else {
+        connection.query('SELECT * from ItemInvited', function (error, results, fields) {
+            if(error){
+                res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
+                //If there is error, we send the error in the error section with 500 status
+            } else {
+                res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+                //If there is no error, all is good and response is 200OK.
+            }
+        });
+    }
+
 });
 
 router.get('/name', function(req, res, next) {
@@ -56,7 +69,10 @@ router.get('/id', function(req, res, next) {
 
 /* GET items  listing, search query for user id. */
 router.get('/user', function(req, res, next) {
-    connection.query('SELECT * from ItemInvited WHERE itemInviteUserId = ?', req.query.s, function (error, results, fields) {
+    connection.query('SELECT ItemInvited.*, a.username, b.username as "invitedUser" ' +
+        'FROM ItemInvited JOIN User AS a ON ItemInvited.itemInviteUserId=a.userId ' +
+        'JOIN User as b ON ItemInvited.itemInviteInvitedUserId = b.userId ' +
+        'WHERE ItemInvited.itemInviteUserId=? AND itemInviteActivityId = ?', [req.query.userId, req.query.activityId], function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
@@ -68,7 +84,10 @@ router.get('/user', function(req, res, next) {
 });
 
 router.get('/invited', function(req, res, next) {
-    connection.query('SELECT * from ItemInvited WHERE itemInviteInvitedUserId = ?', req.query.s, function (error, results, fields) {
+    connection.query('SELECT ItemInvited.*, a.username, b.username as "invitedUser" ' +
+        'FROM ItemInvited JOIN User AS a ON ItemInvited.itemInviteUserId=a.userId ' +
+        'JOIN User as b ON ItemInvited.itemInviteInvitedUserId = b.userId ' +
+        'WHERE ItemInvited.itemInviteInvitedUserId=? AND itemInviteActivityId = ?', [req.query.userId, req.query.activityId], function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
@@ -82,7 +101,10 @@ router.get('/invited', function(req, res, next) {
 
 /* GET items  listing, search query for activity id. */
 router.get('/activity', function(req, res, next) {
-    connection.query('SELECT * from ItemInvited WHERE itemInviteActivityId = ?', req.query.s, function (error, results, fields) {
+    connection.query('SELECT ItemInvited.*, a.username, b.username as "invitedUser" ' +
+        'FROM ItemInvited JOIN User AS a ON ItemInvited.itemInviteUserId=a.userId ' +
+        'JOIN User as b ON ItemInvited.itemInviteInvitedUserId = b.userId ' +
+        'WHERE ItemInvited.itemInviteActivityId=?', req.query.s, function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
@@ -95,7 +117,7 @@ router.get('/activity', function(req, res, next) {
 
 
 router.post('/new', function (req,res,next) {
-    connection.query('INSERT INTO ItemInvited SET itemName = ?, itemDescription = ?, amount = ?, itemInviteActivityId = ?, itemInviteUserId = ?, itemInviteInvitedUserId = ?', [req.query.itemName, req.query.itemDescription, req.query.itemInviteUserId, req.query.amount, req.query.itemInviteActivityId, req.query.itemInviteInvitedUserId], function (error, results, fields) {
+    connection.query('INSERT INTO ItemInvited SET itemName = ?, itemDescription = ?, amount = ?, itemInviteActivityId = ?, itemInviteUserId = ?, itemInviteInvitedUserId = ?', [req.query.itemName, req.query.itemDescription, req.query.amount, req.query.itemInviteActivityId, req.query.itemInviteUserId, req.query.itemInviteInvitedUserId], function (error, results, fields) {
         if(error){
             res.send(JSON.stringify({"status": 500, "error": error, "response": null}));
             //If there is error, we send the error in the error section with 500 status
