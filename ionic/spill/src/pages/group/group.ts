@@ -74,21 +74,25 @@ export class GroupPage {
     this.http.get(url, {}, {}).then(data =>{
       var result:any = JSON.parse(data.data);
       if(data.status == 200){
-        this.groupMembersID = [];
-        this.groupMembers = [];
-        this.groupMembersID = result.response;
+        if(result.status == 200){
+          this.groupMembersID = [];
+          this.groupMembers = [];
+          this.groupMembersID = result.response;
 
-        for (let i = 0; i < this.groupMembersID.length; i++) {
-          //get members from id
-          var url = 'https://spillapi.mybluemix.net/users/id?s=' + this.groupMembersID[i].userId;
-          this.http.get(url, {}, {}).then(data =>{
-            var result:any = JSON.parse(data.data);
-            if(data.status == 200){
-              for (var j = 0; j < result.response.length; j++) {
-                this.groupMembers.push(result.response[j]);
+          for (let i = 0; i < this.groupMembersID.length; i++) {
+            //get members from id
+            var url = 'https://spillapi.mybluemix.net/users/id?s=' + this.groupMembersID[i].userId;
+            this.http.get(url, {}, {}).then(data =>{
+              var result:any = JSON.parse(data.data);
+              if(data.status == 200){
+                if(result.status  == 200){
+                  for (var j = 0; j < result.response.length; j++) {
+                    this.groupMembers.push(result.response[j]);
+                  }
+                }
               }
-            }
-          });
+            });
+          }
         }
       }
     });
@@ -102,56 +106,144 @@ export class GroupPage {
   joinActivity(activity: any){
     //add Members to the Activity if not already in, show Pop Up if not already in 
     //get activitymembers over activityid
+    console.log("ActivityId: " + activity.activityId);
     var alreadyjoined: boolean = false;
     var url = 'https://spillapi.mybluemix.net/activitymembers/id?s=' + activity.activityId;
     this.http.get(url, {}, {}).then(data => {
       var result: any = JSON.parse(data.data);
       if(data.status == 200){
-        console.log(result.response);
-        for ( var k = 0; k < result.response.length; k++) {
-          
-          //console.log("User: " + result.response[k].activityMembersUserId);
-          
-          if(this.user.userId == result.response[k].activityMembersUserId) {
+        if(result.status == 200){
+          console.log(result.response);
+          for ( var k = 0; k < result.response.length; k++) {
             //console.log("User: " + result.response[k].activityMembersUserId);
-            alreadyjoined = true;
+            if(this.user.userId == result.response[k].activityMembersUserId) {
+              //console.log("User: " + result.response[k].activityMembersUserId);
+              alreadyjoined = true;
+            }
           }
-        }
-        if(!alreadyjoined){
-          const join = this.alertCtrl.create({
-            title: 'Join Activity?',
-            message: 'Do you want to join the Activity?',
-            buttons: [
-              {
-                text: 'Cancel',
-                role: 'cancel',
-                handler: () => {
-                  //console.log('Cancel clicked');
+          if(!alreadyjoined){
+            const join = this.alertCtrl.create({
+              title: 'Join Activity?',
+              message: 'Do you want to join the Activity?',
+              buttons: [
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                  handler: () => {
+                    //console.log('Cancel clicked');
+                  }
+                },
+                {
+                  text: 'Join',
+                  handler: () => {
+                    var url = 'https://spillapi.mybluemix.net/activitymembers/new?activityMembersActivityId=' + activity.activityId + '&activityMembersUserId=' + this.user.userId;
+                    this.http.post(url, {},{}).then(data=>{
+                      var result: any = JSON.parse(data.data);
+                      if(data.status == 200){
+                        console.log('User Added');
+                      }
+                    });
+                    this.openActivity(activity);
+                    console.log('Join clicked');
+                  }
                 }
-              },
-              {
-                text: 'Join',
-                handler: () => {
-                  var url = 'https://spillapi.mybluemix.net/activitymembers/new?activityId=' + activity.activityId + '&userId=' + this.user.userId;
-                  this.http.post(url, {},{}).then(data=>{
-                    var result: any = JSON.parse(data.data);
-                    if(data.status == 200){
-                      console.log('User Added');
-                    }
-                  });
-                  console.log('Join clicked');
-                }
-              }
-            ]
-          });
-          join.present();
-        }else{
-          this.openActivity(activity);
+              ]
+            });
+            join.present();
+          }else{
+            this.openActivity(activity);
+          }
+        } else {
+          alert("Somthing went wrong with joining the Activity. Try again!");
         }
+      } else {
+        alert("Somthing went wrong with joining the Activity. Try again!");
       }
     });
   }   
   
+  editActivity(activity: any){
+    const prompt = this.alertCtrl.create({
+      title: 'Edit Activity',
+      message: "Change activity properties",
+      inputs: [
+        {
+          type: 'text',
+          name: 'activityName',
+          placeholder: 'Activity Name'
+        },
+        {
+          type: 'text',
+          name: 'activityDescription',
+          placeholder: 'Activity Description'
+        },
+        {
+          type: 'Date',
+          name: 'activityDate',
+          placeholder: 'Activity Date'
+        },
+        {
+          type: 'Time',
+          name: 'activityTime',
+          placeholder: 'Activity Time'
+        },
+        {
+          type: 'text',
+          name: 'activityPlace',
+          placeholder: 'Activity Place'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+          }
+        },
+        {
+          text: 'Save',
+          handler: data => {
+            console.log("SAVE Activity " + data.activityName + " " + data.activityDescription + " " + data.activityDate + " " + data.activityTime + " " + data.activityPlace);
+            activity.activityName = data.activityName;
+            activity.activityDescription = data.activityDescription;
+            activity.activityDate = data.activityDate + data.activityTime;
+            activity.activityPlace = data.activityPlace;
+            this.updateActivity(activity);
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  updateActivity(activity: any){
+    var url = 'https://spillapi.mybluemix.net/activities/edit?name=' + activity.name + '&description=' + activity.description + '&date=' + activity.date + '&place=' + activity.place + '&activityId=' + activity.activityId;
+    console.log("updating...");
+    this.http.put(url, {}, {}).then(data => {
+      console.log("updating...");
+      var result: any = JSON.parse(data.data);
+      if (data.status == 200) {
+        if(result.status == 200){
+          const prompt = this.alertCtrl.create({
+            title: 'Success!',
+            subTitle: 'Successfully updated the Activity',
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  this.navCtrl.pop();
+                }
+              }
+            ]
+          });
+          prompt.present();
+        } else {
+          alert("Somthing went wrong with updating the Activity. Try again!");
+        }
+      } else {
+        alert("Somthing went wrong with updating the Activity. Try again!");
+      }
+    });
+  }
 
   openAddMember() {
     this.navCtrl.push(AddMemberPage, {user: this.user, group: this.group});
@@ -162,10 +254,44 @@ export class GroupPage {
     this.navCtrl.push(ActivityPage, { activity: activity, user: this.user, group: this.group });
   }
 
-  deleteActivity() {
+  deleteActivity(activity: any) {
     //only possible when current user is admin
     //button has to be created
-    
+    console.log(activity.activityAdminId);
+    console.log(this.user.userId);
+    if(this.user.userId == activity.activityAdminId){
+      console.log("you're the admin");
+      var url = 'https://spillapi.mybluemix.net/activities/delete?id=' + activity.activityId;
+      console.log("deleting....");
+      this.http.delete(url, {}, {}).then(data => {
+        var result: any = JSON.parse(data.data);
+        console.log("deleting....");
+        if (data.status == 200) {
+          if(result.status == 200){
+            console.log("deleting....");
+            const prompt = this.alertCtrl.create({
+              title: 'Success!',
+              subTitle: 'Successfully deleted the Activity',
+              buttons: [
+                {
+                  text: 'OK',
+                  handler: () => {
+                    this.navCtrl.pop();
+                  }
+                }
+              ]
+            });
+            prompt.present();
+          }else {
+            alert("Somthing went wrong with deleting the Activity. Try again!");
+          }
+        } else {
+          alert("Somthing went wrong with deleting the Activity. Try again!");
+        }
+      });
+    } else{
+      alert("You're not Admin of the Activity!");
+    }
   }
 
 

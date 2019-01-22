@@ -11,9 +11,9 @@
   <h3>{{group.description}}</h3>
 
   <ion-refresher (ionRefresh)="doRefresh($event)">
-      <ion-refresher-content>
-      </ion-refresher-content>
-    </ion-refresher>
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
     
   <ion-fab top right #fab>
     <button ion-fab color="yellowButton"><ion-icon name="menu" color="light"></ion-icon></button>
@@ -26,9 +26,13 @@
       <ion-list-header>
         Activities
       </ion-list-header>
-      <ion-item *ngFor="let activity of activities" (click)="joinActivity(activity)">
-        <h2>{{activity.name}}</h2>
-        <h3>{{activity.description}}</h3>
+      <ion-item *ngFor="let activity of activities">
+        <ion-item (click)="joinActivity(activity)">
+          <h2>{{activity.name}}</h2>
+          <h3>{{activity.description}}</h3>
+      </ion-item>
+        <button (click)="editActivity(activity)"><ion-icon name="create"></ion-icon></button>
+        <button color="danger" (click)="deleteActivity(activity)"><ion-icon name="trash"></ion-icon></button>
       </ion-item>  
   </ion-list>
 </ion-content>
