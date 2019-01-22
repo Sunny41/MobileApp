@@ -29,7 +29,7 @@
 
       <h3>Invited Items</h3>
       <ion-item *ngFor="let item of userInvitedItems" (click)="payItem(item)">
-          <h2>{{item.invitedUser}}</h2>
+          <h2>{{item.username}}</h2>
           <h3>{{item.itemName}}</h3>
           <h2>{{-item.amount + "€"}}</h2>
       </ion-item>
@@ -43,5 +43,5 @@
         {{user.username}}
       </ion-item>
     </ion-list>
-        
+
 </ion-content>
