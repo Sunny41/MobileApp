@@ -137,14 +137,14 @@ export class GroupPage {
                   text: 'Join',
                   handler: () => {
                     var url = 'https://spillapi.mybluemix.net/activitymembers/new?activityMembersActivityId=' + activity.activityId + '&activityMembersUserId=' + this.user.userId;
-                    this.http.post(url, {},{}).then(data=>{
-                      var result: any = JSON.parse(data.data);
+                    this.http.post(url, {},{}).then(data=>{                      
                       if(data.status == 200){
-                        console.log('User Added');
+                        var result: any = JSON.parse(data.data);
+                        if(result.status == 200){
+                          this.openActivity(activity);
+                        }
                       }
                     });
-                    this.openActivity(activity);
-                    console.log('Join clicked');
                   }
                 }
               ]
@@ -203,10 +203,10 @@ export class GroupPage {
           text: 'Save',
           handler: data => {
             console.log("SAVE Activity " + data.activityName + " " + data.activityDescription + " " + data.activityDate + " " + data.activityTime + " " + data.activityPlace);
-            activity.activityName = data.activityName;
-            activity.activityDescription = data.activityDescription;
-            activity.activityDate = data.activityDate + data.activityTime;
-            activity.activityPlace = data.activityPlace;
+            activity.name = data.activityName;
+            activity.description = data.activityDescription;
+            activity.date = data.activityDate + data.activityTime;
+            activity.place = data.activityPlace;
             this.updateActivity(activity);
           }
         }
@@ -230,7 +230,7 @@ export class GroupPage {
               {
                 text: 'OK',
                 handler: () => {
-                  this.navCtrl.pop();
+                  this.load();
                 }
               }
             ]

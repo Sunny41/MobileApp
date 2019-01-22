@@ -84,7 +84,7 @@ this.http.get(url, {}, {}).then(data => {
   });
 
   //load my added items
-  var url = 'https://spillapi.mybluemix.net/itemsinvited/user?s=' + this.user.userId;
+  var url = 'https://spillapi.mybluemix.net/itemsinvited/user?s=' + this.user.userId + '&activityId=' + this.activity.activityId;
   this.http.get(url, {}, {}).then(data => {    
     if (data.status == 200) {
       var result: any = JSON.parse(data.data);
@@ -102,7 +102,7 @@ this.http.get(url, {}, {}).then(data => {
   });
 
   //load the items i am invited to
-  var url = 'https://spillapi.mybluemix.net/itemsinvited/invited?s=' + this.user.userId;
+  var url = 'https://spillapi.mybluemix.net/itemsinvited/invited?s=' + this.user.userId + '&activityId=' + this.activity.activityId;
   this.http.get(url, {}, {}).then(data => {    
     if (data.status == 200) {
       var result: any = JSON.parse(data.data);

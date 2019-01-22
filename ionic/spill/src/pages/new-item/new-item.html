@@ -23,10 +23,14 @@
                 <ion-label color="primary">Costs</ion-label>
                 <ion-input type="number" [(ngModel)]="cost" placeholder="€€€"></ion-input>
             </ion-item>
-            <ion-item *ngFor="let activityMember of activityMembers; let k=index">
-              <ion-label>{{ activityMember.username }}</ion-label>
-              <ion-checkbox [checked]="false" (click)="checkMember(activityMember)" name="checkedMember" ></ion-checkbox>
-            </ion-item>
+            
+        </ion-list>
+
+        <ion-list radio-group>
+          <ion-item *ngFor="let activityMember of activityMembers; let k=index">
+            <ion-label>{{ activityMember.username }}</ion-label>
+            <ion-radio [checked]="false" (click)="checkMember(activityMember)" name="checkedMember"  value=""></ion-radio>
+          </ion-item>
         </ion-list>
       <ion-fab bottom right>
         <button ion-fab type="submit" (click)="addNewAsset()"><ion-icon name="add"></ion-icon></button>

@@ -205,10 +205,9 @@ export class DashboardPage {
         title: title,
         buttons: [
           {
-            text: 'Delete',
-            role: 'destructive',
+            text: 'Open',
             handler: () => {
-              this.deleteGroup(group);
+              this.openSelectedGroup(group);
             }
           },
           {
@@ -218,9 +217,10 @@ export class DashboardPage {
             }
           },
           {
-            text: 'Open',
+            text: 'Delete',
+            role: 'destructive',
             handler: () => {
-              this.openSelectedGroup(group);
+              this.deleteGroup(group);
             }
           },
           {
@@ -233,25 +233,8 @@ export class DashboardPage {
       });
       actionSheet.present();
     } else {
-      //Not Admin options
-      const actionSheet = this.actionSheetCtrl.create({
-        title: title,
-        buttons: [
-          {
-            text: 'Open',
-            handler: () => {
-              this.openSelectedGroup(group);
-            }
-          },
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            handler: () => {
-            }
-          }
-        ]
-      });
-      actionSheet.present();
+      //Not Admin options. Just open the group
+      this.openSelectedGroup(group);
     }
   }
 

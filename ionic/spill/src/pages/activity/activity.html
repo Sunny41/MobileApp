@@ -21,23 +21,27 @@
       <button ion-fab (click)="openNewItem()"><ion-icon name="add-circle"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
-    <h3>Items</h3>
-    <ion-item *ngFor="let user of activityMembers">
-      {{user.username}}
-    </ion-item>
+    <h3>Your Items</h3>    
     <ion-list>
       <ion-item *ngFor="let myItem of userItems" >
-        {{ myItems.itemName }}<br>
+        {{ myItem.itemName }}<br>
         <!--show positive balance-->
         <!--show users who have to pay to u-->
       </ion-item>
+
+      <h3>Invited Items</h3>
       <ion-item *ngFor="let item of userInvitedItems" (click)="presentActionSheet(item)" >
           <h2>USERNAME</h2>
-          <h3>{{items.itemName}}</h3>
-          <h2>{{-items.amount + "€"}}</h2>
+          <h3>{{item.itemName}}</h3>
+          <h2>{{-item.amount + "€"}}</h2>
           <!--show negative balance-->
           <!--show pay button-->
           <!--show other users-->
+      </ion-item>
+
+      <h3>Members</h3>
+      <ion-item *ngFor="let user of activityMembers">
+        {{user.username}}
       </ion-item>
     </ion-list>
   Total: <!--Generate Total Costs of Activity-->
