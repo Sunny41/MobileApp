@@ -18,6 +18,7 @@ var invitations = require('./routes/invitations');
 var items = require('./routes/items');
 var itemsinvited = require('./routes/itemsinvited');
 var users = require('./routes/users');
+var payments = require('./routes/payments');
 
 var app = express();
 
@@ -59,6 +60,7 @@ app.use('/invitations', invitations); //GET all invitations
 app.use('/items', items); //GET all items
 app.use('/itemsinvited', itemsinvited); //GET all items someone has been invited for
 app.use('/users', users); //GET all users
+app.use('/payments', users); //GET all payments
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
