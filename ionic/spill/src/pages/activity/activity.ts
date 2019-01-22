@@ -55,7 +55,7 @@ ionViewWillEnter(){
 load(){
 //load activity members
 var url = 'https://spillapi.mybluemix.net/activitymembers/id?s=' + this.activity.activityId;
-this.http.get(url, {}, {}).then(data => {  
+this.http.get(url, {}, {}).then(data => {
   if (data.status == 200) {
     var result: any = JSON.parse(data.data);
     if(result.status == 200){
@@ -64,19 +64,19 @@ this.http.get(url, {}, {}).then(data => {
       for (var i = 0; i < this.activityMembersId.length; i++) {
         var url2 = 'https://spillapi.mybluemix.net/users/id?s=' + this.activityMembersId[i].activityMembersUserId;
         this.http.get(url2, {}, {}).then(data => {
-          
+
           if (data.status == 200) {
             var result2: any = JSON.parse(data.data);
             if(result2.status == 200){
               for (var j = 0; j < result2.response.length; j++) {
                 this.activityMembers.push(result2.response[j]);
               }
-            }            
+            }
           }
         });
       }
     }
-    
+
     if(this.refresher != null && this.refresher != undefined){
       this.refresher.complete();
     }
@@ -85,7 +85,7 @@ this.http.get(url, {}, {}).then(data => {
 
   //load my added items
   var url = 'https://spillapi.mybluemix.net/itemsinvited/user?userId=' + this.user.userId + '&activityId=' + this.activity.activityId;
-  this.http.get(url, {}, {}).then(data => {    
+  this.http.get(url, {}, {}).then(data => {
     if (data.status == 200) {
       var result: any = JSON.parse(data.data);
       this.userItems = [];
@@ -97,13 +97,13 @@ this.http.get(url, {}, {}).then(data => {
         if(this.refresher != null && this.refresher != undefined){
           this.refresher.complete();
         }
-      }      
+      }
     }
   });
 
   //load the items i am invited to
   var url = 'https://spillapi.mybluemix.net/itemsinvited/invited?userId=' + this.user.userId + '&activityId=' + this.activity.activityId;
-  this.http.get(url, {}, {}).then(data => {    
+  this.http.get(url, {}, {}).then(data => {
     if (data.status == 200) {
       var result: any = JSON.parse(data.data);
       this.userInvitedItems = [];
@@ -121,7 +121,7 @@ this.http.get(url, {}, {}).then(data => {
         if(this.refresher != null && this.refresher != undefined){
           this.refresher.complete();
         }
-      }      
+      }
     }
   });
 }
@@ -147,12 +147,12 @@ editItem(item) {
       {
         type: 'text',
         name: 'itemName',
-        placeholder: 'Item Name'
+        value: item.itemName
       },
       {
         type: 'text',
         name: 'itemDescription',
-        placeholder: 'Item Description'
+        value: item.itemDescription
       }
     ],
     buttons: [
@@ -201,9 +201,9 @@ payItem(item){
             //Pay
             var url="https://spillapi.mybluemix.net/payments/new?";
             this.http.post(url, {}, {}).then(data => {
-  
+
             });
-          }         
+          }
         }
       }
     ]
